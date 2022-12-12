@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/just-review-front/static/css/main.7958b90f.css",
-    "main.js": "/just-review-front/static/js/main.0f5324e5.js",
+    "main.js": "/just-review-front/static/js/main.3c769c0b.js",
     "static/js/787.db6131b0.chunk.js": "/just-review-front/static/js/787.db6131b0.chunk.js",
     "index.html": "/just-review-front/index.html",
     "main.7958b90f.css.map": "/just-review-front/static/css/main.7958b90f.css.map",
-    "main.0f5324e5.js.map": "/just-review-front/static/js/main.0f5324e5.js.map",
+    "main.3c769c0b.js.map": "/just-review-front/static/js/main.3c769c0b.js.map",
     "787.db6131b0.chunk.js.map": "/just-review-front/static/js/787.db6131b0.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7958b90f.css",
-    "static/js/main.0f5324e5.js"
+    "static/js/main.3c769c0b.js"
   ]
 }
