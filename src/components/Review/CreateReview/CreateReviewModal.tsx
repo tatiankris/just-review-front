@@ -36,7 +36,7 @@ function CreateReviewModal() {
                     New Review
                 </Typography>
 
-                <CreateReviewForm />
+                <CreateReviewForm handleClose={handleClose} />
             </Box>
     </Modal>
     </div>

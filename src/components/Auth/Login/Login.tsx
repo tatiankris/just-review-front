@@ -3,11 +3,13 @@ import s from './Login.module.scss'
 import {useFormik} from "formik";
 import * as Yup from 'yup';
 import { TextField, Button } from "@mui/joy";
+import {useAppDispatch} from "../../../common/utils/hooks";
+import {loginTC} from "../../../store/reducers/authReducer";
 
 
 const validationSchema = Yup.object().shape({
     email: Yup.string()
-        .email('Enter a valid email')
+        // .email('Enter a valid email')
         .min(2, 'Email too Short!')
         .max(50, 'Email too Long!')
         .required('Email is required'),
@@ -19,14 +21,20 @@ const validationSchema = Yup.object().shape({
 
 
 const Login = () => {
+    const dispatch = useAppDispatch();
+
+
     const formik = useFormik({
         initialValues: {
-            email: 'foobar@example.com',
-            password: 'foobar',
+            email: '',
+            password: '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+            // console.log(values)
+            dispatch(loginTC(values));
+
+            // alert(JSON.stringify(values, null, 2));
         },
     });
 

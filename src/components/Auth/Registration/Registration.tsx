@@ -3,15 +3,18 @@ import s from './Registration.module.scss'
 import * as Yup from "yup";
 import {useFormik} from "formik";
 import {Button, TextField} from "@mui/joy";
+import {registerTC} from "../../../store/reducers/authReducer";
+import {useAppDispatch} from "../../../common/utils/hooks";
 
 const Registration = () => {
+    const dispatch = useAppDispatch();
 
     const formik = useFormik({
         initialValues: {
-            username: 'Nick',
-            email: 'foobar@example.com',
-            password: 'foobar',
-            confirmPassword: 'foobar'
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
         },
         validationSchema: Yup.object().shape({
             username: Yup.string()
@@ -19,7 +22,7 @@ const Registration = () => {
                 .max(22, 'Username too Long!')
                 .required('Username is required'),
             email: Yup.string()
-                .email('Enter a valid email')
+                // .email('Enter a valid email')
                 .min(2, 'Email too Short!')
                 .max(22, 'Email too Long!')
                 .required('Email is required'),
@@ -31,7 +34,9 @@ const Registration = () => {
                 .oneOf([Yup.ref('password'), null], 'Passwords must match')
         }),
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+            // console.log(values)
+            dispatch(registerTC(values));
+            // alert(JSON.stringify(values, null, 2));
         },
     });
 

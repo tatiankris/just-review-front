@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {AppBar, Toolbar} from "@mui/material";
-import {Avatar, IconButton, Box, Stack, TextField, Tooltip, MenuItem, Menu} from "@mui/joy";
+import {Avatar, IconButton, Box, Stack, TextField, Tooltip, MenuItem, Menu, Button} from "@mui/joy";
 import s from './Header.module.scss'
 import { CssVarsProvider } from '@mui/joy/styles';
 import SearchIcon from '@mui/icons-material/Search';
@@ -10,10 +10,16 @@ import {useNavigate} from "react-router-dom";
 import {PROFILE_PAGE} from "../Routing";
 import ModalLogin from "./Auth/Login/ModalLogin";
 import ModalRegistration from "./Auth/Registration/ModalRegistration";
+import {useAppDispatch, useAppSelector} from "../common/utils/hooks";
+import { logoutAC } from "../store/reducers/authReducer";
 
 function Header() {
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const avatar = useAppSelector(state => state.auth.user.avatar)
+    const username = useAppSelector(state => state.auth.user.username)
 
     const [mode, setMode] = useState('light')
     const handleSetMode = () => {
@@ -32,13 +38,15 @@ function Header() {
         setOpen(false)
     }
 
+    const handleLogout = () => {
+        dispatch(logoutAC())}
 
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar color={'inherit'}
                 // className={s.appBar}
             >
-                <Toolbar sx={{"@media(min-width: 600px)": {minHeight: "46px"}}} className={s.toolbar}>
+                <Toolbar sx={{"@media(min-width: 600px)": {minHeight: "50px", padding: '0% 10%'}}} className={s.toolbar}>
                     <CssVarsProvider>
                         <Stack direction="row" spacing={1}>
 
@@ -79,31 +87,42 @@ function Header() {
                         </Box>
 
                         <Stack direction="row" spacing={1}>
-                            <Tooltip title="Profile" variant="soft" className={s.tooltip}>
-                            <IconButton
-                                size="sm"
-                                color="neutral"
-                                onClick={() => {setOpen(!open)}}
-                                style={{position: 'relative'}}
-                                // aria-label="avatar"
-                            >
-                                <Avatar/>
-                                <Menu
-                                    style={{position: 'absolute', left: '75%', top: '48px', width: '130px'}}
-                                    id="positioned-demo-menu"
-                                    open={open}
-                                    onClose={handleCLose}
-                                    aria-labelledby="positioned-demo-button"
-                                    placement="bottom-end"
-                                >
-                                    <MenuItem onClick={() => {navigate(PROFILE_PAGE); handleCLose()}}>
-                                        Open profile
-                                    </MenuItem>
-                                </Menu>
-                            </IconButton>
-                            </Tooltip>
-                            <ModalLogin />
-                            <ModalRegistration />
+                            {isLoggedIn &&
+                                <Stack direction={'row'} spacing={2}>
+                                {/*<Tooltip title="Profile" variant="soft" className={s.tooltip}>*/}
+                                    <IconButton
+                                        size="sm"
+                                        color="neutral"
+                                        onClick={() => {setOpen(!open)}}
+                                        style={{position: 'relative'}}
+                                        // aria-label="avatar"
+                                    >
+                                        <span>{username}</span>
+                                        <Avatar src={avatar}/>
+                                        <Menu
+                                            style={{position: 'absolute', left: '75%', top: '48px', width: '130px'}}
+                                            id="positioned-demo-menu"
+                                            open={open}
+                                            onClose={handleCLose}
+                                            aria-labelledby="positioned-demo-button"
+                                            placement="bottom-end"
+                                        >
+                                            <MenuItem onClick={() => {navigate(`${PROFILE_PAGE}/${username}`); handleCLose()}}>
+                                                Open profile
+                                            </MenuItem>
+                                        </Menu>
+                                    </IconButton>
+                                {/*</Tooltip>*/}
+                                    <Button onClick={handleLogout} variant={'soft'} color={'primary'}>Logout</Button>
+                                </Stack>
+                            }
+                            {!isLoggedIn &&
+
+                                <Stack direction={'row'} spacing={2}>
+                                    <ModalLogin />
+                                    <ModalRegistration />
+                                </Stack>
+                            }
                         </Stack>
                     </CssVarsProvider>
                 </Toolbar>

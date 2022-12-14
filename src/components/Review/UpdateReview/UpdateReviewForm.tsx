@@ -4,11 +4,27 @@ import * as Yup from "yup";
 import {Button, FormLabel, Textarea, TextField} from "@mui/joy";
 import {UpdateReviewImage} from "./UpdateReviewImage";
 import {imageDefault} from "../../../common/imageDefault";
+import {useAppDispatch} from "../../../common/utils/hooks";
+import {updateReviewTC} from "../../../store/reducers/reviewsReducer";
 
+type UpdateType = {
+    options: {
+        tags: string[],
+        imageURL: string,
+        reviewTitle: string,
+        workTitle: string,
+        reviewText: string,
+        category: string,
+        authorGrade: number
+    }
 
+    reviewId: string
+    handleClose: () => void
+}
 
-function UpdateReviewForm() {
+function UpdateReviewForm({ reviewId,options, ...props}:UpdateType) {
 
+    const dispatch = useAppDispatch()
     const [image, setImage] = useState('');
 
     const setReviewImage = (file64: string) => {
@@ -18,15 +34,18 @@ function UpdateReviewForm() {
         setImage(imageDefault)
     }
 
+    const [tags , setTags] = useState(options.tags)
+
+
 
     const formik = useFormik({
         initialValues: {
-            category: 'film',
-            reviewTitle: 'Поговорим о Гае Ричи',
-            workTitle: 'Карты, деньги, два ствола',
-            tags: '#90s',
-            reviewText: 'film film film filmfilm film film film film filmfilm film',
-            grade: 0
+            category: options.category,
+            reviewTitle: options.reviewTitle,
+            workTitle: options.workTitle,
+            // tags: '#90s',
+            reviewText: options.reviewText,
+            authorGrade: options.authorGrade
         },
         validationSchema: Yup.object().shape({
             category: Yup.string()
@@ -41,20 +60,25 @@ function UpdateReviewForm() {
                 .min(2, 'Too Short!')
                 .max(30, 'Too Long!')
                 .required('Field is required'),
-            tags: Yup.string()
-                .min(2, 'Too Short!')
-                .max(30, 'Too Long!')
-                .required('Field is required'),
+            // tags: Yup.string()
+            //     .min(2, 'Too Short!')
+            //     .max(30, 'Too Long!')
+            //     .required('Field is required'),
             reviewText: Yup.string()
                 .min(5, 'Too Short!')
                 .max(2000, 'Too Long!')
                 .required('Field is required'),
-            grade: Yup.number()
+            authorGrade: Yup.number()
                 .min(0, 'Invalid grade')
                 .max(10, 'Invalid grade')
         }),
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+
+
+            // alert(JSON.stringify(values, null, 2));
+            dispatch(updateReviewTC(reviewId, {...values, tags}))
+            props.handleClose()
+
         },
     });
     return (
@@ -96,10 +120,10 @@ function UpdateReviewForm() {
                 id="tags"
                 name="tags"
                 label="Tags"
-                value={formik.values.tags}
-                onChange={formik.handleChange}
-                error={formik.touched.tags && Boolean(formik.errors.tags)}
-                helperText={formik.touched.tags && formik.errors.tags}
+                // value={formik.values.tags}
+                // onChange={formik.handleChange}
+                // error={formik.touched.tags && Boolean(formik.errors.tags)}
+                // helperText={formik.touched.tags && formik.errors.tags}
             />
                 <FormLabel>Review text </FormLabel>
                 <Textarea
@@ -131,10 +155,10 @@ function UpdateReviewForm() {
                     id="grade"
                     name="grade"
                     placeholder="Grade"
-                    value={formik.values.grade}
+                    value={formik.values.authorGrade}
                     onChange={formik.handleChange}
-                    error={formik.touched.grade && Boolean(formik.errors.grade)}
-                    helperText={formik.touched.grade && formik.errors.grade}
+                    error={formik.touched.authorGrade && Boolean(formik.errors.authorGrade)}
+                    helperText={formik.touched.authorGrade && formik.errors.authorGrade}
                 />
 
                 <Button sx={{marginTop: '6px', borderRadius: '22px'}} color="neutral" variant="solid"  type="submit">

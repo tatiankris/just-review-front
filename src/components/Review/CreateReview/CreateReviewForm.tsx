@@ -4,11 +4,16 @@ import * as Yup from "yup";
 import {Button, FormLabel, Textarea, TextField} from "@mui/joy";
 import {UpdateReviewImage} from "../UpdateReview/UpdateReviewImage";
 import {imageDefault} from "../../../common/imageDefault";
+import {useAppDispatch} from "../../../common/utils/hooks";
+import {createReviewTC} from "../../../store/reducers/reviewsReducer";
 
+type CreateType = {
+    handleClose: () => void
+}
 
+function CreateReviewForm(props: CreateType) {
 
-function CreateReviewForm() {
-
+    const dispatch = useAppDispatch()
     const [image, setImage] = useState('');
 
     const setReviewImage = (file64: string) => {
@@ -17,16 +22,16 @@ function CreateReviewForm() {
     const deleteReviewImage = () => {
         setImage(imageDefault)
     }
-
+ const [tags , setTags] = useState(['new', '2022'])
 
     const formik = useFormik({
         initialValues: {
             category: '',
             reviewTitle: '',
             workTitle: '',
-            tags: '',
+            // tags: '',
             reviewText: '',
-            grade: 0
+            authorGrade: 0
         },
         validationSchema: Yup.object().shape({
             category: Yup.string()
@@ -41,20 +46,22 @@ function CreateReviewForm() {
                 .min(2, 'Too Short!')
                 .max(30, 'Too Long!')
                 .required('Field is required'),
-            tags: Yup.string()
-                .min(2, 'Too Short!')
-                .max(30, 'Too Long!')
-                .required('Field is required'),
+            // tags: Yup.string()
+            //     .min(2, 'Too Short!')
+            //     .max(30, 'Too Long!')
+            //     .required('Field is required'),
             reviewText: Yup.string()
                 .min(5, 'Too Short!')
                 .max(2000, 'Too Long!')
                 .required('Field is required'),
-            grade: Yup.number()
+            authorGrade: Yup.number()
                 .min(0, 'Invalid grade')
                 .max(10, 'Invalid grade')
         }),
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+            dispatch(createReviewTC({...values, tags}))
+            props.handleClose()
+            // alert(JSON.stringify(values, null, 2));
         },
     });
     return (
@@ -96,10 +103,10 @@ function CreateReviewForm() {
                     id="tags"
                     name="tags"
                     label="Tags"
-                    value={formik.values.tags}
-                    onChange={formik.handleChange}
-                    error={formik.touched.tags && Boolean(formik.errors.tags)}
-                    helperText={formik.touched.tags && formik.errors.tags}
+                    // value={formik.values.tags}
+                    // onChange={formik.handleChange}
+                    // error={formik.touched.tags && Boolean(formik.errors.tags)}
+                    // helperText={formik.touched.tags && formik.errors.tags}
                 />
                 <FormLabel>Review text </FormLabel>
                 <Textarea
@@ -128,10 +135,10 @@ function CreateReviewForm() {
                     id="grade"
                     name="grade"
                     placeholder="Grade"
-                    value={formik.values.grade}
+                    value={formik.values.authorGrade}
                     onChange={formik.handleChange}
-                    error={formik.touched.grade && Boolean(formik.errors.grade)}
-                    helperText={formik.touched.grade && formik.errors.grade}
+                    error={formik.touched.authorGrade && Boolean(formik.errors.authorGrade)}
+                    helperText={formik.touched.authorGrade && formik.errors.authorGrade}
                 />
 
                 <Button sx={{marginTop: '6px', borderRadius: '22px'}} color="neutral" variant="solid"  type="submit">

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import {Button, Modal, Box, Typography, IconButton} from "@mui/joy";
 import s from '../Modal.module.scss'
+import {deleteReviewTC} from "../../../store/reducers/reviewsReducer";
+import {useAppDispatch} from "../../../common/utils/hooks";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -13,10 +15,17 @@ const style = {
     p: 4,
 };
 
-function DeleteReviewModal() {
+function DeleteReviewModal({ reviewId,reviewTitle, ...props}:{ reviewId: string, reviewTitle: string }) {
+    const dispatch = useAppDispatch()
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleDelete = () => {
+        dispatch(deleteReviewTC(reviewId))
+        handleClose()
+    }
 
     return (
         <div>
@@ -31,11 +40,11 @@ function DeleteReviewModal() {
             >
                 <Box className={s.modalBox} sx={style}>
                     <Typography id="modal-modal-title" level="h4">
-                        Delete review {'//'}?
+                        Delete review {reviewTitle}?
                     </Typography>
                     <div style={{marginTop: '10px'}}>
-                        <Button variant={'soft'} color={'danger'}>Delete</Button>
-                        <Button variant={'soft'} color={'primary'}>Cancel</Button>
+                        <Button variant={'soft'} color={'danger'} onClick={handleDelete}>Delete</Button>
+                        <Button variant={'soft'} color={'primary'} onClick={handleClose}>Cancel</Button>
                     </div>
 
                 </Box>
