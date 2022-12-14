@@ -25,12 +25,13 @@ function CreateReviewModal() {
     return (
         <div>
             <Button variant={'soft'} color={'info'} onClick={handleOpen}>+ New Review</Button>
-        <Modal
-    open={open}
-    onClose={handleClose}
-    aria-labelledby="modal-modal-title"
-    aria-describedby="modal-modal-description"
-    >
+            <Modal
+                sx={{zIndex: 1100}}
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
             <Box className={s.updateModal}>
                 <Typography sx={{paddingLeft: '40%'}} id="modal-modal-title" level="h2">
                     New Review

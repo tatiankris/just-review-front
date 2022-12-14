@@ -58,7 +58,7 @@ function Review({userName, tags, likes,imageURL, reviewId,
                 </Box>
 
                 <div style={{fontSize: '24px', fontWeight: 'bold'}}>
-                    <NavLink target={'_blank'} className={s.reviewTitle} to={REVIEW_PAGE}>
+                    <NavLink target={'_blank'} className={s.reviewTitle} to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>
                         {reviewTitle}
                     </NavLink></div>
 
@@ -95,7 +95,7 @@ function Review({userName, tags, likes,imageURL, reviewId,
                     ea error esse, eum id maxime, mollitia natus nesciunt nisi odit officia quam ratione
                     reprehenderit saepe sit veritatis.
                     {' '}
-                    <NavLink to={REVIEW_PAGE} style={{color: 'grey'}} className={s.reviewTitle}>Читать
+                    <NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}} className={s.reviewTitle}>Читать
                         больше... </NavLink>
                 </Typography>
 
@@ -135,7 +135,7 @@ function Review({userName, tags, likes,imageURL, reviewId,
                 </div>
 
                 <IconButton onClick={() => {
-                    navigate(REVIEW_PAGE)
+                    navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
                 }} size="sm" color="neutral">
                     💬
                 </IconButton>

@@ -55,13 +55,19 @@ export const setCurrentReviewAC = (review: ReviewType) => {
 }
 
 //thunks
-export const getReviewsTC = (): AppThunk => {
+export const getReviewsTC = (reviewId?: string): AppThunk => {
     return (dispatch) => {
         // dispatch(setAppStatusAC("loading"))
         reviewsAPI.all()
             .then(res => {
                 console.log('reviews', res.data.reviews)
                 dispatch(setReviewsAC(res.data.reviews))
+
+                if (reviewId) {
+                   const current = res.data.reviews.find((r: ReviewType) => r._id === reviewId)
+                    dispatch(setCurrentReviewAC(current))
+                    // console.log('current', current)
+                }
             })
             .catch(err => {
                 console.log('error', err.message)
