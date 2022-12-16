@@ -4,11 +4,13 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import {authReducer} from "./reducers/authReducer";
 import {appReducer} from "./reducers/appReducer";
 import {reviewsReducer} from "./reducers/reviewsReducer";
+import {tagsReducer} from "./reducers/tagsReducer";
 
 const rootReducer = combineReducers({
     app: appReducer,
     auth: authReducer,
-    reviews: reviewsReducer
+    reviews: reviewsReducer,
+    tags: tagsReducer
 });
 
 export const store = createStore(

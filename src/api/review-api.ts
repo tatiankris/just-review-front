@@ -25,8 +25,8 @@ export type ReviewDataType = {
     reviewTitle: string,
     workTitle: string,
     reviewText: string,
-    category: string,
-    tags: string[],
+    category: { title: string },
+    tags: Array<{title: string | string}>,
     authorGrade: number
 
 }

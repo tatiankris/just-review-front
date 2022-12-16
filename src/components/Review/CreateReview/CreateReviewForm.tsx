@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import {Button, FormControl, FormLabel, Textarea, TextField} from "@mui/joy";
 import {UpdateReviewImage} from "../UpdateReview/UpdateReviewImage";
 import {imageDefault} from "../../../common/imageDefault";
-import {useAppDispatch} from "../../../common/utils/hooks";
+import {useAppDispatch, useAppSelector} from "../../../common/utils/hooks";
 import {createReviewTC} from "../../../store/reducers/reviewsReducer";
 import {TagsAutocomplete} from "../common/TagsAutocomplete";
 import Autocomplete from "@mui/joy/Autocomplete";
@@ -22,27 +22,30 @@ export type CreateFormikType = {
     reviewText: string,
     authorGrade: number
 }
-const categoryOptions = [
-    {title: 'movie'},
-    {title: 'book'},
-    {title: 'game'},
-    {title: 'comic'},
-    {title: 'music'},
-    {title: 'art'},
-    {title: 'show'},
-]
-const tagsOptions = [
-    {title: '90s'},
-    {title: '2022'},
-    {title: '2021'},
-    {title: 'adventures'},
-    {title: 'classic'},
-    {title: 'rock'},
-    {title: 'jazz'},
-    {title: 'helicopter'},
-]
+// const categoryOptions = [
+//     {title: 'movie'},
+//     {title: 'book'},
+//     {title: 'game'},
+//     {title: 'comic'},
+//     {title: 'music'},
+//     {title: 'art'},
+//     {title: 'show'},
+// ]
+// const tagsOptions = [
+//     {title: '90s'},
+//     {title: '2022'},
+//     {title: '2021'},
+//     {title: 'adventures'},
+//     {title: 'classic'},
+//     {title: 'rock'},
+//     {title: 'jazz'},
+//     {title: 'helicopter'},
+// ]
 
 function CreateReviewForm(props: CreateType) {
+
+    const tagsOptions = useAppSelector(state => state.tags.tags)
+    const categoryOptions = useAppSelector(state => state.tags.categories)
 
     const dispatch = useAppDispatch()
     const [image, setImage] = useState('');
@@ -91,7 +94,7 @@ function CreateReviewForm(props: CreateType) {
         onSubmit: (values) => {
         alert(JSON.stringify(values, null, 2));
 
-            // dispatch(createReviewTC(values))
+            dispatch(createReviewTC(values))
             props.handleClose()
 
         },
@@ -138,8 +141,6 @@ function CreateReviewForm(props: CreateType) {
                     error={formik.touched.reviewText && Boolean(formik.errors.reviewText)}
                     // helperText={formik.touched.reviewText && formik.errors.reviewText}
                 />
-
-
 
                 <UpdateReviewImage callback={setReviewImage} />
                 <div>

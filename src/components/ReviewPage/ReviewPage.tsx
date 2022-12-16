@@ -59,7 +59,7 @@ function ReviewPage() {
 
                             <Stack direction="row" spacing={1}  alignItems={'center'}>
                                 <Box>
-                                    <Chip sx={{marginLeft: '8px'}} color="info">{current.category}</Chip>
+                                    <Chip sx={{marginLeft: '8px'}} color="info">{current.category.title}</Chip>
                                 </Box>
                                 <Box color={'gray'}>Overall rating:</Box>
                                 <Box>

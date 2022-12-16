@@ -4,14 +4,15 @@ import s from '../Modal.module.scss'
 import UpdateReviewForm from "./UpdateReviewForm";
 
 type UpdateType = {
-    options: {
-        tags: string[],
-        imageURL: string,
+    oldValues: {
+
         reviewTitle: string,
         workTitle: string,
+        category: { title: string },
+        tags: Array<{title: string | string}>,
         reviewText: string,
-        category: string,
-        authorGrade: number
+        authorGrade: number,
+        imageURL: string,
     }
 
     reviewId: string
@@ -28,7 +29,7 @@ function UpdateReviewModal({ reviewId, ...props}: UpdateType) {
                 ✏️
             </IconButton>
             <Modal
-
+                sx={{zIndex: 1100}}
                 className={s.modalStyle}
                 open={open}
                 onClose={handleClose}
@@ -40,7 +41,7 @@ function UpdateReviewModal({ reviewId, ...props}: UpdateType) {
                         Update
                     </Typography>
 
-                    <UpdateReviewForm handleClose={handleClose} options={props.options}  reviewId={ reviewId} />
+                    <UpdateReviewForm handleClose={handleClose} oldValues={props.oldValues}  reviewId={ reviewId} />
                 </Box>
             </Modal>
         </div>

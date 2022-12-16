@@ -25,7 +25,6 @@ export const CategoryAutocomplete = ({ setFieldValue, value , categoryOptions, .
                     const valueTitle = typeof value === "string" ? value : value.title;
                     return optionTitle === valueTitle;
                 }}
-                limitTags={5}
                 sx={{width: '100%'}}
                 onChange={(event, value) => {
                     console.log('now value: ', value)

@@ -12,12 +12,13 @@ type ReviewPropsType = {
     reviewId: string
     imageURL: string
     userName: string
-    tags: [string]
+    category: { title: string },
+    tags: Array<{title: string | string}>,
     likes: number
     reviewTitle: string
     workTitle: string
     reviewText: string
-    category: string
+
     authorGrade: number
     createdAt: string
     overallRating: {1: number, 2: number, 3: number, 4: number, 5: number}
@@ -39,7 +40,7 @@ function Review({userName, tags, likes,imageURL, reviewId,
             {
                 author && <Stack className={s.tools} direction="row" spacing={2} justifyContent="right">
                     <div>
-                        <UpdateReviewModal reviewId={reviewId} options={{tags,imageURL, reviewTitle, workTitle, reviewText, category, authorGrade }}/>
+                        <UpdateReviewModal reviewId={reviewId} oldValues={{tags,imageURL, reviewTitle, workTitle, reviewText, category, authorGrade }}/>
                     </div>
 
                     <DeleteReviewModal reviewTitle={reviewTitle}  reviewId={reviewId}/>
@@ -70,7 +71,7 @@ function Review({userName, tags, likes,imageURL, reviewId,
 
                     <Stack direction="row" spacing={1} alignItems={'center'}>
                         <Box>
-                            <Chip sx={{marginLeft: '8px'}} color="info">{category}</Chip>
+                            <Chip sx={{marginLeft: '8px'}} color="info">{category.title}</Chip>
                         </Box>
                         <Box color={'gray'}>Overall rating:</Box>
                         <Box>
@@ -83,17 +84,16 @@ function Review({userName, tags, likes,imageURL, reviewId,
 
                 <Box sx={{display: 'flex', gap: 1, alignItems: 'center'}}>
                     {tags.map(t => {
-                        return <Chip key={t} color={'neutral'} size={'sm'} variant={'soft'}>
-                            {t}
+                        return <Chip key={t.title} color={'neutral'} size={'sm'} variant={'soft'}>
+                            {t.title}
                         </Chip>
                     })}
                 </Box>
 
                 <Typography mb={1} lineHeight="sm" textAlign={'start'} margin={'8px 0px'}>
                     {reviewText}
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet beatae deserunt,
-                    ea error esse, eum id maxime, mollitia natus nesciunt nisi odit officia quam ratione
-                    reprehenderit saepe sit veritatis.
+                    {reviewText}
+                    {reviewText}
                     {' '}
                     <NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}} className={s.reviewTitle}>Читать
                         больше... </NavLink>

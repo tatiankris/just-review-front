@@ -4,26 +4,51 @@ import * as Yup from "yup";
 import {Button, FormLabel, Textarea, TextField} from "@mui/joy";
 import {UpdateReviewImage} from "./UpdateReviewImage";
 import {imageDefault} from "../../../common/imageDefault";
-import {useAppDispatch} from "../../../common/utils/hooks";
+import {useAppDispatch, useAppSelector} from "../../../common/utils/hooks";
 import {updateReviewTC} from "../../../store/reducers/reviewsReducer";
+import {CategoryAutocomplete} from "../common/CategoryAutocomplete";
+import {TagsAutocomplete} from "../common/TagsAutocomplete";
+
+// const categoryOptions = [
+//     {title: 'movie'},
+//     {title: 'book'},
+//     {title: 'game'},
+//     {title: 'comic'},
+//     {title: 'music'},
+//     {title: 'art'},
+//     {title: 'show'},
+// ]
+// const tagsOptions = [
+//     {title: '90s'},
+//     {title: '2022'},
+//     {title: '2021'},
+//     {title: 'adventures'},
+//     {title: 'classic'},
+//     {title: 'rock'},
+//     {title: 'jazz'},
+//     {title: 'helicopter'},
+// ]
 
 type UpdateType = {
-    options: {
-        tags: string[],
-        imageURL: string,
+    oldValues: {
+        category: { title: string },
         reviewTitle: string,
         workTitle: string,
+        tags: Array<{title: string | string}>,
         reviewText: string,
-        category: string,
-        authorGrade: number
+        authorGrade: number,
+        imageURL: string,
     }
 
     reviewId: string
     handleClose: () => void
 }
 
-function UpdateReviewForm({ reviewId,options, ...props}:UpdateType) {
+function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
 
+
+    const tagsOptions = useAppSelector(state => state.tags.tags)
+    const categoryOptions = useAppSelector(state => state.tags.categories)
     const dispatch = useAppDispatch()
     const [image, setImage] = useState('');
 
@@ -34,23 +59,19 @@ function UpdateReviewForm({ reviewId,options, ...props}:UpdateType) {
         setImage(imageDefault)
     }
 
-    const [tags , setTags] = useState(options.tags)
-
-
-
     const formik = useFormik({
         initialValues: {
-            category: options.category,
-            reviewTitle: options.reviewTitle,
-            workTitle: options.workTitle,
-            // tags: '#90s',
-            reviewText: options.reviewText,
-            authorGrade: options.authorGrade
+            category: oldValues.category,
+            reviewTitle: oldValues.reviewTitle,
+            workTitle: oldValues.workTitle,
+            tags: oldValues.tags,
+            reviewText: oldValues.reviewText,
+            authorGrade: oldValues.authorGrade
         },
         validationSchema: Yup.object().shape({
-            category: Yup.string()
-                .min(2, 'Too Short!')
-                .max(20, 'Too Long!')
+            category: Yup.object()
+                // .min(2, 'Too Short!')
+                // .max(20, 'Too Long!')
                 .required('Field is required'),
             reviewTitle: Yup.string()
                 .min(2, 'Too Short!')
@@ -75,27 +96,20 @@ function UpdateReviewForm({ reviewId,options, ...props}:UpdateType) {
         onSubmit: (values) => {
 
 
-            // alert(JSON.stringify(values, null, 2));
-            dispatch(updateReviewTC(reviewId, {...values, tags}))
+            alert(JSON.stringify(values, null, 2));
+            dispatch(updateReviewTC(reviewId, values))
             props.handleClose()
 
         },
     });
     return (
         <div >
+            <div  style={{ display: 'flex', alignItems:'center', flexDirection: 'column'}} >
+                <CategoryAutocomplete categoryOptions={categoryOptions} value={formik.values.category} setFieldValue={formik.setFieldValue} />
+            </div>
             <form  style={{ display: 'flex', alignItems:'center', flexDirection: 'column'}} onSubmit={formik.handleSubmit}>
                 <TextField
-                    sx={{width: '100%'}}
-                    id="category"
-                    name="category"
-                    label="Category"
-                    value={formik.values.category}
-                    onChange={formik.handleChange}
-                    error={formik.touched.category && Boolean(formik.errors.category)}
-                    helperText={formik.touched.category && formik.errors.category}
-                />
-                <TextField
-                    sx={{width: '100%'}}
+                    sx={{width: '60%'}}
                     id="reviewTitle"
                     name="reviewTitle"
                     label="Review title"
@@ -105,7 +119,7 @@ function UpdateReviewForm({ reviewId,options, ...props}:UpdateType) {
                     helperText={formik.touched.reviewTitle && formik.errors.reviewTitle}
                 />
                 <TextField
-                    sx={{width: '100%'}}
+                    sx={{width: '60%'}}
                     id="workTitle"
                     name="workTitle"
                     label="Work title"
@@ -115,20 +129,12 @@ function UpdateReviewForm({ reviewId,options, ...props}:UpdateType) {
                     helperText={formik.touched.workTitle && formik.errors.workTitle}
                 />
 
-                <TextField
-                sx={{width: '100%'}}
-                id="tags"
-                name="tags"
-                label="Tags"
-                // value={formik.values.tags}
-                // onChange={formik.handleChange}
-                // error={formik.touched.tags && Boolean(formik.errors.tags)}
-                // helperText={formik.touched.tags && formik.errors.tags}
-            />
+                <TagsAutocomplete tagsOptions={tagsOptions} values={formik.values.tags} setFieldValue={formik.setFieldValue} />
+
                 <FormLabel>Review text </FormLabel>
                 <Textarea
                     minRows={3}
-                    sx={{width: '100%'}}
+                    sx={{width: '60%'}}
                     id="reviewText"
                     name="reviewText"
                     placeholder="Review text"
@@ -140,9 +146,6 @@ function UpdateReviewForm({ reviewId,options, ...props}:UpdateType) {
                 formik.touched.reviewText && <div style={{color: 'red'}}>{formik.errors.reviewText}</div>
             }
 
-
-
-
                 <UpdateReviewImage callback={setReviewImage} />
                 <div>
                     <img src={image} width={'100%'} height={'180px'} style={{display: 'inline-block', marginTop: '8px'}}/>
@@ -152,8 +155,8 @@ function UpdateReviewForm({ reviewId,options, ...props}:UpdateType) {
                 <FormLabel>Grade</FormLabel>
                 <TextField
                     type={'number'}
-                    id="grade"
-                    name="grade"
+                    id="authorGrade"
+                    name="authorGrade"
                     placeholder="Grade"
                     value={formik.values.authorGrade}
                     onChange={formik.handleChange}

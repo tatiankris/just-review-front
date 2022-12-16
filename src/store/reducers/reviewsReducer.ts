@@ -1,17 +1,18 @@
 import {AppThunk} from "../store";
 import {loginAC} from "./authReducer";
 import {ReviewDataType, reviewsAPI} from "../../api/review-api";
+import {getCategoriesTC, getTagsTC} from "./tagsReducer";
 
 export type ReviewType = {
     _id: string
     userId: string
     userName: string
-    tags: [string]
+    category: { title: string }
+    tags: Array<{title: string | string}>
     likes: number
     reviewTitle: string
     workTitle: string
     reviewText: string
-    category: string
     authorGrade: number
     overallRating: {1: number, 2: number, 3: number, 4: number, 5: number}
     comments: [any]
@@ -63,6 +64,9 @@ export const getReviewsTC = (reviewId?: string): AppThunk => {
                 console.log('reviews', res.data.reviews)
                 dispatch(setReviewsAC(res.data.reviews))
 
+                dispatch(getCategoriesTC())
+                dispatch(getTagsTC())
+
                 if (reviewId) {
                    const current = res.data.reviews.find((r: ReviewType) => r._id === reviewId)
                     dispatch(setCurrentReviewAC(current))
@@ -87,6 +91,9 @@ export const getAuthorTC = (username: string): AppThunk => {
             .then(res => {
                 console.log('reviews', res.data.reviews)
                 dispatch(setReviewsAC(res.data.reviews))
+
+                dispatch(getCategoriesTC())
+                dispatch(getTagsTC())
             })
             .catch(err => {
                 console.log('error', err.message)
