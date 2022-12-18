@@ -15,6 +15,7 @@ function ReviewPage() {
     // `${REVIEW_PAGE}/:username/:review`
     const reviews = useAppSelector(state => state.reviews.reviews)
     const current = useAppSelector(state => state.reviews.currentReview)
+    const comments = useAppSelector(state => state.comments.comments)
 
     const dispatch = useAppDispatch()
 
@@ -23,30 +24,26 @@ function ReviewPage() {
 
     ///НЕ ПОПАДАЕТ В ISEeFFECT!!!
     useEffect(() => {
-        debugger
+        // debugger
             console.log('diiiss')
             dispatch(getReviewsTC(review))
-    }, )
+    }, [])
+
     console.log('current', current)
-    if (!current) {
-        return  <Container maxWidth="md"
-                           sx={{marginTop: '80px'}}
-        >
-            Not FIND
-        </Container>
-    }
 
     return (
         <Container maxWidth="md"
                    sx={{marginTop: '80px'}}
         >
+
+            {current &&
                 <Paper  sx={{marginBottom: '8px'}} elevation={12}>
 
-                    <Box className={s.reviewBox}>
+                        <Box className={s.reviewBox}>
 
-                        <Box style={{display: 'inline-flex', alignItems: 'center'}}><Avatar sx={{
-                            "--Avatar-size": "20px"
-                        }}  /><span style={{fontSize: '14px', fontWeight: 'bold'}}>Иван Иванов</span>
+                        <Box style={{display: 'inline-flex', alignItems: 'center'}}>
+                            <Avatar sx={{"--Avatar-size": "20px"}} />
+                            <span style={{fontSize: '14px', fontWeight: 'bold'}}>{current.userName}</span>
                         </Box>
 
                         <div style={{fontSize: '24px', fontWeight: 'bold'}}><a className={s.reviewTitle} href={'*'}>{current.reviewTitle}</a></div>
@@ -58,9 +55,11 @@ function ReviewPage() {
                             </div>
 
                             <Stack direction="row" spacing={1}  alignItems={'center'}>
+                                {current.category &&
                                 <Box>
                                     <Chip sx={{marginLeft: '8px'}} color="info">{current.category.title}</Chip>
                                 </Box>
+                                }
                                 <Box color={'gray'}>Overall rating:</Box>
                                 <Box>
 
@@ -70,20 +69,22 @@ function ReviewPage() {
                             </Stack>
                         </Stack>
 
-                        {/*<Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>*/}
-                        {/*    {*/}
-                        {/*        current.tags.map(t => {*/}
-                        {/*            return <Chip color={'neutral'} size={'sm'} variant={'soft'}>*/}
-                        {/*                {t}*/}
-                        {/*            </Chip>*/}
-                        {/*        })*/}
-                        {/*    }*/}
-                        {/*</Box>*/}
+                            {
+                                current.tags &&
 
+                                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                                {
+                                    current.tags.map(t => {
+                                        return <Chip key={t.title} color={'neutral'} size={'sm'} variant={'soft'}>
+                                            {t.title}
+                                        </Chip>
+                                    })
+                                }
+                            </Box>
+                            }
                         <Typography mb={1} lineHeight="sm" textAlign={'start'} margin={'8px 0px'} fontSize={20}>
                             {current.reviewText}
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet beatae deserunt,
-                            ea error esse, eum id maxime, mollitia natus nesciunt nisi odit officia quam ratione
+
                         </Typography>
 
                         <div style={{minHeight: '120px', maxHeight: '500px', backgroundImage: `url(${URL})`, backgroundSize: 'cover', width: '100%'}}></div>
@@ -110,15 +111,22 @@ function ReviewPage() {
                             <span style={{color: '#e81224'}}>{current.likes}</span>
                         </div>
 
-
-
+                        {
+                            current.createdAt &&
                         <div style={{padding: '6px' }}>{current.createdAt.slice(0,10)}</div>
+                   }
                     </Stack>
 
 
                 </Paper>
+            }
+            {current &&
+                <Comments comments={comments} />
+            }
 
-            <Comments />
+            {!current && <div>not FOUND</div>}
+
+
 
         </Container>
     )

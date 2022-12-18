@@ -5,12 +5,14 @@ import {authReducer} from "./reducers/authReducer";
 import {appReducer} from "./reducers/appReducer";
 import {reviewsReducer} from "./reducers/reviewsReducer";
 import {tagsReducer} from "./reducers/tagsReducer";
+import {commentsReducer} from "./reducers/commentsReducer";
 
 const rootReducer = combineReducers({
     app: appReducer,
     auth: authReducer,
     reviews: reviewsReducer,
-    tags: tagsReducer
+    tags: tagsReducer,
+    comments: commentsReducer
 });
 
 export const store = createStore(

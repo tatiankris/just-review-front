@@ -1,26 +1,27 @@
 import {Avatar, Box, Card, CardOverflow, Divider, Typography} from "@mui/joy";
 import s from "../ReviewPage.module.scss";
 import React from "react";
+import {CommentType} from "../../../store/reducers/commentsReducer";
 
-function Comment() {
+
+type CommentPropsType ={
+    comment: CommentType
+}
+function Comment({comment,...props}: CommentPropsType) {
+
     return (
         <Box className={s.commentsStack}>
             <Card variant="outlined" sx={{margin: '0px'}}>
                 <Box className={s.comment}>
-
-                    <Box style={{display: 'inline-flex', alignItems: 'center'}}><Avatar sx={{
-                        "--Avatar-size": "20px"
-                    }}/><span style={{fontSize: '14px', fontWeight: 'bold'}}>Иван Иванов</span>
+                    <Box style={{display: 'inline-flex', alignItems: 'center'}}><Avatar sx={{"--Avatar-size": "20px"}}/>
+                        <span style={{fontSize: '14px', fontWeight: 'bold'}}>
+                            Иван Иванов
+                        </span>
                     </Box>
-
                     <Typography mb={1} lineHeight="sm" textAlign={'start'}>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet beatae deserunt,
-                        ea error esse, eum id maxime, mollitia natus nesciunt nisi odit officia quam ratione
-                        reprehenderit saepe sit veritatis.
+                        {comment.text}
                     </Typography>
-
                 </Box>
-
 
                 <Divider/>
                 <CardOverflow
@@ -34,7 +35,7 @@ function Comment() {
                     }}
                 >
                     <Typography level="body3" sx={{fontWeight: 'md', color: 'text.secondary'}}>
-                        12.12.2022
+                        {comment.createdAt.slice(0, 10)}
                     </Typography>
                 </CardOverflow>
             </Card>

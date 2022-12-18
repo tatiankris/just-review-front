@@ -14,8 +14,16 @@ import s from "../ReviewPage.module.scss";
 import {FormatBold, FormatItalic, KeyboardArrowDown} from "@mui/icons-material";
 import Comment from './Comment'
 import React from "react";
+import {useAppDispatch, useAppSelector} from "../../../common/utils/hooks";
+import {CommentType} from "../../../store/reducers/commentsReducer";
 
-function Comments() {
+type CommentsPropsType ={
+    comments: CommentType[]
+}
+function Comments({comments, ...props}: CommentsPropsType) {
+
+    const dispatch = useAppDispatch()
+
     return (
         <Paper sx={{backgroundColor: 'rgba(255, 226, 187, 0.57)', margin: '10px 0px'}} elevation={6}>
             <Box className={s.commentsBox}>
@@ -23,12 +31,11 @@ function Comments() {
                     💬 Comments
                 </Typography>
 
-                <Comment/>
-                <Comment/>
-                <Comment/>
-                <Comment/>
-                <Comment/>
-
+                {   comments &&
+                    comments.map(c => {
+                        return <Comment key={c._id} comment={c}/>
+                    })
+                }
                 <FormControl className={s.formControl}>
                     <FormLabel>🖊 Send comment</FormLabel>
                     <Textarea

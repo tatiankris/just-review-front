@@ -2,6 +2,7 @@ import {AppThunk} from "../store";
 import {loginAC} from "./authReducer";
 import {ReviewDataType, reviewsAPI} from "../../api/review-api";
 import {getCategoriesTC, getTagsTC} from "./tagsReducer";
+import {getCommentsTC} from "./commentsReducer";
 
 export type ReviewType = {
     _id: string
@@ -15,7 +16,7 @@ export type ReviewType = {
     reviewText: string
     authorGrade: number
     overallRating: {1: number, 2: number, 3: number, 4: number, 5: number}
-    comments: [any]
+    comments: number
     createdAt: string
     imageURL?: string
 }
@@ -70,6 +71,7 @@ export const getReviewsTC = (reviewId?: string): AppThunk => {
                 if (reviewId) {
                    const current = res.data.reviews.find((r: ReviewType) => r._id === reviewId)
                     dispatch(setCurrentReviewAC(current))
+                    dispatch(getCommentsTC(reviewId))
                     // console.log('current', current)
                 }
             })
@@ -165,6 +167,8 @@ export const deleteReviewTC = (reviewId: string): AppThunk => {
             )
     }
 }
+
+
 
 export type ReviewActionsType = ReturnType<typeof setReviewsAC> | ReturnType<typeof setCurrentReviewAC>
 
