@@ -1,6 +1,7 @@
 import {authAPI, LoginDataType, RegisterDataType} from "../../api/auth-api";
 import {AppThunk} from "../store";
 import {light} from "@mui/material/styles/createPalette";
+import {setAppStatusAC} from "./appReducer";
 
 type UserData = {
     id: string
@@ -11,6 +12,7 @@ type UserData = {
 }
 
 let initialState = {
+    isInitializeApp: false,
     isLoggedIn: false,
     user: {} as UserData
 }
@@ -25,8 +27,10 @@ export const authReducer = (state: StateType = initialState, action: AuthActions
         case 'auth/SET-IS-LOGOUT': {
             localStorage.removeItem('token')
             console.log('Logout is OK')
-            const newState = {...state, isLoggedIn: false, user: {} as UserData}
-            return newState
+            return {...state, isLoggedIn: false, user: {} as UserData}
+        }
+        case 'auth/SET-IS-INITIALIZE': {
+            return {...state, isInitializeApp: true}
         }
         default:
             return state
@@ -40,6 +44,11 @@ export const loginAC = (user: UserData) => {
         user
     } as const
 }
+export const initializeAC = () => {
+    return {
+        type: 'auth/SET-IS-INITIALIZE'
+    } as const
+}
 export const logoutAC = () => {
     return {
         type: 'auth/SET-IS-LOGOUT',
@@ -49,7 +58,7 @@ export const logoutAC = () => {
 //thunks
 export const loginTC = (data: LoginDataType): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         authAPI.login(data)
             .then(res => {
                 let user = {
@@ -73,7 +82,7 @@ export const loginTC = (data: LoginDataType): AppThunk => {
 
             })
             .finally(() => {
-                // dispatch(setAppStatusAC("succeeded"))
+                dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
@@ -81,7 +90,7 @@ export const loginTC = (data: LoginDataType): AppThunk => {
 
 export const registerTC = (data: RegisterDataType): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         authAPI.registration(data)
             .then(res => {
                 if (res.status === 200) {
@@ -104,7 +113,7 @@ export const registerTC = (data: RegisterDataType): AppThunk => {
                 console.log('error', err.message)
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
 
 
@@ -114,7 +123,7 @@ export const registerTC = (data: RegisterDataType): AppThunk => {
 
 export const authTC = (): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
 
         authAPI.me()
             .then(res => {
@@ -136,12 +145,13 @@ export const authTC = (): AppThunk => {
                 localStorage.removeItem('token')
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                        dispatch(initializeAC())
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
 }
 
 
-export type AuthActionsType = ReturnType<typeof loginAC> | ReturnType<typeof logoutAC>
+export type AuthActionsType = ReturnType<typeof loginAC> | ReturnType<typeof initializeAC> | ReturnType<typeof logoutAC>
 

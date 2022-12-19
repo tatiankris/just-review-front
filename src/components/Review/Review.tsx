@@ -3,15 +3,17 @@ import React, {useState} from "react";
 import s from './Review.module.scss'
 import {Avatar, Box, Chip, IconButton, Stack, Typography} from "@mui/joy";
 import {NavLink, useNavigate} from "react-router-dom";
-import {REVIEW_PAGE} from "../../Routing";
+import {PROFILE_PAGE, REVIEW_PAGE} from "../../Routing";
 import UpdateReviewModal from "./UpdateReview/UpdateReviewModal";
 import DeleteReviewModal from "./DeleteReview/DeleteReviewModal";
 import DeleteModal from "../commonComponents/DeleteModal";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {dislikeReviewTC, likeReviewTC} from "../../store/reducers/reviewsReducer";
+import LikeComponent from "../commonComponents/LikeComponent";
 
 
 type ReviewPropsType = {
+    author: boolean
     reviewId: string
     imageURL: string
     userName: string
@@ -27,7 +29,7 @@ type ReviewPropsType = {
     overallRating: {1: number, 2: number, 3: number, 4: number, 5: number}
 }
 
-function Review({userName, tags, likes,imageURL, reviewId,
+function Review({author, userName, tags, likes,imageURL, reviewId,
                    reviewTitle, workTitle, reviewText, category, authorGrade,
                     createdAt, overallRating,comments,...props}: ReviewPropsType) {
 
@@ -35,7 +37,7 @@ function Review({userName, tags, likes,imageURL, reviewId,
 const dispatch = useAppDispatch()
     const [rating, setRating] = useState<number | null>(2.5);
     // const overallRatingValue =
-    const [author, setAuthor] = useState(true)
+    // const [author, setAuthor] = useState(true)
 
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const loggedUserId = useAppSelector(state => state.auth.user.id)
@@ -61,9 +63,7 @@ const dispatch = useAppDispatch()
                     <div>
                         <UpdateReviewModal reviewId={reviewId} oldValues={{tags,imageURL, reviewTitle, workTitle, reviewText, category, authorGrade }}/>
                     </div>
-
-                    {/*<DeleteReviewModal reviewTitle={reviewTitle}  reviewId={reviewId}/>*/}
-             <DeleteModal reviewId={reviewId} title={reviewTitle} type={'review'}/>
+                    <DeleteModal reviewId={reviewId} title={reviewTitle} type={'review'}/>
                     <div style={{padding: '6px', fontSize: '11px', color: 'gray'}}><NavLink to={'/*'}>Открыть в режиме
                         просмотра</NavLink></div>
                 </Stack>
@@ -71,10 +71,9 @@ const dispatch = useAppDispatch()
 
             <Box className={s.reviewBox}>
 
-                <Box style={{display: 'inline-flex', alignItems: 'center'}}><Avatar sx={{
-                    "--Avatar-size": "20px"
-                }}/>
-                    <span style={{fontSize: '14px', fontWeight: 'bold'}}>{userName}</span>
+                <Box style={{display: 'inline-flex', alignItems: 'center'}}>
+                    <Avatar onClick={() => {navigate(`${PROFILE_PAGE}/${userName}`)}} sx={{"--Avatar-size": "20px"}}/>
+                    <a href={`${PROFILE_PAGE}/${userName}`} style={{fontSize: '14px', fontWeight: 'bold'}} className={s.reviewTitle}>{userName}</a>
                 </Box>
 
                 <div style={{fontSize: '24px', fontWeight: 'bold'}}>
@@ -146,17 +145,18 @@ const dispatch = useAppDispatch()
 
             </Box>
             <Stack className={s.bottom} direction="row" spacing={2} justifyContent="space-around">
-                <div>
-                    <IconButton onClick={handleLike} size="sm" color="danger">
-                        { !!like ? <div>❤</div> : <div style={{display: "inline-block"}}>🤍</div> }
-                    </IconButton>
-                    {
-                        !!like
-                            ? <span style={{color: '#e81224'}}>{likes.length}</span>
-                            : <span style={{color: '#ffffff'}}>{likes.length}</span>
-                    }
+                {/*<div>*/}
+                {/*    <IconButton onClick={handleLike} size="sm" color="danger">*/}
+                {/*        { !!like ? <div>❤</div> : <div style={{display: "inline-block"}}>🤍</div> }*/}
+                {/*    </IconButton>*/}
+                {/*    {*/}
+                {/*        !!like*/}
+                {/*            ? <span style={{color: '#e81224'}}>{likes.length}</span>*/}
+                {/*            : <span style={{color: '#ffffff'}}>{likes.length}</span>*/}
+                {/*    }*/}
 
-                </div>
+                {/*</div>*/}
+                <LikeComponent  likes={likes} reviewId={reviewId} />
 
                 <div>
                     <IconButton onClick={() => {

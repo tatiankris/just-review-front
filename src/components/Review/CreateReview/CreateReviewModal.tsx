@@ -17,14 +17,18 @@ const style = {
     p: 4,
 };
 
-function CreateReviewModal() {
+type PropsType = {
+    variant: 'soft' | 'solid' | 'outlined'
+}
+
+function CreateReviewModal({variant}: PropsType) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
         <div>
-            <Button variant={'soft'} color={'info'} onClick={handleOpen}>+ New Review</Button>
+            <Button variant={variant} color={'info'} onClick={handleOpen} style={{fontSize: '18px'}}>+ New Review</Button>
             <Modal
                 sx={{zIndex: 1100}}
                 open={open}

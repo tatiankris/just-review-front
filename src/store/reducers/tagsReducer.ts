@@ -2,6 +2,7 @@ import {ReviewActionsType, ReviewType, setCurrentReviewAC, setReviewsAC} from ".
 import {AppThunk} from "../store";
 import {reviewsAPI} from "../../api/review-api";
 import {tagsAPI} from "../../api/tags-api";
+import {setAppStatusAC} from "./appReducer";
 
 
 const initialState = {
@@ -41,7 +42,7 @@ export const setTagsAC = (tags: Array<{title: string}>) => {
 
 export const getCategoriesTC = (): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         tagsAPI.getCategories()
             .then(res => {
                 console.log('categories', res.data.categories)
@@ -53,14 +54,14 @@ export const getCategoriesTC = (): AppThunk => {
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
 }
 export const getTagsTC = (): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         tagsAPI.getTags()
             .then(res => {
                 console.log('tags', res.data.tags)
@@ -72,7 +73,7 @@ export const getTagsTC = (): AppThunk => {
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }

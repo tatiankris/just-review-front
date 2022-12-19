@@ -46,8 +46,8 @@ function LikeComponent( { likes, reviewId,current, ...props }:LikePropsType ) {
             </IconButton>
             {
                 !!like
-                    ? <span style={{color: '#e81224'}}>{likes.length}</span>
-                    : <span style={{color: '#ffffff'}}>{likes.length}</span>
+                    ? <span style={{color: '#c4111f'}}>{likes.length}</span>
+                    : <span style={{color: '#474343'}}>{likes.length}</span>
             }
         </div>
 

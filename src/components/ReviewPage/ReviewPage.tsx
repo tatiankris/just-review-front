@@ -3,9 +3,9 @@ import s from './ReviewPage.module.scss'
 import {Avatar, Box, Chip, Container, IconButton, Stack, Typography} from "@mui/joy";
 import {Paper, Rating} from "@mui/material";
 import Comments from './CommentField/Comments'
-import {REVIEW_PAGE} from "../../Routing";
+import {PROFILE_PAGE, REVIEW_PAGE} from "../../Routing";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {getReviewsTC} from "../../store/reducers/reviewsReducer";
 import LikeComponent from "../commonComponents/LikeComponent";
 
@@ -19,6 +19,7 @@ function ReviewPage() {
     const comments = useAppSelector(state => state.comments.comments)
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const {username, review} = useParams()
     console.log('review', review)
@@ -42,12 +43,12 @@ function ReviewPage() {
 
                         <Box className={s.reviewBox}>
 
-                        <Box style={{display: 'inline-flex', alignItems: 'center'}}>
-                            <Avatar sx={{"--Avatar-size": "20px"}} />
-                            <span style={{fontSize: '14px', fontWeight: 'bold'}}>{current.userName}</span>
-                        </Box>
+                            <Box style={{display: 'inline-flex', alignItems: 'center'}}>
+                                <Avatar onClick={() => {navigate(`${PROFILE_PAGE}/${current.userName}`)}} sx={{"--Avatar-size": "20px"}}/>
+                                <a href={`${PROFILE_PAGE}/${current.userName}`} style={{fontSize: '14px', fontWeight: 'bold'}} className={s.reviewTitle}>{current.userName}</a>
+                            </Box>
 
-                        <div style={{fontSize: '24px', fontWeight: 'bold'}}><a className={s.reviewTitle} href={'*'}>{current.reviewTitle}</a></div>
+                        <div style={{fontSize: '24px', fontWeight: 'bold'}}><span >{current.reviewTitle}</span></div>
 
                         <Stack width={'100%'} direction="row" spacing={2} justifyContent="space-between" alignItems={'center'}>
                             <div>

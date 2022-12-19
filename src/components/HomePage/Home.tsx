@@ -4,6 +4,7 @@ import Tags from "../Tags/Tags";
 import Review from "../Review/Review";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {getReviewsTC} from "../../store/reducers/reviewsReducer";
+import { useDebounce } from "usehooks-ts";
 const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
 function Home() {
@@ -13,13 +14,13 @@ function Home() {
     const currentReview = useAppSelector(state => state.reviews.currentReview)
     const dispatch = useAppDispatch()
 
+    const search = useAppSelector(state => state.reviews.search)
+    const debouncedSearch = useDebounce(search, 500)
+
 
     useEffect(() => {
         dispatch(getReviewsTC())
-    }, [])
-
-
-
+    }, [dispatch, debouncedSearch])
 
     return (
 
@@ -33,6 +34,7 @@ function Home() {
                             {
                                 reviews && reviews.map(r => {
                                     return <Review
+                                        author={false}
                                         reviewId={r._id}
                                         key={r._id}
                                         imageURL={r.imageURL ? r.imageURL : URL}

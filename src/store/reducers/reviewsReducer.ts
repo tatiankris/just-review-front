@@ -3,6 +3,7 @@ import {loginAC} from "./authReducer";
 import {likesAPI, ReviewDataType, reviewsAPI} from "../../api/review-api";
 import {getCategoriesTC, getTagsTC} from "./tagsReducer";
 import {getCommentsTC} from "./commentsReducer";
+import { setAppStatusAC } from "./appReducer";
 
 export type ReviewType = {
     _id: string
@@ -23,7 +24,8 @@ export type ReviewType = {
 }
 const initialState = {
     reviews: [] as Array<ReviewType>,
-    currentReview: {} as ReviewType
+    currentReview: {} as ReviewType,
+    search: ''
 }
 
 export type StateType = typeof initialState;
@@ -43,6 +45,9 @@ export const reviewsReducer = (state: StateType = initialState, action: ReviewAc
         }
         case 'reviews/SET-CURRENT-LIKES': {
             return {...state, currentReview: {...state.currentReview, likes: action.likes}}
+        }
+        case 'reviews/SET-SEARCH': {
+            return {...state, search: action.search}
         }
 
         default:
@@ -79,12 +84,21 @@ export const setCurrentLikesAC = (likes: Array<{_id: string, reviewId: string, u
         likes
     } as const
 }
+export const setSearchAC = (search: string) => {
+    return {
+        type: 'reviews/SET-SEARCH',
+        search
+    } as const
+}
 
 //thunks
 export const getReviewsTC = (reviewId?: string): AppThunk => {
-    return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
-        reviewsAPI.all()
+    return (dispatch, getState) => {
+
+        const search = getState().reviews.search
+
+        dispatch(setAppStatusAC("loading"))
+        reviewsAPI.all(search.length ? search : null)
             .then(res => {
                 console.log('reviews', res.data.reviews)
                 dispatch(setReviewsAC(res.data.reviews))
@@ -104,7 +118,7 @@ export const getReviewsTC = (reviewId?: string): AppThunk => {
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
@@ -112,7 +126,7 @@ export const getReviewsTC = (reviewId?: string): AppThunk => {
 
 export const getAuthorTC = (username: string): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         reviewsAPI.author (username)
             .then(res => {
                 console.log('reviews', res.data.reviews)
@@ -126,7 +140,7 @@ export const getAuthorTC = (username: string): AppThunk => {
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
@@ -134,19 +148,19 @@ export const getAuthorTC = (username: string): AppThunk => {
 
 export const createReviewTC = (reviewData: ReviewDataType): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         reviewsAPI.create (reviewData)
             .then(res => {
 
                 console.log('review', res.data.review)
-                // dispatch(getAuthorTC(res.data.review.))
+                dispatch(getAuthorTC(res.data.review.userName))
             })
             .catch(err => {
                 console.log('error', err.message)
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
@@ -154,19 +168,19 @@ export const createReviewTC = (reviewData: ReviewDataType): AppThunk => {
 
 export const updateReviewTC = (reviewId: string, reviewData: ReviewDataType): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         reviewsAPI.update (reviewId, reviewData)
             .then(res => {
 
                 console.log('review', res.data.review)
-                // dispatch(getAuthorTC(res.data.review.))
+                dispatch(getAuthorTC(res.data.review.userName))
             })
             .catch(err => {
                 console.log('error', err.message)
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
@@ -174,19 +188,19 @@ export const updateReviewTC = (reviewId: string, reviewData: ReviewDataType): Ap
 
 export const deleteReviewTC = (reviewId: string): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         reviewsAPI.delete (reviewId)
             .then(res => {
 
                 console.log('review', res.data.review)
-                // dispatch(getAuthorTC(res.data.review.))
+                dispatch(getAuthorTC(res.data.review.userName))
             })
             .catch(err => {
                 console.log('error', err.message)
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
@@ -225,6 +239,7 @@ export const likeReviewTC = (reviewId: string, current?: boolean): AppThunk => {
 export const dislikeReviewTC = (reviewId: string, current?: boolean): AppThunk => {
     return (dispatch,getState) => {
         const review = getState().reviews.reviews.find(r => r._id === reviewId)
+
         // dispatch(setAppStatusAC("loading"))
         likesAPI.deleteLike(reviewId)
             .then(res => {
@@ -254,5 +269,5 @@ export const dislikeReviewTC = (reviewId: string, current?: boolean): AppThunk =
 
 
 
-export type ReviewActionsType = ReturnType<typeof setReviewsAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setCurrentLikesAC>| ReturnType<typeof setLikesAC>
+export type ReviewActionsType = ReturnType<typeof setReviewsAC> | ReturnType<typeof setSearchAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setCurrentLikesAC>| ReturnType<typeof setLikesAC>
 

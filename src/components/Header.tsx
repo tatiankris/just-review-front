@@ -12,6 +12,7 @@ import ModalLogin from "./Auth/Login/ModalLogin";
 import ModalRegistration from "./Auth/Registration/ModalRegistration";
 import {useAppDispatch, useAppSelector} from "../common/utils/hooks";
 import { logoutAC } from "../store/reducers/authReducer";
+import {setSearchAC} from "../store/reducers/reviewsReducer";
 
 function Header() {
 
@@ -20,6 +21,7 @@ function Header() {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const avatar = useAppSelector(state => state.auth.user.avatar)
     const username = useAppSelector(state => state.auth.user.username)
+    const search = useAppSelector(state => state.reviews.search)
 
     const [mode, setMode] = useState('light')
     const handleSetMode = () => {
@@ -40,6 +42,10 @@ function Header() {
 
     const handleLogout = () => {
         dispatch(logoutAC())}
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(setSearchAC(e.currentTarget.value.trim()))
+    }
 
     return (
         <Box sx={{flexGrow: 1}}>
@@ -80,6 +86,8 @@ function Header() {
                             sx={{flexGrow: 1, padding: '0px 80px'}}
                         >
                             <TextField
+                                value={search}
+                                onChange={handleSearch}
                                 sx={{borderRadius: '20px', maxWidth: '300px'}}
                                 placeholder="Search…"
                                 startDecorator={<SearchIcon />}

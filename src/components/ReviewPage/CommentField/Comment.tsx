@@ -3,8 +3,9 @@ import s from "../ReviewPage.module.scss";
 import React, {useState} from "react";
 import {CommentType, updateCommentTC} from "../../../store/reducers/commentsReducer";
 import DeleteModal from "../../commonComponents/DeleteModal";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch} from "../../../common/utils/hooks";
+import {PROFILE_PAGE} from "../../../Routing";
 
 
 type CommentPropsType ={
@@ -13,6 +14,8 @@ type CommentPropsType ={
 function Comment({comment,...props}: CommentPropsType) {
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+
     const {review} = useParams()
 
     const [update, setUpdate] = useState(false)
@@ -41,10 +44,8 @@ function Comment({comment,...props}: CommentPropsType) {
                 <Box className={s.comment}>
                     <Stack width={'100%'} direction="row" sx={{justifyContent: 'space-between'}}>
                         <Box style={{display: 'inline-flex', alignItems: 'center'}}>
-                            <Avatar sx={{"--Avatar-size": "20px"}}/>
-                            <span style={{fontSize: '14px', fontWeight: 'bold'}}>
-                            Иван Иванов
-                        </span>
+                            <Avatar onClick={() => {navigate(`${PROFILE_PAGE}/${comment.user}`)}} sx={{"--Avatar-size": "20px"}}/>
+                            <a href={`${PROFILE_PAGE}/${comment.user}`} style={{fontSize: '14px', fontWeight: 'bold'}} className={s.reviewTitle}>{comment.user}</a>
                         </Box>
                         <Box style={{display: 'inline-flex', alignItems: 'center'}}>
 

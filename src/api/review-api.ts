@@ -4,8 +4,8 @@ import { instance } from "./api";
 
 export const reviewsAPI = {
 
-    all() {
-        return instance.get('/reviews/all')
+    all(search?: string | null) {
+        return instance.get('/reviews/all', {params: {search}})
     },
     author(username: string) {
         return instance.get(`/reviews/${username}`)
@@ -29,6 +29,12 @@ export const likesAPI = {
     deleteLike(reviewId: string) {
         return instance.delete(`/reviews/like/${reviewId}`, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
     }
+}
+
+export const userAPI = {
+    user(username: string) {
+        return instance.get(`/reviews/user/${username}`)
+    },
 }
 
 export type ReviewDataType = {

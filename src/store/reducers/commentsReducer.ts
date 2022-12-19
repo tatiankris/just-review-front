@@ -1,5 +1,6 @@
 import {AppThunk} from "../store";
 import {CommentData, commentsAPI} from "../../api/comments-api";
+import { setAppStatusAC } from "./appReducer";
 
 export type CommentType = {
     review: string
@@ -39,7 +40,7 @@ export const setCommentsAC = (data: CommentType[]) => {
 
 export const getCommentsTC = (reviewId: string): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         commentsAPI.getComments(reviewId)
             .then(res => {
                 console.log('res.data.comments', res.data.comments)
@@ -50,7 +51,7 @@ export const getCommentsTC = (reviewId: string): AppThunk => {
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
@@ -58,7 +59,7 @@ export const getCommentsTC = (reviewId: string): AppThunk => {
 
 export const createCommentTC = (reviewId: string, data: CommentData): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"));
         commentsAPI.createComment(reviewId, data)
             .then(res => {
 
@@ -69,7 +70,7 @@ export const createCommentTC = (reviewId: string, data: CommentData): AppThunk =
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
@@ -77,7 +78,7 @@ export const createCommentTC = (reviewId: string, data: CommentData): AppThunk =
 
 export const updateCommentTC = (reviewId: string, commentId: string, data: CommentData): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         commentsAPI.updateComment(reviewId, commentId, data)
             .then(res => {
 
@@ -88,14 +89,14 @@ export const updateCommentTC = (reviewId: string, commentId: string, data: Comme
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
 }
 export const deleteCommentTC = (reviewId: string, commentId: string): AppThunk => {
     return (dispatch) => {
-        // dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         commentsAPI.deleteComment(reviewId, commentId)
             .then(res => {
 
@@ -106,7 +107,7 @@ export const deleteCommentTC = (reviewId: string, commentId: string): AppThunk =
 
             })
             .finally(() => {
-                    // dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
