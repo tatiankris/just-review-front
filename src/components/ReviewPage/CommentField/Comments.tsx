@@ -13,9 +13,11 @@ import {
 import s from "../ReviewPage.module.scss";
 import {FormatBold, FormatItalic, KeyboardArrowDown} from "@mui/icons-material";
 import Comment from './Comment'
-import React from "react";
+import React, {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../common/utils/hooks";
-import {CommentType} from "../../../store/reducers/commentsReducer";
+import {CommentType, createCommentTC} from "../../../store/reducers/commentsReducer";
+import {useParams} from "react-router-dom";
+import {log} from "util";
 
 type CommentsPropsType ={
     comments: CommentType[]
@@ -23,9 +25,25 @@ type CommentsPropsType ={
 function Comments({comments, ...props}: CommentsPropsType) {
 
     const dispatch = useAppDispatch()
+    const {review} = useParams()
+
+    const [value, setValue ] = useState('')
+    const handleSubmit = () => {
+        if (!value.trim().length) {
+            return console.log('Comment text is required')
+        } else if (!review) {
+            return console.log('review not found')
+        } else {
+            dispatch(createCommentTC(review, {text: value}))
+            setValue('')
+        }
+
+
+    }
+
 
     return (
-        <Paper sx={{backgroundColor: 'rgba(255, 226, 187, 0.57)', margin: '10px 0px'}} elevation={6}>
+        <Paper sx={{backgroundColor: 'rgba(255, 226, 187, 0.57)', margin: '10px 0px 30px 0px'}} elevation={6}>
             <Box className={s.commentsBox}>
                 <Typography padding={'4px'} fontSize={'14px'} fontWeight={'bold'}>
                     💬 Comments
@@ -39,61 +57,23 @@ function Comments({comments, ...props}: CommentsPropsType) {
                 <FormControl className={s.formControl}>
                     <FormLabel>🖊 Send comment</FormLabel>
                     <Textarea
-                        placeholder="Type something here…"
+                        placeholder="Write comment…"
                         minRows={3}
+                        value={value}
+                        onKeyPress={(e) => {if (e.key === "Enter" && !e.shiftKey) { handleSubmit() }} }
+                        onChange={(e) => {setValue(e.currentTarget.value)}}
                         endDecorator={
                             <Box
                                 sx={{
                                     display: 'flex',
                                     gap: 'var(--Textarea-paddingBlock)',
                                     pt: 'var(--Textarea-paddingBlock)',
-                                    borderTop: '1px solid',
-                                    borderColor: 'divider',
+                                    // borderTop: '1px solid',
+                                    // borderColor: 'divider',
                                     flex: 'auto',
                                 }}
                             >
-                                <IconButton
-                                    variant="plain"
-                                    color="neutral"
-                                    // onClick={(event) => setAnchorEl(event.currentTarget)}
-                                >
-                                    <FormatBold/>
-                                    <KeyboardArrowDown fontSize="medium"/>
-                                </IconButton>
-                                <Menu
-                                    // anchorEl={anchorEl}
-                                    // open={Boolean(anchorEl)}
-                                    // onClose={() => setAnchorEl(null)}
-                                    size="sm"
-                                    placement="bottom-start"
-                                    sx={{'--List-decorator-size': '24px'}}
-                                >
-                                    {['200', 'normal', 'bold'].map((weight) => (
-                                        <MenuItem
-                                            // key={weight}
-                                            // selected={fontWeight === weight}
-                                            // onClick={() => {
-                                            //     setFontWeight(weight);
-                                            //     setAnchorEl(null);
-                                            // }}
-                                            // sx={{ fontWeight: weight }}
-                                        >
-                                            <ListItemDecorator>
-                                                {/*{fontWeight === weight && <Check fontSize="sm" />}*/}
-                                            </ListItemDecorator>
-                                            {weight === '200' ? 'lighter' : weight}
-                                        </MenuItem>
-                                    ))}
-                                </Menu>
-                                <IconButton
-                                    // variant={italic ? 'soft' : 'plain'}
-                                    // color={italic ? 'primary' : 'neutral'}
-                                    // aria-pressed={italic}
-                                    // onClick={() => setItalic((bool) => !bool)}
-                                >
-                                    <FormatItalic/>
-                                </IconButton>
-                                <Button variant={'soft'} sx={{ml: 'auto'}}>Send</Button>
+                                <Button onClick={handleSubmit} variant={'soft'} sx={{ml: 'start'}}>Send</Button>
                             </Box>
                         }
                         sx={{

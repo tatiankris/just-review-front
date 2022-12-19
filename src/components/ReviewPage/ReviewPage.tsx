@@ -33,7 +33,7 @@ function ReviewPage() {
 
     return (
         <Container maxWidth="md"
-                   sx={{marginTop: '80px'}}
+                   sx={{marginTop: '80px', marginBottom: '20px'}}
         >
 
             {current &&
@@ -108,7 +108,7 @@ function ReviewPage() {
                             <IconButton size="sm" color="danger" >
                                 ❤️
                             </IconButton>
-                            <span style={{color: '#e81224'}}>{current.likes}</span>
+                            <span style={{color: '#e81224'}}>{current.likes.length}</span>
                         </div>
 
                         {

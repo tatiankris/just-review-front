@@ -1,6 +1,6 @@
 import {AppThunk} from "../store";
 import {loginAC} from "./authReducer";
-import {ReviewDataType, reviewsAPI} from "../../api/review-api";
+import {likesAPI, ReviewDataType, reviewsAPI} from "../../api/review-api";
 import {getCategoriesTC, getTagsTC} from "./tagsReducer";
 import {getCommentsTC} from "./commentsReducer";
 
@@ -10,7 +10,7 @@ export type ReviewType = {
     userName: string
     category: { title: string }
     tags: Array<{title: string | string}>
-    likes: number
+    likes: Array<{_id: string, reviewId: string, userId: string}>
     reviewTitle: string
     workTitle: string
     reviewText: string
@@ -19,6 +19,7 @@ export type ReviewType = {
     comments: number
     createdAt: string
     imageURL?: string
+
 }
 const initialState = {
     reviews: [] as Array<ReviewType>,
@@ -35,6 +36,10 @@ export const reviewsReducer = (state: StateType = initialState, action: ReviewAc
         }
         case 'reviews/SET-CURRENT-REVIEW': {
             return {...state, currentReview: action.review}
+        }
+        case 'reviews/SET-LIKES': {
+            return {...state, reviews:
+                    [...state.reviews.map(r => r._id === action.reviewId ? {...r, likes: action.likes} : r)]}
         }
         default:
             return state
@@ -53,6 +58,14 @@ export const setCurrentReviewAC = (review: ReviewType) => {
     return {
         type: 'reviews/SET-CURRENT-REVIEW',
         review
+    } as const
+}
+
+export const setLikesAC = (reviewId: string, likes: Array<{_id: string, reviewId: string, userId: string}>) => {
+    return {
+        type: 'reviews/SET-LIKES',
+        reviewId,
+        likes
     } as const
 }
 
@@ -168,7 +181,59 @@ export const deleteReviewTC = (reviewId: string): AppThunk => {
     }
 }
 
+export const likeReviewTC = (reviewId: string): AppThunk => {
+    return (dispatch,getState) => {
+        const review = getState().reviews.reviews.find(r => r._id === reviewId)
+        // dispatch(setAppStatusAC("loading"))
+        likesAPI.addLike ({reviewId})
+            .then(res => {
 
 
-export type ReviewActionsType = ReturnType<typeof setReviewsAC> | ReturnType<typeof setCurrentReviewAC>
+                        if (review) {
+                            dispatch(setLikesAC(reviewId, res.data.likes))
+                        }
+
+                // console.log('review', res.data.review)
+                // dispatch(getAuthorTC(res.data.review.))
+            })
+            .catch(err => {
+                console.log('error', err.message)
+
+            })
+            .finally(() => {
+                    // dispatch(setAppStatusAC("succeeded"))
+                }
+            )
+    }
+}
+export const dislikeReviewTC = (reviewId: string): AppThunk => {
+    return (dispatch,getState) => {
+        const review = getState().reviews.reviews.find(r => r._id === reviewId)
+        // dispatch(setAppStatusAC("loading"))
+        likesAPI.deleteLike(reviewId)
+            .then(res => {
+
+                if (review) {
+                    dispatch(setLikesAC(reviewId, res.data.likes))
+                }
+
+                // console.log('review', res.data.review)
+                // dispatch(getAuthorTC(res.data.review.))
+            })
+            .catch(err => {
+                console.log('error', err.message)
+
+            })
+            .finally(() => {
+                    // dispatch(setAppStatusAC("succeeded"))
+                }
+            )
+    }
+}
+
+
+
+
+
+export type ReviewActionsType = ReturnType<typeof setReviewsAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setLikesAC>
 

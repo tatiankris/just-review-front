@@ -46,6 +46,7 @@ function Home() {
                                         overallRating={r.overallRating}
                                         userName={r.userName}
                                         authorGrade={r.authorGrade}
+                                        comments={r.comments}
                                     />
                                 })
                             }

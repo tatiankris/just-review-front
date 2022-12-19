@@ -21,6 +21,16 @@ export const reviewsAPI = {
     }
 }
 
+export const likesAPI = {
+
+    addLike(data: { reviewId: string }) {
+        return instance.post('/reviews/like', data, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
+    },
+    deleteLike(reviewId: string) {
+        return instance.delete(`/reviews/like/${reviewId}`, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
+    }
+}
+
 export type ReviewDataType = {
     reviewTitle: string,
     workTitle: string,

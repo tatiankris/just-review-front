@@ -14,7 +14,7 @@ export const commentsAPI = {
         return instance.put(`/reviews/comment/${reviewId}/${commentId}`, data, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
     },
     deleteComment(reviewId: string, commentId: string) {
-        return instance.post(`/reviews/comment/${reviewId}/${commentId}`, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
+        return instance.delete(`/reviews/comment/${reviewId}/${commentId}`, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
     },
 
 

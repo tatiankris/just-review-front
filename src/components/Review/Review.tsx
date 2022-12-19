@@ -6,6 +6,9 @@ import {NavLink, useNavigate} from "react-router-dom";
 import {REVIEW_PAGE} from "../../Routing";
 import UpdateReviewModal from "./UpdateReview/UpdateReviewModal";
 import DeleteReviewModal from "./DeleteReview/DeleteReviewModal";
+import DeleteModal from "../../common/DeleteModal";
+import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
+import {dislikeReviewTC, likeReviewTC} from "../../store/reducers/reviewsReducer";
 
 
 type ReviewPropsType = {
@@ -14,11 +17,11 @@ type ReviewPropsType = {
     userName: string
     category: { title: string },
     tags: Array<{title: string | string}>,
-    likes: number
+    likes: Array<{_id: string, reviewId: string, userId: string}>
     reviewTitle: string
     workTitle: string
     reviewText: string
-
+    comments: number
     authorGrade: number
     createdAt: string
     overallRating: {1: number, 2: number, 3: number, 4: number, 5: number}
@@ -26,14 +29,31 @@ type ReviewPropsType = {
 
 function Review({userName, tags, likes,imageURL, reviewId,
                    reviewTitle, workTitle, reviewText, category, authorGrade,
-                    createdAt, overallRating,...props}: ReviewPropsType) {
+                    createdAt, overallRating,comments,...props}: ReviewPropsType) {
 
     const navigate = useNavigate()
-
+const dispatch = useAppDispatch()
     const [rating, setRating] = useState<number | null>(2.5);
     // const overallRatingValue =
-
     const [author, setAuthor] = useState(true)
+
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const loggedUserId = useAppSelector(state => state.auth.user.id)
+    const like = likes.find(l => l.userId === loggedUserId)
+
+    // const [liked, setLiked] = useState(!!like)
+    const handleLike = () => {
+        if (isLoggedIn) {
+            if (!!like && loggedUserId) {
+                dispatch(dislikeReviewTC(reviewId))
+            }
+            if (!like && loggedUserId) {
+                dispatch(likeReviewTC(reviewId))
+            }
+        } else {
+            alert('Log IN!!')
+        }
+    }
 
     return (
         <Paper className={s.review} elevation={12}>
@@ -43,8 +63,8 @@ function Review({userName, tags, likes,imageURL, reviewId,
                         <UpdateReviewModal reviewId={reviewId} oldValues={{tags,imageURL, reviewTitle, workTitle, reviewText, category, authorGrade }}/>
                     </div>
 
-                    <DeleteReviewModal reviewTitle={reviewTitle}  reviewId={reviewId}/>
-
+                    {/*<DeleteReviewModal reviewTitle={reviewTitle}  reviewId={reviewId}/>*/}
+             <DeleteModal reviewId={reviewId} title={reviewTitle} type={'review'}/>
                     <div style={{padding: '6px', fontSize: '11px', color: 'gray'}}><NavLink to={'/*'}>Открыть в режиме
                         просмотра</NavLink></div>
                 </Stack>
@@ -128,18 +148,25 @@ function Review({userName, tags, likes,imageURL, reviewId,
             </Box>
             <Stack className={s.bottom} direction="row" spacing={2} justifyContent="space-around">
                 <div>
-                    <IconButton size="sm" color="danger">
-                        ❤️
+                    <IconButton onClick={handleLike} size="sm" color="danger">
+                        { !!like ? <div>❤</div> : <div style={{display: "inline-block"}}>🤍</div> }
                     </IconButton>
-                    <span style={{color: '#e81224'}}>{likes}</span>
+                    {
+                        !!like
+                            ? <span style={{color: '#e81224'}}>{likes.length}</span>
+                            : <span style={{color: '#ffffff'}}>{likes.length}</span>
+                    }
+
                 </div>
 
-                <IconButton onClick={() => {
-                    navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
-                }} size="sm" color="neutral">
-                    💬
-                </IconButton>
-
+                <div>
+                    <IconButton onClick={() => {
+                        navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
+                    }} size="sm" color="neutral">
+                        💬
+                    </IconButton>
+                    <span style={{color: '#166d3d'}}>{comments}</span>
+                </div>
                 <div style={{padding: '6px'}}>{createdAt.slice(0, 10)}</div>
             </Stack>
         </Paper>
