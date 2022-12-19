@@ -7,6 +7,7 @@ import {REVIEW_PAGE} from "../../Routing";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {useParams} from "react-router-dom";
 import {getReviewsTC} from "../../store/reducers/reviewsReducer";
+import LikeComponent from "../commonComponents/LikeComponent";
 
 const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
@@ -104,13 +105,9 @@ function ReviewPage() {
 
                     </Box>
                     <Stack className={s.bottom} direction="row" spacing={2} justifyContent="space-around">
-                        <div>
-                            <IconButton size="sm" color="danger" >
-                                ❤️
-                            </IconButton>
-                            <span style={{color: '#e81224'}}>{current.likes.length}</span>
-                        </div>
-
+                        { current.likes &&
+                            <LikeComponent likes={current.likes} reviewId={current._id} current />
+                        }
                         {
                             current.createdAt &&
                         <div style={{padding: '6px' }}>{current.createdAt.slice(0,10)}</div>

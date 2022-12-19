@@ -2,7 +2,7 @@ import {Avatar, Box, Button, Card, CardOverflow, Divider, IconButton, Stack, Tex
 import s from "../ReviewPage.module.scss";
 import React, {useState} from "react";
 import {CommentType, updateCommentTC} from "../../../store/reducers/commentsReducer";
-import DeleteModal from "../../../common/DeleteModal";
+import DeleteModal from "../../commonComponents/DeleteModal";
 import {useParams} from "react-router-dom";
 import {useAppDispatch} from "../../../common/utils/hooks";
 

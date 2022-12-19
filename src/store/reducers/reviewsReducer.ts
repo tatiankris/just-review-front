@@ -41,6 +41,10 @@ export const reviewsReducer = (state: StateType = initialState, action: ReviewAc
             return {...state, reviews:
                     [...state.reviews.map(r => r._id === action.reviewId ? {...r, likes: action.likes} : r)]}
         }
+        case 'reviews/SET-CURRENT-LIKES': {
+            return {...state, currentReview: {...state.currentReview, likes: action.likes}}
+        }
+
         default:
             return state
     }
@@ -65,6 +69,13 @@ export const setLikesAC = (reviewId: string, likes: Array<{_id: string, reviewId
     return {
         type: 'reviews/SET-LIKES',
         reviewId,
+        likes
+    } as const
+}
+
+export const setCurrentLikesAC = (likes: Array<{_id: string, reviewId: string, userId: string}>) => {
+    return {
+        type: 'reviews/SET-CURRENT-LIKES',
         likes
     } as const
 }
@@ -181,7 +192,7 @@ export const deleteReviewTC = (reviewId: string): AppThunk => {
     }
 }
 
-export const likeReviewTC = (reviewId: string): AppThunk => {
+export const likeReviewTC = (reviewId: string, current?: boolean): AppThunk => {
     return (dispatch,getState) => {
         const review = getState().reviews.reviews.find(r => r._id === reviewId)
         // dispatch(setAppStatusAC("loading"))
@@ -190,8 +201,13 @@ export const likeReviewTC = (reviewId: string): AppThunk => {
 
 
                         if (review) {
+                            if (current) {
+                                dispatch(setCurrentLikesAC(res.data.likes))
+                            }
                             dispatch(setLikesAC(reviewId, res.data.likes))
                         }
+
+
 
                 // console.log('review', res.data.review)
                 // dispatch(getAuthorTC(res.data.review.))
@@ -206,7 +222,7 @@ export const likeReviewTC = (reviewId: string): AppThunk => {
             )
     }
 }
-export const dislikeReviewTC = (reviewId: string): AppThunk => {
+export const dislikeReviewTC = (reviewId: string, current?: boolean): AppThunk => {
     return (dispatch,getState) => {
         const review = getState().reviews.reviews.find(r => r._id === reviewId)
         // dispatch(setAppStatusAC("loading"))
@@ -214,6 +230,9 @@ export const dislikeReviewTC = (reviewId: string): AppThunk => {
             .then(res => {
 
                 if (review) {
+                    if (current) {
+                        dispatch(setCurrentLikesAC(res.data.likes))
+                    }
                     dispatch(setLikesAC(reviewId, res.data.likes))
                 }
 
@@ -235,5 +254,5 @@ export const dislikeReviewTC = (reviewId: string): AppThunk => {
 
 
 
-export type ReviewActionsType = ReturnType<typeof setReviewsAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setLikesAC>
+export type ReviewActionsType = ReturnType<typeof setReviewsAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setCurrentLikesAC>| ReturnType<typeof setLikesAC>
 

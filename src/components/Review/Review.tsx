@@ -6,7 +6,7 @@ import {NavLink, useNavigate} from "react-router-dom";
 import {REVIEW_PAGE} from "../../Routing";
 import UpdateReviewModal from "./UpdateReview/UpdateReviewModal";
 import DeleteReviewModal from "./DeleteReview/DeleteReviewModal";
-import DeleteModal from "../../common/DeleteModal";
+import DeleteModal from "../commonComponents/DeleteModal";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {dislikeReviewTC, likeReviewTC} from "../../store/reducers/reviewsReducer";
 
@@ -41,7 +41,6 @@ const dispatch = useAppDispatch()
     const loggedUserId = useAppSelector(state => state.auth.user.id)
     const like = likes.find(l => l.userId === loggedUserId)
 
-    // const [liked, setLiked] = useState(!!like)
     const handleLike = () => {
         if (isLoggedIn) {
             if (!!like && loggedUserId) {

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import {Button, Modal, Box, Typography, IconButton} from "@mui/joy";
-import s from '../components/Review/Modal.module.scss'
-import { useAppDispatch } from "./utils/hooks";
-import {deleteCommentTC} from "../store/reducers/commentsReducer";
-import {deleteReviewTC} from "../store/reducers/reviewsReducer";
+import s from '../Review/Modal.module.scss'
+import { useAppDispatch } from "../../common/utils/hooks";
+import {deleteCommentTC} from "../../store/reducers/commentsReducer";
+import {deleteReviewTC} from "../../store/reducers/reviewsReducer";
 
 
 const style = {
