@@ -3,7 +3,6 @@ import { instance } from "./api";
 
 
 export const reviewsAPI = {
-
     all(search?: string | null) {
         return instance.get('/reviews/all', {params: {search}})
     },
@@ -18,6 +17,9 @@ export const reviewsAPI = {
     },
     delete(reviewId: string) {
         return instance.delete(`/reviews/review/${reviewId}`, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
+    },
+    images(file: any) {
+        return instance.post('reviews/images', {file: file}, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
     }
 }
 
