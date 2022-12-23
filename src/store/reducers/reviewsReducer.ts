@@ -5,12 +5,13 @@ import {getCategoriesTC, getTagsTC} from "./tagsReducer";
 import {getCommentsTC} from "./commentsReducer";
 import { setAppStatusAC } from "./appReducer";
 
+export type TagsType = Array<{title: string | string}>
 export type ReviewType = {
     _id: string
     userId: string
     userName: string
     category: { title: string }
-    tags: Array<{title: string | string}>
+    tags: TagsType
     likes: Array<{_id: string, reviewId: string, userId: string}>
     reviewTitle: string
     workTitle: string
@@ -92,15 +93,19 @@ export const setSearchAC = (search: string) => {
 }
 
 //thunks
-export const getReviewsTC = (reviewId?: string): AppThunk => {
+export const getReviewsTC = (reviewId?: string | null): AppThunk => {
     return (dispatch, getState) => {
 
         const search = getState().reviews.search
+        const tags = getState().tags.searchTags
 
         dispatch(setAppStatusAC("loading"))
-        reviewsAPI.all(search.length ? search : null)
+        reviewsAPI.all(
+            search.length ? search : null,
+            tags.length ? tags : null
+            )
             .then(res => {
-                console.log('reviews', res.data.reviews)
+                // console.log('reviews', res.data.reviews)
                 dispatch(setReviewsAC(res.data.reviews))
 
                 dispatch(getCategoriesTC())

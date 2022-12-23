@@ -1,10 +1,12 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import s from './Tags.module.scss'
 import {Box, Button, Checkbox, Chip, ChipDelete, FormLabel, styled, TextField, Typography} from "@mui/joy";
 import CheckIcon from '@mui/icons-material/Check';
 // import {Autocomplete, Paper, styled, TextField} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import Autocomplete from "@mui/joy/Autocomplete";
+import {getReviewsTC} from "../../store/reducers/reviewsReducer";
+import {setSearchTagsAC} from "../../store/reducers/tagsReducer";
 
 
 const CssTextField = styled(TextField)({
@@ -28,6 +30,7 @@ function Tags() {
     const dispatch = useAppDispatch()
     const allTags = useAppSelector(state => state.tags.tags)
 
+    const searchTags = useAppSelector(state => state.tags.searchTags)
     // const startTags = allTags.slice(0, 12)
     // const nextTags = allTags.slice(12)
     // const [tags, setTags] = React.useState<Array<{ title: string }>>([...startTags]);
@@ -40,12 +43,28 @@ function Tags() {
 
     const handleChange = (value: any) => {
         setSelected([value, ...selected])
+
     }
+
+    useEffect(() => {
+            const tags = selected.map(t => t.title)
+        dispatch(setSearchTagsAC(tags))
+    }, [selected])
+
 
     const handleApply = () => {
         if (selected.length) {
-            // dispatch(searchReviewsByTags(selected))
+
+            const tags = selected.map(t => t.title)
+            console.log('selected', tags)
+            // dispatch(getReviewsTC(null, tags))
+            dispatch(getReviewsTC())
+        } else {
+            // dispatch(getReviewsTC(null, null))
+            dispatch(getReviewsTC())
         }
+
+
 
     }
 
@@ -89,11 +108,14 @@ function Tags() {
                         limitTags={5}
                         sx={{width: '100%'}}
                         onChange={(event, value) => {
-                           if (value && !selected.includes(value)) {
+                           if (value && !selected.find(s => s.title === value.title)) {
                                console.log('new value: ', value)
                                handleChange(value);
                            }
-                            console.log('value already exist: ', value)
+                           else {
+                               console.log('value already exist: ', value)
+                           }
+
                         }}
                         getOptionLabel={(option) => typeof option === 'string' ? option : option.title}
                     />

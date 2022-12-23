@@ -7,7 +7,8 @@ import {setAppStatusAC} from "./appReducer";
 
 const initialState = {
     categories: [] as Array<{title: string}>,
-    tags: [] as Array<{title: string}>
+    tags: [] as Array<{title: string}>,
+    searchTags: [] as Array<string>
 }
 
 export type StateType = typeof initialState;
@@ -20,6 +21,9 @@ export const tagsReducer = (state: StateType = initialState, action: TagsActions
         }
         case 'tags/SET-TAGS': {
             return {...state, tags: action.tags}
+        }
+        case 'tags/SET-SEARCH-TAGS': {
+            return {...state, searchTags: action.tags}
         }
         default:
             return state
@@ -39,13 +43,19 @@ export const setTagsAC = (tags: Array<{title: string}>) => {
         tags
     } as const
 }
+export const setSearchTagsAC = (tags: Array<string>) => {
+    return {
+        type: 'tags/SET-SEARCH-TAGS',
+        tags
+    } as const
+}
 
 export const getCategoriesTC = (): AppThunk => {
     return (dispatch) => {
         dispatch(setAppStatusAC("loading"))
         tagsAPI.getCategories()
             .then(res => {
-                console.log('categories', res.data.categories)
+                // console.log('categories', res.data.categories)
                 dispatch(setCategoriesAC(res.data.categories))
 
             })
@@ -64,7 +74,7 @@ export const getTagsTC = (): AppThunk => {
         dispatch(setAppStatusAC("loading"))
         tagsAPI.getTags()
             .then(res => {
-                console.log('tags', res.data.tags)
+                // console.log('tags', res.data.tags)
                 dispatch(setTagsAC(res.data.tags))
 
             })
@@ -80,4 +90,4 @@ export const getTagsTC = (): AppThunk => {
 }
 
 
-export type TagsActionsType = ReturnType<typeof setCategoriesAC> | ReturnType<typeof setTagsAC>
+export type TagsActionsType = ReturnType<typeof setCategoriesAC> | ReturnType<typeof setTagsAC> | ReturnType<typeof setSearchTagsAC>

@@ -16,11 +16,11 @@ function Home() {
 
     const search = useAppSelector(state => state.reviews.search)
     const debouncedSearch = useDebounce(search, 500)
-
-
+    const searchTags = useAppSelector(state => state.tags.searchTags)
+    const debouncedTagsSearch = useDebounce(searchTags, 1200)
     useEffect(() => {
         dispatch(getReviewsTC())
-    }, [dispatch, debouncedSearch])
+    }, [dispatch, debouncedSearch, debouncedTagsSearch])
 
     return (
 

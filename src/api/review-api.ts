@@ -1,10 +1,11 @@
 import { instance } from "./api";
+import {TagsType} from "../store/reducers/reviewsReducer";
 
 
 
 export const reviewsAPI = {
-    all(search?: string | null) {
-        return instance.get('/reviews/all', {params: {search}})
+    all(search?: string | null, tags?: string[] | null) {
+        return instance.get(`/reviews/all`, {params: {search, tags}})
     },
     author(username: string) {
         return instance.get(`/reviews/${username}`)

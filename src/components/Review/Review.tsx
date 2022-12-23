@@ -1,5 +1,5 @@
 import { Paper, Rating } from "@mui/material";
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import s from './Review.module.scss'
 import {Avatar, Box, Chip, IconButton, Stack, Typography} from "@mui/joy";
 import {NavLink, useNavigate} from "react-router-dom";
@@ -56,6 +56,32 @@ const dispatch = useAppDispatch()
         }
     }
 
+    const search = useAppSelector(state => state.reviews.search)
+
+    const includeSearch = (str: string) => {
+
+        if (search && str.includes(search)) {
+            const regex = new RegExp(search, 'gi')
+            const matchValue = str.match(regex)
+
+            if (matchValue) {
+                return str.split(regex).map((s, i, arr) =>{
+                    if (i < arr.length - 1) {
+                        const c = matchValue.shift()
+                        return <>{s}<span style={{backgroundColor: 'yellow'}}>{c}</span></>
+                    }
+                    return s
+                } )
+            }
+
+            return str
+
+        }
+        return str
+    }
+
+    // const light = useCallback((str: string ) => {}, search)
+
     return (
         <Paper className={s.review} elevation={12}>
             {
@@ -78,12 +104,12 @@ const dispatch = useAppDispatch()
 
                 <div style={{fontSize: '24px', fontWeight: 'bold'}}>
                     <NavLink target={'_blank'} className={s.reviewTitle} to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>
-                        {reviewTitle}
+                        {includeSearch(reviewTitle)}
                     </NavLink></div>
 
                 <Stack width={'100%'} direction="row" spacing={2} justifyContent="space-between" alignItems={'center'}>
                     <div>
-                        <span style={{fontSize: '18px'}}>{workTitle}</span>
+                        <span style={{fontSize: '18px'}}>{includeSearch(workTitle)}</span>
 
                     </div>
 
@@ -109,12 +135,17 @@ const dispatch = useAppDispatch()
                 </Box>
 
                 <Typography mb={1} lineHeight="sm" textAlign={'start'} margin={'8px 0px'}>
-                    {reviewText}
-                    {reviewText}
-                    {reviewText}
-                    {' '}
-                    <NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}} className={s.reviewTitle}>Читать
-                        больше... </NavLink>
+                    {
+                        reviewText.length < 35 && <>{includeSearch(reviewText)}</>
+                    }
+                    {
+                        reviewText.length > 35 &&
+                        <>{includeSearch(reviewText.slice(0, 20))}
+                            {'....'}
+                            <NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}} className={s.reviewTitle}>Читать
+                                больше </NavLink>
+                        </>
+                    }
                 </Typography>
 
                 <div style={{

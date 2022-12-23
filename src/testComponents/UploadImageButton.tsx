@@ -58,6 +58,9 @@ export const UploadImageButton = ({callback}: PropsType) => {
                     Choose image
                 </Button>
             </label>
+
+
+
         </div>
     )
 }

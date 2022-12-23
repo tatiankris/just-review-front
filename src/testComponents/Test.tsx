@@ -17,6 +17,8 @@ import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
 import {reviewsAPI} from "../api/review-api";
 import {UploadImageButton} from "./UploadImageButton";
+import {DragDropImage} from "./DragDropImage";
+import {PROFILE_PAGE} from "../Routing";
 
 
 
@@ -131,10 +133,15 @@ function Test() {
     {/*<Input type={'file'}  />*/}
     {/*<Button loading={uploading}>upload</Button>*/}
     <UploadImageButton callback={handleImage} />
+    <DragDropImage callback={handleImage} />
+
+
     <img src={image} width={'120px'} height={'90'} style={{display: 'block', marginTop: '8px'}}/>
     <Button onClick={() => {uploadImageToServer(image)}}>Upload</Button>
     <SimpleMdeReact value={value} onChange={onChange} />
     <ReactMarkdown children={value} />
+
+    <a href={`${PROFILE_PAGE}/user1?text=${null}`}>link</a>
 </div>
 
         </Container>
