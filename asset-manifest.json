@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/just-review-front/static/css/main.7611b422.css",
-    "main.js": "/just-review-front/static/js/main.b142f545.js",
+    "main.css": "/just-review-front/static/css/main.5e7b31aa.css",
+    "main.js": "/just-review-front/static/js/main.db072863.js",
     "static/js/787.db6131b0.chunk.js": "/just-review-front/static/js/787.db6131b0.chunk.js",
     "static/media/marked.cjs": "/just-review-front/static/media/marked.28bff95ab5758e468f7c.cjs",
     "index.html": "/just-review-front/index.html",
-    "main.7611b422.css.map": "/just-review-front/static/css/main.7611b422.css.map",
-    "main.b142f545.js.map": "/just-review-front/static/js/main.b142f545.js.map",
+    "main.5e7b31aa.css.map": "/just-review-front/static/css/main.5e7b31aa.css.map",
+    "main.db072863.js.map": "/just-review-front/static/js/main.db072863.js.map",
     "787.db6131b0.chunk.js.map": "/just-review-front/static/js/787.db6131b0.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7611b422.css",
-    "static/js/main.b142f545.js"
+    "static/css/main.5e7b31aa.css",
+    "static/js/main.db072863.js"
   ]
 }
