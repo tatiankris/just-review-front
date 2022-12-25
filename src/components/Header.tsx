@@ -13,6 +13,7 @@ import ModalRegistration from "./Auth/Registration/ModalRegistration";
 import {useAppDispatch, useAppSelector} from "../common/utils/hooks";
 import { logoutAC } from "../store/reducers/authReducer";
 import {setSearchAC} from "../store/reducers/reviewsReducer";
+import {setSearchTagsAC} from "../store/reducers/tagsReducer";
 
 function Header() {
 
@@ -47,6 +48,12 @@ function Header() {
         dispatch(setSearchAC(e.currentTarget.value.trim()))
     }
 
+    const homeHandler = () => {
+        dispatch(setSearchAC(''))
+        dispatch(setSearchTagsAC([]))
+        navigate('/')
+    }
+
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar color={'inherit'}
@@ -56,9 +63,9 @@ function Header() {
                     <CssVarsProvider>
                         <Stack direction="row" spacing={1}>
 
-                            <Tooltip title="Home" variant="soft" className={s.tooltip}>
+                            <Tooltip title="SearchPage" variant="soft" className={s.tooltip}>
                         <IconButton
-                            onClick={() => {navigate('/')}}
+                            onClick={homeHandler}
                             // className={s.homeIconButton}
                             size="sm"
                             sx={{

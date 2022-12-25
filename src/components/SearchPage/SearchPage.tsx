@@ -1,13 +1,15 @@
 import React, {useEffect} from "react";
-import {Container, Grid} from "@mui/joy";
+import {Container, Grid, Stack} from "@mui/joy";
 import Tags from "../Tags/Tags";
 import Review from "../Review/Review";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {getReviewsTC} from "../../store/reducers/reviewsReducer";
 import { useDebounce } from "usehooks-ts";
+import s from './SearchPage.module.scss'
+import SearchReview from "../Review/SearchReview";
 const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
-function Home() {
+function SearchPage() {
 
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const reviews = useAppSelector(state => state.reviews.reviews)
@@ -25,15 +27,16 @@ function Home() {
     return (
 
             <Container maxWidth="lg"
-                       sx={{marginTop: '80px'}}
+                       sx={{marginTop: '60px'}}
             >
-                <Grid container spacing={3} sx={{padding: '0% 3%'}}>
-                    <Grid xs={8}>
+                <Tags />
+                <Grid container spacing={3}>
+                    <Grid className={s.searchPageStack}>
                         <div>
 
                             {
                                 reviews && reviews.map(r => {
-                                    return <Review
+                                    return <SearchReview
                                         author={false}
                                         reviewId={r._id}
                                         key={r._id}
@@ -54,12 +57,6 @@ function Home() {
                             }
 
                         </div>
-
-                    </Grid>
-                    <Grid xs={4}>
-
-                       <Tags />
-
                     </Grid>
                 </Grid>
             </Container>
@@ -67,4 +64,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default SearchPage;

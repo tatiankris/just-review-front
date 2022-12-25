@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Home from './components/HomePage/Home';
 import {AppBar, Backdrop} from "@mui/material";
 import Header from "./components/Header";
 import Routing from "./Routing";

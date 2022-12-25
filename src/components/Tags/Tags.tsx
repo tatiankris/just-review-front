@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from "react";
 import s from './Tags.module.scss'
-import {Box, Button, Checkbox, Chip, ChipDelete, FormLabel, styled, TextField, Typography} from "@mui/joy";
+import {Box, Button, Checkbox, Chip, ChipDelete, FormLabel, Stack, styled, TextField, Typography} from "@mui/joy";
 import CheckIcon from '@mui/icons-material/Check';
 // import {Autocomplete, Paper, styled, TextField} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import Autocomplete from "@mui/joy/Autocomplete";
 import {getReviewsTC} from "../../store/reducers/reviewsReducer";
 import {setSearchTagsAC} from "../../store/reducers/tagsReducer";
+import {useMediaQuery} from "react-responsive";
+
 
 
 const CssTextField = styled(TextField)({
@@ -19,6 +21,7 @@ const CssTextField = styled(TextField)({
     lineHeight: 'inherit',
     textOverflow: 'ellipsis',
     minWidth: '0px',
+    maxWidth: '200px',
     outline: '0px',
     padding: '0px',
     border: 'none'
@@ -26,6 +29,7 @@ const CssTextField = styled(TextField)({
 
 
 function Tags() {
+    const iSmallScreen = useMediaQuery({ query: '(max-width: 728px)' })
 
     const dispatch = useAppDispatch()
     const allTags = useAppSelector(state => state.tags.tags)
@@ -51,6 +55,9 @@ function Tags() {
         dispatch(setSearchTagsAC(tags))
     }, [selected])
 
+    const handleReset = () => {
+        setSelected([])
+    }
 
     const handleApply = () => {
         if (selected.length) {
@@ -63,25 +70,23 @@ function Tags() {
             // dispatch(getReviewsTC(null, null))
             dispatch(getReviewsTC())
         }
-
-
-
     }
 
     return (
-            <Box className={s.tags} sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                <Box>
+            <Box className={s.tags}>
+
                     <Box
+                        className={s.tagsField}
                         role="group"
                         aria-labelledby="tags"
-                        sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}
                     >
                         {
                             selected.map(t => {
                                 return <Chip
+                                    size={iSmallScreen ? 'sm' : 'md'}
                                     key={t.title}
-                               variant={'soft'}
-                              color={'primary'}
+                                    variant={'soft'}
+                                    color={'primary'}
                                     endDecorator={<ChipDelete onClick={() => {
                                         const updatedTags = selected.filter(s => s.title !== t.title)
                                         setSelected(updatedTags)
@@ -94,11 +99,12 @@ function Tags() {
                         }
 
                     </Box>
-
-                    <FormLabel>Search tags</FormLabel>
+                    <Stack spacing={0.2} className={s.autocompleteStack} >
                     <Autocomplete
+                        size={iSmallScreen ? 'sm' : 'md'}
+                        className={s.tagsAutocomplete}
                         id={'tagsSearch'}
-                        placeholder={'Search...'}
+                        placeholder={'Tags search...'}
                         options={allTags}
                         isOptionEqualToValue={(option: string | {title: string}, value: string | {title: string}) => {
                             const optionTitle = typeof option === "string" ? option : option.title;
@@ -106,7 +112,6 @@ function Tags() {
                             return optionTitle === valueTitle;
                         }}
                         limitTags={5}
-                        sx={{width: '100%'}}
                         onChange={(event, value) => {
                            if (value && !selected.find(s => s.title === value.title)) {
                                console.log('new value: ', value)
@@ -119,10 +124,13 @@ function Tags() {
                         }}
                         getOptionLabel={(option) => typeof option === 'string' ? option : option.title}
                     />
-                    <Button onClick={handleApply} sx={{marginTop: '8px'}} variant={'solid'} color={"info"}>Apply</Button>
-                </Box>
-
-
+                        <Stack  className={s.buttonStack} direction={'row'} spacing={0.2}>
+                            <Button size={iSmallScreen ? 'sm' : 'md'} onClick={handleApply} className={s.buttonApply} variant={'solid'}
+                                    color={"info"}>Apply</Button>
+                            <Button size={iSmallScreen ? 'sm' : 'md'} onClick={handleReset} className={s.buttonApply} variant={'soft'}
+                                    color={"success"}>Reset</Button>
+                        </Stack>
+                    </Stack>
             </Box>
     );
 }

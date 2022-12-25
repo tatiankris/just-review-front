@@ -39,7 +39,7 @@ function LikeComponent( { likes, reviewId,current, ...props }:LikePropsType ) {
 
     return (
         <div>
-            <IconButton onClick={handleLike} size="sm" color="danger">
+            <IconButton onClick={handleLike} size="sm" color="danger" style={{backgroundColor: 'none'}}>
                 { !!like
                     ? <div>❤</div>
                     : <div>🤍</div> }

@@ -8,7 +8,7 @@ import UpdateReviewModal from "./UpdateReview/UpdateReviewModal";
 import DeleteReviewModal from "./DeleteReview/DeleteReviewModal";
 import DeleteModal from "../commonComponents/DeleteModal";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
-import {dislikeReviewTC, likeReviewTC} from "../../store/reducers/reviewsReducer";
+import {dislikeReviewTC, likeReviewTC, TagsType} from "../../store/reducers/reviewsReducer";
 import LikeComponent from "../commonComponents/LikeComponent";
 
 
@@ -18,7 +18,7 @@ type ReviewPropsType = {
     imageURL: string
     userName: string
     category: { title: string },
-    tags: Array<{title: string | string}>,
+    tags: TagsType,
     likes: Array<{_id: string, reviewId: string, userId: string}>
     reviewTitle: string
     workTitle: string

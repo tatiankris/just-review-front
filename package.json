@@ -70,6 +70,7 @@
     "easymde": "^2.18.0",
     "gh-pages": "^4.0.0",
     "react-cloudinary-upload-widget": "^1.6.0",
+    "react-responsive": "^9.0.2",
     "react-simplemde-editor": "^5.2.0"
   }
 }
