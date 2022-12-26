@@ -26,7 +26,9 @@ export type ReviewType = {
 const initialState = {
     reviews: [] as Array<ReviewType>,
     currentReview: {} as ReviewType,
-    search: ''
+    search: '',
+    latest: [] as Array<ReviewType>,
+    highestRating: [] as Array<ReviewType>
 }
 
 export type StateType = typeof initialState;
@@ -50,6 +52,9 @@ export const reviewsReducer = (state: StateType = initialState, action: ReviewAc
         case 'reviews/SET-SEARCH': {
             return {...state, search: action.search}
         }
+        case 'reviews/SET-MAIN-REVIEWS': {
+            return {...state, latest: action.latest, highestRating: action.highestRating}
+        }
 
         default:
             return state
@@ -61,6 +66,13 @@ export const setReviewsAC = (reviews: ReviewType[]) => {
     return {
         type: 'reviews/SET-REVIEWS',
         reviews
+    } as const
+}
+export const setMainReviewsAC = (latest: ReviewType[], highestRating: ReviewType[] ) => {
+    return {
+        type: 'reviews/SET-MAIN-REVIEWS',
+        latest,
+        highestRating
     } as const
 }
 
@@ -93,7 +105,7 @@ export const setSearchAC = (search: string) => {
 }
 
 //thunks
-export const getReviewsTC = (reviewId?: string | null): AppThunk => {
+export const getReviewsTC = (reviewId?: string | null, isMain?: boolean): AppThunk => {
     return (dispatch, getState) => {
 
         const search = getState().reviews.search
@@ -102,21 +114,33 @@ export const getReviewsTC = (reviewId?: string | null): AppThunk => {
         dispatch(setAppStatusAC("loading"))
         reviewsAPI.all(
             search.length ? search : null,
-            tags.length ? tags : null
+            tags.length ? tags : null,
+            isMain ? isMain : false
             )
             .then(res => {
                 // console.log('reviews', res.data.reviews)
-                dispatch(setReviewsAC(res.data.reviews))
+                if (!!res.data.isMain) {
 
-                dispatch(getCategoriesTC())
-                dispatch(getTagsTC())
+                    dispatch(setMainReviewsAC(res.data.latest, res.data.highestRating))
+                    dispatch(getCategoriesTC())
+                    dispatch(getTagsTC())
 
-                if (reviewId) {
-                   const current = res.data.reviews.find((r: ReviewType) => r._id === reviewId)
-                    dispatch(setCurrentReviewAC(current))
-                    dispatch(getCommentsTC(reviewId))
-                    // console.log('current', current)
+
+
+                } else {
+                    dispatch(setReviewsAC(res.data.reviews))
+
+                    dispatch(getCategoriesTC())
+                    dispatch(getTagsTC())
+
+                    // if (reviewId) {
+                    //     const current = res.data.reviews.find((r: ReviewType) => r._id === reviewId)
+                    //     dispatch(setCurrentReviewAC(current))
+                    //     dispatch(getCommentsTC(reviewId))
+                    //     // console.log('current', current)
+                    // }
                 }
+
             })
             .catch(err => {
                 console.log('error', err.message)
@@ -128,7 +152,25 @@ export const getReviewsTC = (reviewId?: string | null): AppThunk => {
             )
     }
 }
+export const getCurrentReviewsTC = (reviewId: string): AppThunk => {
+    return (dispatch) => {
+        dispatch(setAppStatusAC("loading"))
+        reviewsAPI.currentReview (reviewId)
+            .then(res => {
 
+                dispatch(setCurrentReviewAC(res.data.review))
+                dispatch(getCommentsTC(reviewId))
+            })
+            .catch(err => {
+                console.log('error', err.message)
+
+            })
+            .finally(() => {
+                    dispatch(setAppStatusAC("succeeded"))
+                }
+            )
+    }
+}
 export const getAuthorTC = (username: string): AppThunk => {
     return (dispatch) => {
         dispatch(setAppStatusAC("loading"))
@@ -274,5 +316,5 @@ export const dislikeReviewTC = (reviewId: string, current?: boolean): AppThunk =
 
 
 
-export type ReviewActionsType = ReturnType<typeof setReviewsAC> | ReturnType<typeof setSearchAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setCurrentLikesAC>| ReturnType<typeof setLikesAC>
+export type ReviewActionsType = ReturnType<typeof setReviewsAC> | ReturnType<typeof setMainReviewsAC> | ReturnType<typeof setSearchAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setCurrentLikesAC>| ReturnType<typeof setLikesAC>
 

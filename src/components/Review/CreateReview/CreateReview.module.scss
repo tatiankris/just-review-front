@@ -1,0 +1,62 @@
+.createModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f2ddfc;
+  //border: 0.5px solid #000;
+  overflow: auto;
+  height: 90%;
+  display: flex;
+
+
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 90%;
+  //border-radius: 10px;
+  padding: 8px;
+  color: rgba(121, 118, 121, 0.9);
+  font-family: "Public Sans", sans-serif;
+}
+
+
+.container {
+  width: 100%;
+
+  height: 100%;
+  font-size: 14px;
+}
+
+.modalName {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-size: 24px;
+  color: rgba(94, 82, 82, 0.97);
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.category {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.formLabel {
+  width: 60%;
+  padding: 2px 0;
+  display: flex;
+  align-items: start;
+  justify-content: start;
+}
+
+.reviewText {
+  width: 60%;
+  word-break: break-word;
+}
+
+
+

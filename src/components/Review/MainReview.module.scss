@@ -1,7 +1,9 @@
 .review {
-  margin-bottom: 18px;
+  //margin-bottom: 18px;
   font-family: 'Roboto','Helvetica', sans-serif;
   overflow:hidden;
+  height: 100%;
+  margin: 0 5px;
 }
 
 .reviewBox {
@@ -10,11 +12,17 @@
   //align-items: flex-start;
   //flex-direction: column;
 }
+.reviewInfo {
+  padding: 10px 20px 10px 10px;
+  height: 210px;
+}
+
+
 .image {
-  height: 100%;
-  //backgroundSize: cover;
+
   width: 100%;
   position: relative;
+  height: 170px;
   .categoryZ {
     position: absolute;
     right: 2%;
@@ -23,37 +31,37 @@
     background-color: white;
     border: 1px solid #2fe713;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 10px;
     padding: 1.4% 2%;
     font-weight: 600;
 
   }
 }
-@media screen and (max-width: 728px) {
-  .image {
-    height: 170px;
-    width: 100%;
-
-    .categoryZ {
-      font-size: 10px;
-    }
-  }
-}
+//@media screen and (max-width: 728px) {
+//  .image {
+//    height: 170px;
+//    width: 100%;
+//
+//    .categoryZ {
+//      font-size: 10px;
+//    }
+//  }
+//}
 
 
 .userLink {
-  font-size: 14px;
+  font-size: 10px;
   font-weight: bold;
   display: flex;
   flex-direction: row;
   justify-content: start ;
   align-items: center;
 }
-@media screen and (max-width: 728px) {
-  .userLink {
-    font-size: 10px;
-  }
-}
+//@media screen and (max-width: 728px) {
+//  .userLink {
+//    font-size: 10px;
+//  }
+//}
 
 
 .avatar {
@@ -62,15 +70,16 @@
 
 .titles {
   font-weight: bold;
-  font-size: 24px;
   display: flex;
   flex-direction: column;
   justify-content: start ;
   align-items: start;
+  font-size: 16px;
 
   .workTitle {
-    font-size: 18px;
     color: #a35cdc;
+    margin-top: 4px;
+    font-size: 14px;
 
   }
 
@@ -84,39 +93,46 @@
 }
 .authorGrade {
   display: flex;
-  justify-content: space-between ;
-  align-items: center;
   color: gray;
+  font-size: 7px;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
 }
 .gradeX {
   background-color: #583e66;
   color: #ffd70e;
-  font-size: 24px;
   padding: 2% 5%;
   border-radius: 10px;
+  font-size: 16px;
 
 }
 
 .overallRating {
   display: flex;
-  padding: 2% 0%;
-  align-items: center;
-  justify-content: space-between ;
+  padding: 2% 0;
+  font-size: 7px;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
 }
 
 .setRating {
-    //margin-top: 30px;
     display: flex;
-    justify-content: end;
+  justify-content: start;
+  align-items: start;
+  font-size: 8px;
+  color: #b1b0b0;
 }
 
 .tags {
   display: flex;
   gap: 1%;
   align-items: center;
+  padding: 6px 0;
 }
 .tag {
-  font-size: 13px;
+  font-size: 9px;
   padding: 1.4% 2%;
   font-weight: 600;
   color: #252546;
@@ -142,6 +158,7 @@
   background-color: rgba(255, 226, 187, 0.57);
   border-bottom-right-radius: 6px 4px;
   border-bottom-left-radius: 4px 4px;
+  font-size: 12px;
 }
 
 .tools {
@@ -153,60 +170,61 @@
 
 .reviewText {
   word-wrap: break-word;
-  margin: 8px 0px;
+  margin: 8px 0;
   text-align: start;
+  font-size: 14px;
 }
 
 
 
 @media screen and (max-width: 728px) {
-  .titles {
-    font-size: 16px;
-    .workTitle {
-      margin-top: 4px;
-      font-size: 14px;
-    }
-  }
+  //.titles {
+  //  font-size: 16px;
+  //  .workTitle {
+  //    margin-top: 4px;
+  //    font-size: 14px;
+  //  }
+  //}
 
-  .authorGrade {
-    font-size: 7px;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-  }
-  .overallRating {
-    font-size: 7px;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-  }
-  .setRating {
-    justify-content: start;
-    align-items: start;
-    font-size: 8px;
-    color: #b1b0b0;
-  }
+  //.authorGrade {
+  //  font-size: 7px;
+  //  flex-direction: column;
+  //  justify-content: start;
+  //  align-items: start;
+  //}
+  //.overallRating {
+  //  font-size: 7px;
+  //  flex-direction: column;
+  //  justify-content: start;
+  //  align-items: start;
+  //}
+  //.setRating {
+  //  justify-content: start;
+  //  align-items: start;
+  //  font-size: 8px;
+  //  color: #b1b0b0;
+  //}
 
-  .gradeX {
-    font-size: 16px;
-  }
+  //.gradeX {
+  //  font-size: 16px;
+  //}
 
 
-  .reviewText {
-    font-size: 14px;
+  //.reviewText {
+  //  font-size: 14px;
+  //
+  //}
 
-  }
+  //.tags {
+  //  padding: 6px 0px;
+  //}
+  //.tag {
+  //  font-size: 9px;
+  //}
 
-  .tags {
-    padding: 6px 0px;
-  }
-  .tag {
-    font-size: 9px;
-  }
-
-  .bottom {
-    font-size: 12px;
-  }
+  //.bottom {
+  //  font-size: 12px;
+  //}
 }
 
 

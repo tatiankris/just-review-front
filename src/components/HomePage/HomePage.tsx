@@ -4,6 +4,10 @@ import {useNavigate} from "react-router-dom";
 import s from "./HomePage.module.scss";
 import Tags from "../Tags/Tags";
 import {Container, Grid, Stack} from '@mui/joy';
+import SearchPage from "../SearchPage/SearchPage";
+import {MainPage} from "../MainPage/MainPage";
+import {useDebounce} from "usehooks-ts";
+import {getReviewsTC} from "../../store/reducers/reviewsReducer";
 
 export {}
 export const HomePage = () => {
@@ -11,28 +15,41 @@ export const HomePage = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
+    // useEffect(() => {
+    //
+    //     if (search.length) {
+    //         navigate('/search')
+    //     } else if (searchTags.length) {
+    //         navigate('/search')
+    //     }
+    //
+    // }, [search, searchTags])
+
     const search = useAppSelector(state => state.reviews.search)
+    const debouncedSearch = useDebounce(search, 500)
     const searchTags = useAppSelector(state => state.tags.searchTags)
-
+    const debouncedTagsSearch = useDebounce(searchTags, 1200)
     useEffect(() => {
-
-        if (search.length) {
-            navigate('/search')
-        } else if (searchTags.length) {
-            navigate('/search')
+        if (!search.length && !searchTags.length)
+        {
+            dispatch(getReviewsTC(null, true))
+        } else {
+            dispatch(getReviewsTC())
         }
 
-    }, [search, searchTags])
+    }, [dispatch, debouncedSearch, debouncedTagsSearch])
 
     return (
         <Container maxWidth="lg"
-                   sx={{marginTop: '80px', border: '1px solid black'}}
+                   sx={{marginTop: '55px'}}
         >
-            <Grid container spacing={3}>
-                <Stack className={s.homePageStack} spacing={2}>
-                    <Tags />
-                </Stack>
-            </Grid>
+            <Tags />
+            {
+                !search.length && !searchTags.length
+
+                ? <MainPage />
+                    :<SearchPage />
+            }
         </Container>
     )
 }

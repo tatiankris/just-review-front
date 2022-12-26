@@ -4,8 +4,11 @@ import {TagsType} from "../store/reducers/reviewsReducer";
 
 
 export const reviewsAPI = {
-    all(search?: string | null, tags?: string[] | null) {
-        return instance.get(`/reviews/all`, {params: {search, tags}})
+    all(search?: string | null, tags?: string[] | null, isMain?: boolean) {
+        return instance.get(`/reviews/all`, {params: {search, tags, isMain}})
+    },
+    currentReview(reviewId: string) {
+        return instance.get(`/reviews/reviewPage/${reviewId}`)
     },
     author(username: string) {
         return instance.get(`/reviews/${username}`)

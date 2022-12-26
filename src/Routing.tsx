@@ -20,7 +20,7 @@ function Routing() {
             <Route path={`${REVIEW_PAGE}/:username/:review`} element={<ReviewPage />}/>
             <Route path={`${PROFILE_PAGE}/:username`} element={<ProfilePage />}/>
             <Route path={'/test'} element={<Test />}/>
-            <Route path="/search" element={<SearchPage/>} />
+            {/*<Route path="/search" element={<SearchPage/>} />*/}
             <Route path="/" element={<HomePage/>} />
             <Route
                 path="*"
@@ -35,7 +35,7 @@ function Routing() {
             <Route path={`${PROFILE_PAGE}/:username`} element={<ProfilePage />}/>
 
             <Route path={'/test'} element={<Test />}/>
-            <Route path="/search" element={<SearchPage/>} />
+            {/*<Route path="/search" element={<SearchPage/>} />*/}
             <Route path="/" element={<HomePage/>} />
             <Route
                 path="*"

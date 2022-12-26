@@ -6,8 +6,9 @@ import Comments from './CommentField/Comments'
 import {PROFILE_PAGE, REVIEW_PAGE} from "../../Routing";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {useNavigate, useParams} from "react-router-dom";
-import {getReviewsTC} from "../../store/reducers/reviewsReducer";
+import {getCurrentReviewsTC, getReviewsTC} from "../../store/reducers/reviewsReducer";
 import LikeComponent from "../commonComponents/LikeComponent";
+import {ReactMarkdown} from "react-markdown/lib/react-markdown";
 
 const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
@@ -22,14 +23,16 @@ function ReviewPage() {
     const navigate = useNavigate()
 
     const {username, review} = useParams()
-    console.log('review', review)
 
     ///НЕ ПОПАДАЕТ В ISEeFFECT!!!
     useEffect(() => {
-        // debugger
-            console.log('diiiss')
-            dispatch(getReviewsTC(review))
-    }, [])
+        // dispatch(getReviewsTC(review, false))
+        if (review) {
+            console.log('review', review)
+
+            dispatch(getCurrentReviewsTC(review))
+        }
+    }, [review])
 
     console.log('current', current)
 
@@ -84,13 +87,18 @@ function ReviewPage() {
                                 }
                             </Box>
                             }
-                        <Typography mb={1} lineHeight="sm" textAlign={'start'} margin={'8px 0px'} fontSize={20}>
-                            {current.reviewText}
+                        {/*<Typography mb={1} lineHeight="sm" textAlign={'start'} margin={'8px 0px'} fontSize={20}>*/}
+                        {/*    <ReactMarkdown*/}
+                        {/*        children={current.reviewText}*/}
+                        {/*    />*/}
+                        {/*</Typography>*/}
+                            <ReactMarkdown
+                                children={current.reviewText}
+                            />
 
-                        </Typography>
 
-                        <div style={{minHeight: '120px', maxHeight: '500px', backgroundImage: `url(${URL})`, backgroundSize: 'cover', width: '100%'}}></div>
-
+                        {/*<div style={{minHeight: '120px', maxHeight: '500px', backgroundImage: `url(${URL})`, backgroundSize: 'cover', width: '100%'}}></div>*/}
+                            <img src={`${URL}`}  style={{minHeight: '120px', width: '100%'}}/>
                         <Stack sx={{margin: '12px 4px 8px 4px'}} width={'100%'} direction="row" spacing={2} justifyContent="space-between">
                             <div>
                                 <Typography>Author grade: <Typography variant="outlined" color="success">

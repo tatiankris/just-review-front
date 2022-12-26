@@ -14,25 +14,21 @@ function SearchPage() {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const reviews = useAppSelector(state => state.reviews.reviews)
     const currentReview = useAppSelector(state => state.reviews.currentReview)
-    const dispatch = useAppDispatch()
-
-    const search = useAppSelector(state => state.reviews.search)
-    const debouncedSearch = useDebounce(search, 500)
-    const searchTags = useAppSelector(state => state.tags.searchTags)
-    const debouncedTagsSearch = useDebounce(searchTags, 1200)
-    useEffect(() => {
-        dispatch(getReviewsTC())
-    }, [dispatch, debouncedSearch, debouncedTagsSearch])
+    // const dispatch = useAppDispatch()
+    //
+    // const search = useAppSelector(state => state.reviews.search)
+    // const debouncedSearch = useDebounce(search, 500)
+    // const searchTags = useAppSelector(state => state.tags.searchTags)
+    // const debouncedTagsSearch = useDebounce(searchTags, 1200)
+    // useEffect(() => {
+    //     dispatch(getReviewsTC())
+    // }, [dispatch, debouncedSearch, debouncedTagsSearch])
 
     return (
 
-            <Container maxWidth="lg"
-                       sx={{marginTop: '60px'}}
-            >
-                <Tags />
                 <Grid container spacing={3}>
                     <Grid className={s.searchPageStack}>
-                        <div>
+                        {/*<div>*/}
 
                             {
                                 reviews && reviews.map(r => {
@@ -56,10 +52,9 @@ function SearchPage() {
                                 })
                             }
 
-                        </div>
+                        {/*</div>*/}
                     </Grid>
                 </Grid>
-            </Container>
 
     );
 }

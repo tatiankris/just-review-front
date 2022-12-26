@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import {Button, Modal, Box, Typography} from "@mui/joy";
-import s from "../Modal.module.scss";
+import {Button, Modal, Box, Typography, ModalDialog} from "@mui/joy";
+import s from "./CreateReview.module.scss";
 import UpdateReviewForm from "../UpdateReview/UpdateReviewForm";
 import CreateReviewForm from "./CreateReviewForm";
 
@@ -30,19 +30,21 @@ function CreateReviewModal({variant}: PropsType) {
         <div>
             <Button variant={variant} color={'info'} onClick={handleOpen} style={{fontSize: '18px'}}>+ New Review</Button>
             <Modal
+                disableAutoFocus
+                // disableEnforceFocus
+                disableRestoreFocus
                 sx={{zIndex: 1100}}
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-            <Box className={s.updateModal}>
-                <Typography sx={{paddingLeft: '40%'}} id="modal-modal-title" level="h2">
-                    New Review
-                </Typography>
+
+            <ModalDialog className={s.createModal}>
+
 
                 <CreateReviewForm handleClose={handleClose} />
-            </Box>
+            </ModalDialog>
     </Modal>
     </div>
 );

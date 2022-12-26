@@ -99,7 +99,7 @@ function Tags() {
                         }
 
                     </Box>
-                    <Stack spacing={0.2} className={s.autocompleteStack} >
+                    <Stack spacing={0.2} className={s.autocompleteStack} direction={iSmallScreen ? 'column' : 'row'}>
                     <Autocomplete
                         size={iSmallScreen ? 'sm' : 'md'}
                         className={s.tagsAutocomplete}

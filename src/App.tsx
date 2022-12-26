@@ -7,6 +7,7 @@ import Routing from "./Routing";
 import {useAppDispatch, useAppSelector} from "./common/utils/hooks";
 import {authTC} from "./store/reducers/authReducer";
 import {CircularProgress} from "@mui/joy";
+import {useMediaQuery} from "react-responsive";
 
 
 function App() {
@@ -17,12 +18,13 @@ function App() {
         dispatch(authTC())
     }, [])
 
+
     return (
         <div id={'appid'} className="App">
             <Backdrop open={status === 'loading'} sx={{color: '#fff', zIndex: 10}}>
                 <CircularProgress />
             </Backdrop>
-            <Header />
+            <Header/>
             <Routing/>
 
 
