@@ -1,6 +1,6 @@
 import {Alert, Button } from "@mui/joy";
 import React, {useState} from "react";
-import {convertToBase64} from "../common/utils/convertToBase64";
+import {convertToBase64} from "../../../../common/utils/convertToBase64";
 
 type PropsType = {
     callback: (file64: string) => void
@@ -54,8 +54,8 @@ export const UploadImageButton = ({callback}: PropsType) => {
                        accept="image/*"
                        style={{display: 'none'}}
                 />
-                <Button variant="soft" component="span" style={{width: '100%'}}>
-                    Choose image
+                <Button size={'sm'} variant="soft" component="span">
+                    Browse file
                 </Button>
             </label>
 

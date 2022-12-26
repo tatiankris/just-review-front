@@ -17,6 +17,9 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import SimpleMDE from "react-simplemde-editor";
 import {SimpleMDEReactProps} from "react-simplemde-editor/src/SimpleMdeReact";
 import EasyMDE, { Options } from "easymde";
+import {UploadImageButton} from "../common/UploadImage/UploadImageButton";
+import {DragDropImage} from "../common/UploadImage/DragDropImage";
+import {UploadImage} from "../common/UploadImage/UploadImage";
 
 type CreateType = {
     handleClose: () => void
@@ -37,14 +40,14 @@ function CreateReviewForm(props: CreateType) {
     const categoryOptions = useAppSelector(state => state.tags.categories)
 
     const dispatch = useAppDispatch()
-    const [image, setImage] = useState('');
-
-    const setReviewImage = (file64: string) => {
-        setImage(file64);
-    }
-    const deleteReviewImage = () => {
-        setImage(imageDefault)
-    }
+    // const [image, setImage] = useState('');
+    //
+    // const setReviewImage = (file64: string) => {
+    //     setImage(file64);
+    // }
+    // const deleteReviewImage = () => {
+    //     setImage(imageDefault)
+    // }
 
     const [reviewText, setReviewText] = useState('')
     const handleTextChange = useCallback ((text: string) => {
@@ -52,6 +55,15 @@ function CreateReviewForm(props: CreateType) {
         }
     , [])
 
+
+    const [image, setImage] = useState('');
+
+    const handleImage = (file64: string) => {
+        setImage(file64)
+    }
+    const handleDelete = () => {
+        setImage('')
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -149,7 +161,8 @@ function CreateReviewForm(props: CreateType) {
             </div>
             <form  style={{ display: 'flex', alignItems:'center', flexDirection: 'column'}} onSubmit={formik.handleSubmit}>
                 <TextField
-                    sx={{width: '60%'}}
+                    className={s.item}
+                    // sx={{width: '100%'}}
                     id="reviewTitle"
                     placeholder="Review title"
                     name="reviewTitle"
@@ -160,7 +173,8 @@ function CreateReviewForm(props: CreateType) {
                     helperText={formik.touched.reviewTitle && formik.errors.reviewTitle}
                 />
                 <TextField
-                    sx={{width: '60%'}}
+                    className={s.item}
+                    // sx={{width: '100%'}}
                     id="workTitle"
                     placeholder="Work title"
                     name="workTitle"
@@ -185,18 +199,22 @@ function CreateReviewForm(props: CreateType) {
                 {/*    error={formik.touched.reviewText && Boolean(formik.errors.reviewText)}*/}
                 {/*    // helperText={formik.touched.reviewText && formik.errors.reviewText}*/}
                 {/*/>*/}
-                <SimpleMdeReact className={s.reviewText} id="reviewText" placeholder="Review text"
+                <SimpleMdeReact className={`${s.reviewText} ${s.item}`} id="reviewText" placeholder="Review text"
                                 value={reviewText} onChange={handleTextChange} options={customRendererOptions}
                 />
 
-                <UpdateReviewImage callback={setReviewImage} />
-                <div>
-                    <img src={image} width={'100%'} height={'180px'} style={{display: 'inline-block', marginTop: '8px'}}/>
-                    <Button color={'danger'} onClick={deleteReviewImage} variant="soft">Delete uploaded image</Button>
-                </div>
+                {/*<UpdateReviewImage callback={setReviewImage} />*/}
+                {/*<div>*/}
+                {/*    <img src={image} width={'100%'} height={'180px'} style={{display: 'inline-block', marginTop: '8px'}}/>*/}
+                {/*    <Button color={'danger'} onClick={deleteReviewImage} variant="soft">Delete uploaded image</Button>*/}
+                {/*</div>*/}
 
-                <FormLabel>Grade</FormLabel>
+               <UploadImage handleDelete={handleDelete} image={image} handleImage={handleImage}/>
+
+                <FormLabel sx={{width: '40%', marginTop: '14px'}}>Grade</FormLabel>
+
                 <TextField
+                    sx={{width: '40%'}}
                     type={'number'}
                     id="authorGrade"
                     name="authorGrade"
@@ -206,8 +224,8 @@ function CreateReviewForm(props: CreateType) {
                     error={formik.touched.authorGrade && Boolean(formik.errors.authorGrade)}
                     helperText={formik.touched.authorGrade && formik.errors.authorGrade}
                 />
-
-                <Button sx={{marginTop: '6px', borderRadius: '22px'}} color="neutral" variant="solid"  type="submit">
+                <div style={{color: 'grey'}}>Evaluation of the work (from 1 to 10)</div>
+                <Button sx={{marginTop: '14px', marginBottom: '20px', borderRadius: '22px'}} color="neutral" variant="solid"  type="submit">
                     Create
                 </Button>
             </form>

@@ -16,8 +16,8 @@ import children = ReactMarkdown.propTypes.children;
 import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
 import {reviewsAPI} from "../api/review-api";
-import {UploadImageButton} from "./UploadImageButton";
-import {DragDropImage} from "./DragDropImage";
+import {UploadImageButton} from "../components/Review/common/UploadImage/UploadImageButton";
+import {DragDropImage} from "../components/Review/common/UploadImage/DragDropImage";
 import {PROFILE_PAGE} from "../Routing";
 
 
@@ -133,11 +133,11 @@ function Test() {
     {/*<Input type={'file'}  />*/}
     {/*<Button loading={uploading}>upload</Button>*/}
     <UploadImageButton callback={handleImage} />
-    <DragDropImage callback={handleImage} />
-
-
+    <DragDropImage callback={handleImage} image={image} />
     <img src={image} width={'120px'} height={'90'} style={{display: 'block', marginTop: '8px'}}/>
     <Button onClick={() => {uploadImageToServer(image)}}>Upload</Button>
+
+
     <SimpleMdeReact value={value} onChange={onChange} />
     <ReactMarkdown children={value} />
 

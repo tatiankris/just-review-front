@@ -3,6 +3,7 @@ import Autocomplete from "@mui/joy/Autocomplete";
 import {FormControl, FormLabel} from "@mui/joy";
 import {FormikErrors} from "formik/dist/types";
 import {CreateFormikType} from "../CreateReview/CreateReviewForm";
+import s from "../CreateReview/CreateReview.module.scss";
 
 type AutocompleteType = {
     categoryOptions: Array<{ title: string }>
@@ -13,7 +14,9 @@ type AutocompleteType = {
 export const CategoryAutocomplete = ({ setFieldValue, value , categoryOptions, ...props}: AutocompleteType) => {
 
     return (
-        <FormControl sx={{width: '60%'}}>
+        <FormControl  className={s.item}
+                      // sx={{width: '100%'}}
+        >
             <FormLabel>Category</FormLabel>
             <Autocomplete
                 id={'category'}

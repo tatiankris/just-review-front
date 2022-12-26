@@ -3,6 +3,7 @@ import Autocomplete from "@mui/joy/Autocomplete";
 import {FormControl, FormLabel} from "@mui/joy";
 import {FormikErrors} from "formik/dist/types";
 import {CreateFormikType} from "../CreateReview/CreateReviewForm";
+import s from "../CreateReview/CreateReview.module.scss";
 
 type AutocompleteType = {
     tagsOptions: Array<{ title: string } | string>
@@ -15,7 +16,10 @@ export const TagsAutocomplete = ({ setFieldValue, values , tagsOptions, ...props
     const [inputValue, setInputValue] = useState('')
 
     return (
-        <FormControl sx={{width: '60%'}}>
+        <FormControl
+            className={s.item}
+            // sx={{width: '100%'}}
+        >
             <FormLabel>Tags</FormLabel>
             <Autocomplete
                 multiple
