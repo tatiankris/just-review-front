@@ -50,5 +50,5 @@ export type ReviewDataType = {
     category: { title: string },
     tags: Array<{title: string | string}>,
     authorGrade: number
-
+    file?: string | null
 }

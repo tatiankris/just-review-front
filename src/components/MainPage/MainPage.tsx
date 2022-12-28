@@ -10,7 +10,7 @@ import Slider from 'react-slick'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {useMediaQuery} from "react-responsive";
-const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
+const URL = 'https://images.pexels.com/photos/7130560/pexels-photo-7130560.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' //'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
 
 

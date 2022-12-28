@@ -30,7 +30,6 @@ export type CreateFormikType = {
     reviewTitle: string,
     workTitle: string,
     tags: TagsType,
-    // reviewText: string,
     authorGrade: number
 }
 
@@ -40,14 +39,6 @@ function CreateReviewForm(props: CreateType) {
     const categoryOptions = useAppSelector(state => state.tags.categories)
 
     const dispatch = useAppDispatch()
-    // const [image, setImage] = useState('');
-    //
-    // const setReviewImage = (file64: string) => {
-    //     setImage(file64);
-    // }
-    // const deleteReviewImage = () => {
-    //     setImage(imageDefault)
-    // }
 
     const [reviewText, setReviewText] = useState('')
     const handleTextChange = useCallback ((text: string) => {
@@ -57,7 +48,6 @@ function CreateReviewForm(props: CreateType) {
 
 
     const [image, setImage] = useState('');
-
     const handleImage = (file64: string) => {
         setImage(file64)
     }
@@ -87,14 +77,6 @@ function CreateReviewForm(props: CreateType) {
                 .min(2, 'Too Short!')
                 .max(50, 'Too Long!')
                 .required('Field is required'),
-            // tags: Yup.string()
-            //     .min(2, 'Too Short!')
-            //     .max(30, 'Too Long!')
-            //     .required('Field is required'),
-            // reviewText: Yup.string()
-            //     .min(2, 'Too Short!')
-            //     .max(2000, 'Too Long!')
-            //     .required('Field is required'),
             authorGrade: Yup.number()
                 .min(0, 'Invalid grade')
                 .max(10, 'Invalid grade')
@@ -102,7 +84,8 @@ function CreateReviewForm(props: CreateType) {
         onSubmit: (values) => {
         alert(JSON.stringify(values, null, 2));
 
-            dispatch(createReviewTC({...values, reviewText}))
+
+            dispatch(createReviewTC({...values, reviewText, file: image}))
             props.handleClose()
 
         },
@@ -120,23 +103,6 @@ function CreateReviewForm(props: CreateType) {
                 },
             };
         }, []);
-
-        // const customRendererOptions = useMemo(() => {
-        //     return {
-        //         previewRender() {
-        //             return (
-        //                 <ReactMarkdown
-        //                     // source={text}
-        //                     // renderers={{
-        //                     //     CodeBlock: CodeRenderer,
-        //                     //     Code: CodeRenderer,
-        //                     // }}
-        //                     children={formik.values.reviewText}
-        //                 />
-        //             );
-        //         },
-        //     } as SimpleMDE.options;
-        // }, []);
 
     const customRendererOptions = useMemo(() => {
         return {
@@ -188,31 +154,13 @@ function CreateReviewForm(props: CreateType) {
                 <TagsAutocomplete tagsOptions={tagsOptions} values={formik.values.tags} setFieldValue={formik.setFieldValue} />
 
                 <FormLabel className={s.formLabel} >Review text </FormLabel>
-                {/*<Textarea*/}
-                {/*    minRows={3}*/}
-                {/*    sx={{width: '60%'}}*/}
-                {/*    id="reviewText"*/}
-                {/*    name="reviewText"*/}
-                {/*    placeholder="Review text"*/}
-                {/*    value={formik.values.reviewText}*/}
-                {/*    onChange={formik.handleChange}*/}
-                {/*    error={formik.touched.reviewText && Boolean(formik.errors.reviewText)}*/}
-                {/*    // helperText={formik.touched.reviewText && formik.errors.reviewText}*/}
-                {/*/>*/}
                 <SimpleMdeReact className={`${s.reviewText} ${s.item}`} id="reviewText" placeholder="Review text"
                                 value={reviewText} onChange={handleTextChange} options={customRendererOptions}
                 />
 
-                {/*<UpdateReviewImage callback={setReviewImage} />*/}
-                {/*<div>*/}
-                {/*    <img src={image} width={'100%'} height={'180px'} style={{display: 'inline-block', marginTop: '8px'}}/>*/}
-                {/*    <Button color={'danger'} onClick={deleteReviewImage} variant="soft">Delete uploaded image</Button>*/}
-                {/*</div>*/}
-
                <UploadImage handleDelete={handleDelete} image={image} handleImage={handleImage}/>
 
                 <FormLabel sx={{width: '40%', marginTop: '14px'}}>Grade</FormLabel>
-
                 <TextField
                     sx={{width: '40%'}}
                     type={'number'}

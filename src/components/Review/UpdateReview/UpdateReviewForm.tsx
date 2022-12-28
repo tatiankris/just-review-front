@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useMemo, useState} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {Button, FormLabel, Textarea, TextField} from "@mui/joy";
@@ -8,26 +8,15 @@ import {useAppDispatch, useAppSelector} from "../../../common/utils/hooks";
 import {updateReviewTC} from "../../../store/reducers/reviewsReducer";
 import {CategoryAutocomplete} from "../common/CategoryAutocomplete";
 import {TagsAutocomplete} from "../common/TagsAutocomplete";
+import st from '../CreateReview/CreateReview.module.scss'
+import s from "../CreateReview/CreateReview.module.scss";
+import SimpleMdeReact from "react-simplemde-editor";
+import {UploadImage} from "../common/UploadImage/UploadImage";
+import ReactDOMServer from "react-dom/server";
+import {ReactMarkdown} from "react-markdown/lib/react-markdown";
+import {Options} from "easymde";
 
-// const categoryOptions = [
-//     {title: 'movie'},
-//     {title: 'book'},
-//     {title: 'game'},
-//     {title: 'comic'},
-//     {title: 'music'},
-//     {title: 'art'},
-//     {title: 'show'},
-// ]
-// const tagsOptions = [
-//     {title: '90s'},
-//     {title: '2022'},
-//     {title: '2021'},
-//     {title: 'adventures'},
-//     {title: 'classic'},
-//     {title: 'rock'},
-//     {title: 'jazz'},
-//     {title: 'helicopter'},
-// ]
+
 
 type UpdateType = {
     oldValues: {
@@ -50,13 +39,19 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
     const tagsOptions = useAppSelector(state => state.tags.tags)
     const categoryOptions = useAppSelector(state => state.tags.categories)
     const dispatch = useAppDispatch()
-    const [image, setImage] = useState('');
 
-    const setReviewImage = (file64: string) => {
-        setImage(file64);
+    const [reviewText, setReviewText] = useState(oldValues.reviewText)
+    const handleTextChange = useCallback ((text: string) => {
+            setReviewText(text)
+        }
+        , [])
+
+    const [image, setImage] = useState(oldValues.imageURL);
+    const handleImage = (file64: string) => {
+        setImage(file64)
     }
-    const deleteReviewImage = () => {
-        setImage(imageDefault)
+    const handleDelete = () => {
+        setImage('')
     }
 
     const formik = useFormik({
@@ -65,7 +60,6 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
             reviewTitle: oldValues.reviewTitle,
             workTitle: oldValues.workTitle,
             tags: oldValues.tags,
-            reviewText: oldValues.reviewText,
             authorGrade: oldValues.authorGrade
         },
         validationSchema: Yup.object().shape({
@@ -85,10 +79,6 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
             //     .min(2, 'Too Short!')
             //     .max(30, 'Too Long!')
             //     .required('Field is required'),
-            reviewText: Yup.string()
-                .min(5, 'Too Short!')
-                .max(2000, 'Too Long!')
-                .required('Field is required'),
             authorGrade: Yup.number()
                 .min(0, 'Invalid grade')
                 .max(10, 'Invalid grade')
@@ -97,19 +87,35 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
 
 
             alert(JSON.stringify(values, null, 2));
-            dispatch(updateReviewTC(reviewId, values))
+            dispatch(updateReviewTC(reviewId, {...values, reviewText, file: image}))
             props.handleClose()
 
         },
     });
+
+    const customRendererOptions = useMemo(() => {
+        return {
+            previewRender() {
+                return ReactDOMServer.renderToString(
+                    <ReactMarkdown
+                        children={reviewText}
+                    />
+                );
+            },
+        } as Options;
+    }, []);
+
     return (
-        <div >
-            <div  style={{ display: 'flex', alignItems:'center', flexDirection: 'column'}} >
+        <div className={st.container}>
+            <div className={st.modalName}>
+                Update Review
+            </div>
+            <div  className={st.category} >
                 <CategoryAutocomplete categoryOptions={categoryOptions} value={formik.values.category} setFieldValue={formik.setFieldValue} />
             </div>
             <form  style={{ display: 'flex', alignItems:'center', flexDirection: 'column'}} onSubmit={formik.handleSubmit}>
                 <TextField
-                    sx={{width: '60%'}}
+                    className={st.item}
                     id="reviewTitle"
                     name="reviewTitle"
                     label="Review title"
@@ -119,7 +125,7 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
                     helperText={formik.touched.reviewTitle && formik.errors.reviewTitle}
                 />
                 <TextField
-                    sx={{width: '60%'}}
+                    className={st.item}
                     id="workTitle"
                     name="workTitle"
                     label="Work title"
@@ -131,29 +137,16 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
 
                 <TagsAutocomplete tagsOptions={tagsOptions} values={formik.values.tags} setFieldValue={formik.setFieldValue} />
 
-                <FormLabel>Review text </FormLabel>
-                <Textarea
-                    minRows={3}
-                    sx={{width: '60%'}}
-                    id="reviewText"
-                    name="reviewText"
-                    placeholder="Review text"
-                    value={formik.values.reviewText}
-                    onChange={formik.handleChange}
-                    error={formik.touched.reviewText && Boolean(formik.errors.reviewText)}
+                <FormLabel className={st.formLabel} >Review text </FormLabel>
+                <SimpleMdeReact className={`${st.reviewText} ${st.item}`} id="reviewText" placeholder="Review text"
+                                value={reviewText} onChange={handleTextChange} options={customRendererOptions}
                 />
-                {
-                formik.touched.reviewText && <div style={{color: 'red'}}>{formik.errors.reviewText}</div>
-            }
 
-                <UpdateReviewImage callback={setReviewImage} />
-                <div>
-                    <img src={image} width={'100%'} height={'180px'} style={{display: 'inline-block', marginTop: '8px'}}/>
-                    <Button color={'danger'} onClick={deleteReviewImage} variant="outlined">Delete uploaded image</Button>
-                </div>
+                <UploadImage handleDelete={handleDelete} image={image} handleImage={handleImage}/>
 
-                <FormLabel>Grade</FormLabel>
+                <FormLabel sx={{width: '40%', marginTop: '14px'}}>Grade</FormLabel>
                 <TextField
+                    sx={{width: '40%'}}
                     type={'number'}
                     id="authorGrade"
                     name="authorGrade"
@@ -163,12 +156,11 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
                     error={formik.touched.authorGrade && Boolean(formik.errors.authorGrade)}
                     helperText={formik.touched.authorGrade && formik.errors.authorGrade}
                 />
-
-                <Button sx={{marginTop: '6px', borderRadius: '22px'}} color="neutral" variant="solid"  type="submit">
+                <div style={{color: 'grey'}}>Evaluation of the work (from 1 to 10)</div>
+                <Button sx={{marginTop: '6px', marginBottom: '20px', borderRadius: '22px'}} color="neutral" variant="solid"  type="submit">
                     Update
                 </Button>
             </form>
-
         </div>
     )
 }

@@ -22,7 +22,7 @@ import {useMediaQuery} from "react-responsive";
 function Header() {
 
     const isSmallScreen = useMediaQuery({ query: '(max-width: 840px)' })
-    console.log('isSmallScreen', isSmallScreen)
+    // console.log('isSmallScreen', isSmallScreen)
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();

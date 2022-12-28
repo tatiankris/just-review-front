@@ -98,7 +98,10 @@ function ReviewPage() {
 
 
                         {/*<div style={{minHeight: '120px', maxHeight: '500px', backgroundImage: `url(${URL})`, backgroundSize: 'cover', width: '100%'}}></div>*/}
-                            <img src={`${URL}`}  style={{minHeight: '120px', width: '100%'}}/>
+                            {
+                                current.imageURL &&
+                                <img src={`${current.imageURL}`} style={{minHeight: '120px', width: '100%'}}/>
+                            }
                         <Stack sx={{margin: '12px 4px 8px 4px'}} width={'100%'} direction="row" spacing={2} justifyContent="space-between">
                             <div>
                                 <Typography>Author grade: <Typography variant="outlined" color="success">

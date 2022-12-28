@@ -9,7 +9,7 @@ import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {getAuthorTC, getReviewsTC} from "../../store/reducers/reviewsReducer";
 import {useParams} from "react-router-dom";
 import {getUserTC} from "../../store/reducers/userReducer";
-const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
+const URL = 'https://images.pexels.com/photos/7130560/pexels-photo-7130560.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' //'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
 
 function ProfilePage() {
@@ -21,7 +21,7 @@ function ProfilePage() {
     const reviews = useAppSelector(state => state.reviews.reviews)
     const user = useAppSelector(state => state.user.user)
 
-    console.log('REVIEWS',reviews )
+    // console.log('REVIEWS',reviews )
 
 
     useEffect(() => {

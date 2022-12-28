@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import {Button, Modal, Box, Typography, IconButton} from "@mui/joy";
+import {Button, Modal, Box, Typography, IconButton, ModalDialog} from "@mui/joy";
 import s from '../Modal.module.scss'
+import st from '../CreateReview/CreateReview.module.scss'
 import UpdateReviewForm from "./UpdateReviewForm";
 
 type UpdateType = {
@@ -36,13 +37,10 @@ function UpdateReviewModal({ reviewId, ...props}: UpdateType) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{backgroundColor: '#fff8c5'}} className={s.updateModal}>
-                    <Typography paddingLeft={'40%'} id="modal-modal-title" level="h2">
-                        Update
-                    </Typography>
 
+                <ModalDialog className={st.createModal}>
                     <UpdateReviewForm handleClose={handleClose} oldValues={props.oldValues}  reviewId={ reviewId} />
-                </Box>
+                </ModalDialog>
             </Modal>
         </div>
     );
