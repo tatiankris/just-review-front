@@ -1,0 +1,81 @@
+.gridContainer {
+  width: 100%;
+  margin: 8px 0 0 0;
+}
+
+.tableContainer {
+  width: 100%;
+  margin:0 6px;
+}
+
+.table {
+  //width: 100%;
+  max-width: 1092px;
+  min-width: 300px;
+  padding: 6px;
+  margin-left: 6px;
+}
+
+
+
+
+.headerRow {
+  padding: 0;
+}
+.cellTitleIcon {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+
+  //width: 100%;
+  height: 100%;
+}
+
+.cellHeader {
+  //padding: 0;
+  //max-width: 70px;
+  white-space: normal;
+  word-wrap: break-word;
+  text-align: center;
+}
+
+.cellText {
+  padding: 2px;
+  max-width: 70px;
+  white-space: normal;
+  word-wrap: break-word;
+  //margin: 8px 0px;
+  text-align: start;
+}
+
+
+.sortIcon {
+  border-radius: 10px;
+  &:hover {
+    background-color: rgba(105, 105, 105, 0.45);
+  }
+  &:active {
+    background-color: rgba(105, 105, 105, 0.62);
+  }
+}
+
+.options {
+  font-size: 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 728px) {
+  .tableContainer {
+    font-size: 10px;
+  }
+  .cellHeader {
+    font-size: 10px;
+  }
+  .cellText {
+    font-size: 10px;
+  }
+}

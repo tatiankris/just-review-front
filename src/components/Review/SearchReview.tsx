@@ -13,7 +13,7 @@ import { useMediaQuery } from 'react-responsive'
 
 
 type ReviewPropsType = {
-    author: boolean
+    author?: boolean
     reviewId: string
     imageURL: string
     userName: string
@@ -78,16 +78,16 @@ const dispatch = useAppDispatch()
 
     return (
         <Paper className={s.review} elevation={12}>
-            {
-                author && <Stack className={s.tools} direction="row" spacing={2} justifyContent="right">
-                    <div>
-                        <UpdateReviewModal reviewId={reviewId} oldValues={{tags,imageURL, reviewTitle, workTitle, reviewText, category, authorGrade }}/>
-                    </div>
-                    <DeleteModal reviewId={reviewId} title={reviewTitle} type={'review'}/>
-                    <div style={{padding: '6px', fontSize: '11px', color: 'gray'}}><NavLink to={'/*'}>Открыть в режиме
-                        просмотра</NavLink></div>
-                </Stack>
-            }
+            {/*{*/}
+            {/*    author && <Stack className={s.tools} direction="row" spacing={2} justifyContent="right">*/}
+            {/*        <div>*/}
+            {/*            <UpdateReviewModal reviewId={reviewId} oldValues={{tags,imageURL, reviewTitle, workTitle, reviewText, category, authorGrade }}/>*/}
+            {/*        </div>*/}
+            {/*        <DeleteModal reviewId={reviewId} title={reviewTitle} type={'review'}/>*/}
+            {/*        <div style={{padding: '6px', fontSize: '11px', color: 'gray'}}><NavLink to={'/*'}>Открыть в режиме*/}
+            {/*            просмотра</NavLink></div>*/}
+            {/*    </Stack>*/}
+            {/*}*/}
             {iSmallScreen &&
                 <Box>
                     <Box>
@@ -168,76 +168,79 @@ const dispatch = useAppDispatch()
                         </div>
                     </Grid>
 
-                    <Grid xs={5}>
-                        <Box className={s.userLink}>
-                            <Avatar className={s.avatar} onClick={() => {
-                                navigate(`${PROFILE_PAGE}/${userName}`)
-                            }} sx={{"--Avatar-size": "20px"}}/>
-                            <a href={`${PROFILE_PAGE}/${userName}`} style={{fontSize: '14px', fontWeight: 'bold'}}
-                               className={s.link}>{userName}</a>
-                        </Box>
-
-                        <Box className={s.titles}>
-                            <NavLink target={'_blank'} className={s.link} to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>
-                                {includeSearch(reviewTitle)}
-                            </NavLink>
-                            <div>
-                                <span className={s.workTitle}>{includeSearch(workTitle)}</span>
-                            </div>
-                        </Box>
-                        <Typography className={s.reviewText} mb={1} lineHeight="sm" textAlign={'start'}
-                                    margin={'8px 0px'}>
-                            {
-                                reviewText.length < 42 && <>{includeSearch(reviewText)}
-                                    {'....'}
-                                </>
-                            }
-                            {
-                                reviewText.length > 42 &&
-                                <>{includeSearch(reviewText.slice(0, 42))}
-                                    {'....'}
-                                    <NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}}
-                                             className={s.reviewTitle}>
-                                        Read more
-                                    </NavLink>
-                                </>
-                            }
-                        </Typography>
-                        <Box className={s.tags}>
-                            {renderTags.map(t => {
-                                return <div className={s.tag} key={t.title}>
-                                    {t.title}
-                                </div>
-                            })}
-                        </Box>
-
-                    </Grid>
-
-                    <Grid className={s.gradesGrid} xs={4}>
-
+                    <Grid xs={9} className={s.infoGrid}>
                         <Box>
-                            <div className={s.authorGrade}>
-                                <Box>The author rates the work:</Box>
-                                <div className={s.gradeX}><b style={{color: 'white'}}>{authorGrade}</b>/10</div>
-                            </div>
+                            <Box className={s.userLink}>
+                                <Avatar className={s.avatar} onClick={() => {
+                                    navigate(`${PROFILE_PAGE}/${userName}`)
+                                }} sx={{"--Avatar-size": "20px"}}/>
+                                <a href={`${PROFILE_PAGE}/${userName}`} style={{fontSize: '14px', fontWeight: 'bold'}}
+                                   className={s.link}>{userName}</a>
+                            </Box>
 
-                            <Stack className={s.overallRating} direction="row">
+                            <Box className={s.titles}>
+                                <NavLink target={'_blank'} className={s.link}
+                                         to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>
+                                    {includeSearch(reviewTitle)}
+                                </NavLink>
+                                <div>
+                                    <span className={s.workTitle}>{includeSearch(workTitle)}</span>
+                                </div>
+                            </Box>
+                            <Typography className={s.reviewText} mb={1} lineHeight="sm" textAlign={'start'}
+                                        margin={'8px 0px'}>
+                                {
+                                    reviewText.length < 42 && <>{includeSearch(reviewText)}
+                                        {'....'}
+                                    </>
+                                }
+                                {
+                                    reviewText.length > 42 &&
+                                    <>{includeSearch(reviewText.slice(0, 42))}
+                                        {'....'}
+                                        <NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}}
+                                                 className={s.reviewTitle}>
+                                            Read more
+                                        </NavLink>
+                                    </>
+                                }
+                            </Typography>
+                            <Box className={s.tags}>
+                                {renderTags.map(t => {
+                                    return <div className={s.tag} key={t.title}>
+                                        {t.title}
+                                    </div>
+                                })}
+                            </Box>
 
-                                <Box color={'gray'}>Average review rating:</Box>
-                                <Box>
-                                    <Rating size="large" name="read-only" value={4} readOnly/>
-                                </Box>
-                            </Stack>
                         </Box>
 
-                        <Box className={s.setRating}>
-                            👉 <Rating name="controlled"
-                                       value={rating}
-                                       onChange={(event, newValue) => {
-                                           setRating(newValue);
-                                       }}/>
-                        </Box>
+                        <Box className={s.gradesGrid}>
 
+                            <Box>
+                                <div className={s.authorGrade}>
+                                    <Box>The author rates the work:</Box>
+                                    <div className={s.gradeX}><b style={{color: 'white'}}>{authorGrade}</b>/10</div>
+                                </div>
+
+                                <Stack className={s.overallRating} direction="row">
+
+                                    <Box color={'gray'}>Average review rating:</Box>
+                                    <Box>
+                                        <Rating size="large" name="read-only" value={4} readOnly/>
+                                    </Box>
+                                </Stack>
+                            </Box>
+
+                            <Box className={s.setRating}>
+                                👉 <Rating name="controlled"
+                                           value={rating}
+                                           onChange={(event, newValue) => {
+                                               setRating(newValue);
+                                           }}/>
+                            </Box>
+
+                        </Box>
                     </Grid>
                 </Grid>
             }

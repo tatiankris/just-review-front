@@ -6,6 +6,7 @@ import ReviewPage from "./components/ReviewPage/ReviewPage";
 import Test from "./testComponents/Test";
 import {useAppSelector} from "./common/utils/hooks";
 import HomePage from "./components/HomePage/HomePage";
+import {GoogleAuth} from "./components/Auth/GoogleAuth";
 
 export const REVIEW_PAGE = '/review' //'/:userName/:reviewName'
 export const PROFILE_PAGE = '/profile' //'/:userName
@@ -20,6 +21,7 @@ function Routing() {
             <Route path={`${REVIEW_PAGE}/:username/:review`} element={<ReviewPage />}/>
             <Route path={`${PROFILE_PAGE}/:username`} element={<ProfilePage />}/>
             <Route path={'/test'} element={<Test />}/>
+            <Route path={'/google'} element={<GoogleAuth />}/>
             {/*<Route path="/search" element={<SearchPage/>} />*/}
             <Route path="/" element={<HomePage/>} />
             <Route

@@ -1,9 +1,30 @@
 .profileInfo {
   padding: 10px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
-  background-color: #fde6c84f;
-  border-radius: 30px;
+  background-color: rgba(230, 230, 250, 0);
+  //background-color: #ece9f5;
+  border-radius: 2px;
+  margin-bottom: 10px;
 }
+
+.grid {
+  width: 100%;
+  margin: 0;
+  //display: flex;
+  //flex-direction: column;
+  //justify-content: flex-end;
+}
+
+.gridItem {
+  width: 100%;
+}
+
+@media screen and (max-width: 712px) {
+  .grid {
+    //display: flex;
+    //flex-direction: column;
+  }
+  }

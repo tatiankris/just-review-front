@@ -5,3 +5,29 @@
   align-items: center;
   border-radius: 10px;
 }
+
+.ghButton {
+  background-color: rgb(255, 255, 255);
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  border-radius: 2px;
+  border: 1px solid transparent;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: Roboto, sans-serif;
+  padding: 0 10px 0 0;
+  box-shadow: -1px 2px 2px #9abaa0;
+
+  &:hover {
+    background-color: #fff8f8;
+  }
+}
+
+.ghIcon {
+  color: black;
+  padding: 10px;
+  //margin-right: 10px;
+}

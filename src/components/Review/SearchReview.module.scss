@@ -76,6 +76,12 @@
 
 }
 
+.infoGrid {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between ;
+  align-items: center;
+}
 
 .gradesGrid {
   display: flex;
@@ -96,6 +102,7 @@
   border-radius: 10px;
 
 }
+
 
 .overallRating {
   display: flex;

@@ -11,17 +11,18 @@ import {PROFILE_PAGE} from "../Routing";
 import ModalLogin from "./Auth/Login/ModalLogin";
 import ModalRegistration from "./Auth/Registration/ModalRegistration";
 import {useAppDispatch, useAppSelector} from "../common/utils/hooks";
-import { logoutAC } from "../store/reducers/authReducer";
+import {logoutAC} from "../store/reducers/authReducer";
 import {setSearchAC} from "../store/reducers/reviewsReducer";
 import {setSearchTagsAC} from "../store/reducers/tagsReducer";
 import {useMediaQuery} from "react-responsive";
+import {BurgerMenu} from "./BurgerMenu";
 
 
 
 
 function Header() {
 
-    const isSmallScreen = useMediaQuery({ query: '(max-width: 840px)' })
+    const isSmallScreen = useMediaQuery({ query: '(max-width: 600px)' })
     // console.log('isSmallScreen', isSmallScreen)
 
     const navigate = useNavigate();
@@ -61,17 +62,26 @@ function Header() {
         navigate('/')
     }
 
+    const handleProfile = () => {
+        navigate(`${PROFILE_PAGE}/${username}`);
+        handleCLose()
+    }
+
+
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar color={'inherit'}
                 // className={s.appBar}
             >
-                <Toolbar sx={{"@media(min-width: 600px)": {minHeight: "50px", padding: '0% 10%'}}} className={s.toolbar}>
+                <Toolbar
+                    sx={{"@media(min-width: 600px)": {minHeight: "50px"}}}
+                         className={s.toolbar}>
                     <CssVarsProvider>
 
-                        {
-                            !isSmallScreen &&
+
                             <Stack direction="row" spacing={1}>
+                                {
+                                    !isSmallScreen &&
                                 <Tooltip title="SearchPage" variant="soft" className={s.tooltip}>
                                     <IconButton
                                         onClick={homeHandler}
@@ -86,36 +96,34 @@ function Header() {
                                         <div className={s.homeButton}>JustReview</div>
                                     </IconButton>
                                 </Tooltip>
-
-                                <IconButton onClick={handleSetMode} size="sm" color="neutral">
-                                    {
-                                        mode === 'light'
-                                            ? <LightModeIcon/>
-                                            : <DarkModeIcon/>
-                                    }
-                                </IconButton>
-                                <IconButton onClick={handleSetLanguage} size="sm" color="neutral">
-                                    {language}
-                                </IconButton>
+                                }
+                                <OptionsStack isSmallScreen={isSmallScreen} mode={mode} handleSetMode={handleSetMode} handleSetLanguage={handleSetLanguage} language={language}/>
                             </Stack>
-                        }
+
 
                         <Box
-                            sx={isSmallScreen? {} : {flexGrow: 1, padding: '0px 80px'}}
+                            sx={isSmallScreen
+                                ? {display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60%'}
+                                : {flexGrow: 1, padding: '0 1%'}
+                        }
                         >
                             <TextField
-                                size={isSmallScreen ? 'sm' : 'md'}
+                                size={'md'}
                                 value={search}
                                 onChange={handleSearch}
-                                sx={{borderRadius: '20px', maxWidth: '300px'}}
+                                sx={!isSmallScreen ? {borderRadius: '20px',
+                                    maxWidth: '300px',
+                                    // minWidth: '100px',
+                                } : {borderRadius: '20px',
+                                    width: '100%'}}
                                 placeholder="Search…"
-                                startDecorator={<SearchIcon />}
+                                startDecorator={!isSmallScreen ? <SearchIcon /> : ''}
                             />
                         </Box>
-                        {
-                            !isSmallScreen && <Stack direction="row" spacing={1}>
+
+                       <Stack direction={ !isSmallScreen ? "row" : "column"} spacing={!isSmallScreen ? 1 : 0}>
                                 {isLoggedIn &&
-                                    <Stack direction={'row'} spacing={2}>
+                                    <Stack direction={!isSmallScreen ? "row" : "column"} spacing={!isSmallScreen ? 2 : 0}>
                                         {/*<Tooltip title="Profile" variant="soft" className={s.tooltip}>*/}
                                         <IconButton
                                             size="sm"
@@ -126,8 +134,8 @@ function Header() {
                                             style={{position: 'relative'}}
                                             // aria-label="avatar"
                                         >
-                                            <span>{username}</span>
-                                            <Avatar src={avatar}/>
+                                            {!isSmallScreen && <span>{username}</span>}
+                                            <Avatar size={'sm'} src={avatar}/>
                                             <Menu
                                                 style={{position: 'absolute', left: '75%', top: '48px', width: '130px'}}
                                                 id="positioned-demo-menu"
@@ -136,30 +144,28 @@ function Header() {
                                                 aria-labelledby="positioned-demo-button"
                                                 placement="bottom-end"
                                             >
-                                                <MenuItem onClick={() => {
-                                                    navigate(`${PROFILE_PAGE}/${username}`);
-                                                    handleCLose()
-                                                }}>
+                                                <MenuItem onClick={handleProfile}>
                                                     Open profile
                                                 </MenuItem>
                                             </Menu>
                                         </IconButton>
                                         {/*</Tooltip>*/}
-                                        <Button onClick={handleLogout} variant={'soft'} color={'primary'}>Logout</Button>
+                                        <Button onClick={handleLogout} variant={'soft'} color={'primary'} size={isSmallScreen ? 'sm': 'md'}>Logout</Button>
                                     </Stack>
                                 }
                                 {!isLoggedIn &&
 
-                                    <Stack direction={'row'} spacing={2}>
-                                        <ModalLogin/>
-                                        <ModalRegistration/>
+                                    <Stack direction={!isSmallScreen ? "row" : "column"} spacing={!isSmallScreen ? 2 : 0}>
+                                        <ModalLogin isSmallScreen={isSmallScreen}/>
+                                        <ModalRegistration isSmallScreen={isSmallScreen}/>
                                     </Stack>
                                 }
                             </Stack>
-                        }
+
                         {/*{*/}
-                        {/*    isSmallScreen && */}
-                        {/*    */}
+                        {/*    isSmallScreen &&*/}
+                        {/*    <BurgerMenu handleLogout={handleLogout} mode={mode} handleSetMode={handleSetMode} handleSetLanguage={handleSetLanguage} language={language} isLoggedIn={isLoggedIn} handleProfile={handleProfile}  />*/}
+
                         {/*}*/}
 
                     </CssVarsProvider>
@@ -167,6 +173,33 @@ function Header() {
             </AppBar>
         </Box>
     );
+}
+
+
+type OptionsPropsType = {
+    handleSetMode: () => void
+    mode: string
+    handleSetLanguage: () => void
+    language: string
+    isSmallScreen: boolean
+}
+
+export function OptionsStack({handleSetMode, mode, handleSetLanguage, language, isSmallScreen}: OptionsPropsType) {
+
+    return (
+        <Stack direction={isSmallScreen ? 'column' : 'row'}>
+            <IconButton onClick={handleSetMode} size="sm" color="neutral">
+                {
+                    mode === 'light'
+                        ? <LightModeIcon/>
+                        : <DarkModeIcon/>
+                }
+            </IconButton>
+            <IconButton onClick={handleSetLanguage} size="sm" color="neutral">
+                {language}
+            </IconButton>
+        </Stack>
+    )
 }
 
 export default Header;

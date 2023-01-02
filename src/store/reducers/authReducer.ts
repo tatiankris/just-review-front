@@ -14,7 +14,7 @@ type UserData = {
 let initialState = {
     isInitializeApp: false,
     isLoggedIn: false,
-    user: {} as UserData
+    user: {} as UserData,
 }
 export type StateType = typeof initialState;
 
@@ -26,6 +26,7 @@ export const authReducer = (state: StateType = initialState, action: AuthActions
         }
         case 'auth/SET-IS-LOGOUT': {
             localStorage.removeItem('token')
+            window.open("http://localhost:5000/auth/logout", "_self")
             console.log('Logout is OK')
             return {...state, isLoggedIn: false, user: {} as UserData}
         }
@@ -54,6 +55,8 @@ export const logoutAC = () => {
         type: 'auth/SET-IS-LOGOUT',
     } as const
 }
+
+
 
 //thunks
 export const loginTC = (data: LoginDataType): AppThunk => {
@@ -138,7 +141,9 @@ export const authTC = (): AppThunk => {
                 dispatch(loginAC(user))
 
                 // dispatch(getReviewsTC())
+                console.log('token', res.data.token)
                 localStorage.setItem('token', res.data.token)
+
             })
             .catch(err => {
                 console.log('error', err.data.message)
@@ -146,6 +151,36 @@ export const authTC = (): AppThunk => {
             })
             .finally(() => {
                         dispatch(initializeAC())
+                    dispatch(setAppStatusAC("succeeded"))
+                }
+            )
+    }
+}
+
+export const googleAuthTC = (): AppThunk => {
+    return (dispatch) => {
+        dispatch(setAppStatusAC("loading"))
+
+        authAPI.google()
+            .then(res => {
+                let user = {
+                    id: res.data.user._id,
+                    email: res.data.user.email,
+                    username: res.data.user.username,
+                    avatar: res.data.user.avatar,
+                    roles: res.data.user.roles
+                } as UserData
+                console.log('googleAuth', res.data)
+                dispatch(loginAC(user))
+
+                localStorage.setItem('token', res.data.token)
+            })
+            .catch(err => {
+                console.log('error', err.data.message)
+                localStorage.removeItem('token')
+            })
+            .finally(() => {
+                    dispatch(initializeAC())
                     dispatch(setAppStatusAC("succeeded"))
                 }
             )

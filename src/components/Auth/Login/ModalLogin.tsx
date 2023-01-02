@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Modal, Box, Typography, Button, TextField, Stack, Chip, Divider} from "@mui/joy";
 import s from './Login.module.scss'
 import Login from "./Login";
 import GoogleIcon from '@mui/icons-material/Google';
+import {GoogleLogin, GoogleLogout, useGoogleLogout} from 'react-google-login';
+import { gapi } from 'gapi-script';
+import jwt_decode from 'jwt-decode';
+import LoginGithub from "react-login-github";
+import GitHubIcon from '@mui/icons-material/GitHub';
+import {authAPI} from "../../../api/auth-api";
+import {useAppDispatch} from "../../../common/utils/hooks";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -16,14 +23,74 @@ const style = {
   p: 4,
 };
 
-function ModalLogin() {
+declare var google: any;
+
+type PropsType = {
+  isSmallScreen: boolean
+}
+function ModalLogin({isSmallScreen} : PropsType) {
+  const clientId = '301022637814-i3noevnhjjh0rn88avi7p3d0q5m6hucj.apps.googleusercontent.com'
+  const ghClientId = '51eed0be7af19f448be0'
+
+useEffect(() => {
+
+});
+
+  const dispatch = useAppDispatch()
+
+
+
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+
+    setOpen(true);
+    console.log('open login')
+
+
+  }
+
+  const handleClose = () => {
+    console.log('close login')
+    setOpen(false);
+  }
+
+  const google = () => {
+    window.open("http://localhost:5000/auth/google", "_self")
+
+  }
+
+  const gitHub = () => {
+    window.open("http://localhost:5000/auth/github", "_self")
+  }
+
+  // function handleCallbackResponse(response: any) {
+  //   console.log('encoded JWT ID token:' + response.credential)
+  // }
+
+  // useEffect(() => {
+  //   google.accounts.id.initialize({
+  //     client_id: "301022637814-i3noevnhjjh0rn88avi7p3d0q5m6hucj.apps.googleusercontent.com",
+  //     callback: handleCallbackResponse
+  //   })
+  //
+  //   google.accounts.id.renderButton(
+  //       document.getElementById("signInDiv"),
+  //       { type: "standard", theme: "filled_blue", size: "large", shape: "rectangular"}
+  //   )
+  //
+  //
+  // }, [])
+
+
 
   return (
-    <div>
-      <Button sx={{height: '30px'}} variant={'soft'} color="success" onClick={handleOpen}>Login</Button>
+      <div>
+      {/*<GoogleLogout clientId={clientId} buttonText="Log out" onLogoutSuccess={logOut} />*/}
+      <Button sx={{height: !isSmallScreen ? '30px' : 'auto'}} size={!isSmallScreen ? 'md' : 'sm'} variant={'soft'} color="success" onClick={handleOpen} fullWidth>Login</Button>
+
+
+      {/*<div id={"signInDiv"}></div>*/}
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -35,11 +102,27 @@ function ModalLogin() {
             Login
           </Typography>
           <div style={{marginTop: '12px'} }>
-            <span style={{marginTop: '6px', color: 'gray'}}>Continue with</span>
+            {/*<span style={{marginTop: '6px', color: 'gray'}}>Continue with</span>*/}
 
             <Stack style={{margin: '6px 0px', width: '100%'}} spacing={0.5}>
-              <Chip color={'success'} startDecorator={<GoogleIcon />} onClick={() => {alert('Google')}}>Google</Chip>
-              <Chip startDecorator={<div>🐩</div>} onClick={() => {alert('VK')}}>VK</Chip>
+              {/*<div onClick={handleGoogleClick}>*/}
+              {/*  <GoogleLogin*/}
+              {/*    clientId={clientId}*/}
+              {/*    buttonText="Sign in with Google"*/}
+              {/*    onSuccess={onSuccessGoogle}*/}
+              {/*    onFailure={onFailureGoogle}*/}
+              {/*    cookiePolicy={'single_host_origin'}*/}
+              {/*    isSignedIn={true}*/}
+              {/*/>*/}
+              {/*</div>*/}
+              {/*<LoginGithub clientId={ghClientId}*/}
+              {/*             onSuccess={onSuccessGH}*/}
+              {/*             onFailure={onFailureGH}*/}
+              {/*             className={s.ghButton}*/}
+              {/*><GitHubIcon className={s.ghIcon} /><span style={{color: 'rgba(0, 0, 0, 0.54)'}}>Sign in with GitHub</span></LoginGithub>*/}
+
+              <Chip color={'success'} startDecorator={<GoogleIcon />} onClick={google}>Sign in with Google</Chip>
+              <Chip startDecorator={<GitHubIcon />} onClick={gitHub}>Sign in with GitHub</Chip>
             </Stack>
           </div>
           <Divider />
@@ -51,6 +134,7 @@ function ModalLogin() {
 
         </Box>
       </Modal>
+
     </div>
   );
 }

@@ -1,4 +1,9 @@
-import { instance } from "./api";
+import {instance, instanceGoogle} from "./api";
+import axios from "axios";
+const CLIENT_ID = '51eed0be7af19f448be0'
+const CLIENT_SECRET = 'f561ab4ab6241252b270812f4dc63877dfa84e4f'
+
+const params = '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&code='
 
 
 export const authAPI = {
@@ -11,6 +16,15 @@ export const authAPI = {
     me() {
         return instance.get('/auth/me', {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
     },
+
+    google() {
+        return axios.get('http://localhost:5000/auth/login/success', {withCredentials: true, headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                // "Access-Control-Allow-Origin": 'http://localhost:3000',
+                // "Access-Control-Allow-Methods": 'GET'
+            }})
+    }
 }
 
 export type LoginDataType = {

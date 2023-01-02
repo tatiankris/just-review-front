@@ -5,14 +5,41 @@ import {AppBar, Backdrop} from "@mui/material";
 import Header from "./components/Header";
 import Routing from "./Routing";
 import {useAppDispatch, useAppSelector} from "./common/utils/hooks";
-import {authTC} from "./store/reducers/authReducer";
+import {authTC, googleAuthTC} from "./store/reducers/authReducer";
 import {CircularProgress} from "@mui/joy";
 import {useMediaQuery} from "react-responsive";
 
+// declare var google: any;
 
 function App() {
     const dispatch = useAppDispatch();
     const status = useAppSelector(state => state.app.appStatus)
+    // const google = useAppSelector(state => state.auth.googleAuth)
+
+
+    // useEffect(() => {
+    //     console.log('app google', google)
+    //     if (google) {
+    //
+    //         dispatch(googleAuthTC())
+    //     }
+    // }, [google])
+
+    // function handleCallbackResponse(response: any) {
+    //     console.log('encoded JWT ID token:' + response.credential)
+    // }
+    // useEffect(() => {
+    //
+    //     google.accounts.id.initialize({
+    //         client_id: "301022637814-i3noevnhjjh0rn88avi7p3d0q5m6hucj.apps.googleusercontent.com",
+    //         callback: handleCallbackResponse
+    //     })
+    //
+    //     google.accounts.id.renderButton(
+    //         document.getElementById("signInDiv"),
+    //         { theme: "outline", size: "large"  , zIndex: '1000000'}
+    //     )
+    // }, [])
 
     useEffect(() => {
         dispatch(authTC())
@@ -25,6 +52,7 @@ function App() {
                 <CircularProgress />
             </Backdrop>
             <Header/>
+            {/*<div id={"signInDiv"}></div>*/}
             <Routing/>
 
 

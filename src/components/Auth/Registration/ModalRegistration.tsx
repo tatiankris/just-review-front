@@ -3,6 +3,8 @@ import {Chip, Divider, Stack, Box, Button, Modal, Typography} from "@mui/joy";
 import GoogleIcon from "@mui/icons-material/Google";
 import Registration from "./Registration";
 import s from './Registration.module.scss'
+import GitHubIcon from "@mui/icons-material/GitHub";
+import {useAppDispatch} from "../../../common/utils/hooks";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -16,14 +18,28 @@ const style = {
     border: '0.5px solid #000',
 };
 
-function ModalRegistration() {
+type PropsType = {
+    isSmallScreen: boolean
+}
+
+function ModalRegistration({isSmallScreen}: PropsType) {
+
+    const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const google = () => {
+        window.open("http://localhost:5000/auth/google", "_self")
+    }
+    const gitHub = () => {
+        window.open("http://localhost:5000/auth/github", "_self")
+    }
+
+
     return (
         <div>
-            <Button variant={'outlined'} sx={{height: '30px'}} onClick={handleOpen}>Sign Up</Button>
+            <Button variant={'outlined'} sx={{height: !isSmallScreen ? '30px' : 'auto'}} size={!isSmallScreen ? 'md' : 'sm'} onClick={handleOpen}>Sign Up</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -36,11 +52,11 @@ function ModalRegistration() {
                     </Typography>
 
                     <div style={{marginTop: '12px'} }>
-                        <span style={{marginTop: '6px', color: 'gray'}}>Continue with</span>
+                        {/*<span style={{marginTop: '6px', color: 'gray'}}>Continue with</span>*/}
 
                         <Stack style={{margin: '6px 0px', width: '100%'}} spacing={0.5}>
-                            <Chip color={'success'} startDecorator={<GoogleIcon />} onClick={() => {alert('Google')}}>Google</Chip>
-                            <Chip startDecorator={<div>🐩</div>} onClick={() => {alert('VK')}}>VK</Chip>
+                            <Chip color={'success'} startDecorator={<GoogleIcon />} onClick={google}>Sign up with Google</Chip>
+                            <Chip startDecorator={<GitHubIcon />} onClick={gitHub}>Sign up with GitHub</Chip>
                         </Stack>
                     </div>
                     <Divider />
