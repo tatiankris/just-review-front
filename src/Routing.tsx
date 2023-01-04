@@ -23,10 +23,10 @@ function Routing() {
             <Route path={'/test'} element={<Test />}/>
             <Route path={'/google'} element={<GoogleAuth />}/>
             {/*<Route path="/search" element={<SearchPage/>} />*/}
-            <Route path="/" element={<HomePage/>} />
+            <Route path="/home" element={<HomePage/>} />
             <Route
                 path="*"
-                element={<Navigate to={"/"} replace />}
+                element={<Navigate to={"/home"} replace />}
             />
         </Routes>
     }
@@ -38,10 +38,10 @@ function Routing() {
 
             <Route path={'/test'} element={<Test />}/>
             {/*<Route path="/search" element={<SearchPage/>} />*/}
-            <Route path="/" element={<HomePage/>} />
+            <Route path="/home" element={<HomePage/>} />
             <Route
                 path="*"
-                element={<Navigate to={"/"} replace />}
+                element={<Navigate to={"/home"} replace />}
             />
         </Routes>
     )
