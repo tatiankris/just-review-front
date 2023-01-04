@@ -56,7 +56,7 @@ export const MainPage = () => {
                             category={r.category}
                             createdAt={r.createdAt}
                             likes={r.likes}
-                            overallRating={r.overallRating}
+                            rating={r.rating}
                             userName={r.userName}
                             authorGrade={r.authorGrade}
                             comments={r.comments}
@@ -85,7 +85,7 @@ export const MainPage = () => {
                             category={r.category}
                             createdAt={r.createdAt}
                             likes={r.likes}
-                            overallRating={r.overallRating}
+                            rating={r.rating}
                             userName={r.userName}
                             authorGrade={r.authorGrade}
                             comments={r.comments}

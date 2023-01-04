@@ -26,19 +26,19 @@ type ReviewPropsType = {
     comments: number
     authorGrade: number
     createdAt: string
-    overallRating: {1: number, 2: number, 3: number, 4: number, 5: number}
+    rating: number
 }
 
 function MainReview({author, userName, tags, likes,imageURL, reviewId,
                    reviewTitle, workTitle, reviewText, category, authorGrade,
-                    createdAt, overallRating,comments,...props}: ReviewPropsType) {
+                    createdAt, rating,comments,...props}: ReviewPropsType) {
 
     const iSmallScreen = useMediaQuery({ query: '(max-width: 728px)' })
     console.log('iSmallScreen', iSmallScreen)
 
     const navigate = useNavigate()
 const dispatch = useAppDispatch()
-    const [rating, setRating] = useState<number | null>(2.5);
+    const [ratingChanged, setRating] = useState<number | null>(2.5);
     // const overallRatingValue =
     // const [author, setAuthor] = useState(true)
 
@@ -138,7 +138,7 @@ const dispatch = useAppDispatch()
                             </div>
                             <Stack className={s.overallRating} direction="row">
                                 <Box>
-                                    <Rating name="read-only" value={4} readOnly/>
+                                    <Rating name="read-only" value={rating} readOnly/>
                                 </Box>
                             </Stack>
                         </Box>

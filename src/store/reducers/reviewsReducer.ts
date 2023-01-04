@@ -1,6 +1,6 @@
 import {AppThunk} from "../store";
 import {loginAC} from "./authReducer";
-import {likesAPI, ReviewDataType, reviewsAPI} from "../../api/review-api";
+import {gradesAPI, ReviewDataType, reviewsAPI} from "../../api/review-api";
 import {getCategoriesTC, getTagsTC} from "./tagsReducer";
 import {getCommentsTC} from "./commentsReducer";
 import { setAppStatusAC } from "./appReducer";
@@ -17,7 +17,7 @@ export type ReviewType = {
     workTitle: string
     reviewText: string
     authorGrade: number
-    overallRating: {1: number, 2: number, 3: number, 4: number, 5: number}
+    rating: number
     comments: number
     createdAt: string
     imageURL?: string
@@ -55,7 +55,13 @@ export const reviewsReducer = (state: StateType = initialState, action: ReviewAc
         case 'reviews/SET-MAIN-REVIEWS': {
             return {...state, latest: action.latest, highestRating: action.highestRating}
         }
-
+        case 'reviews/SET-RATINGS': {
+            return {...state, reviews:
+                    [...state.reviews.map(r => r._id === action.reviewId ? {...r, rating: action.averageRating} : r)]}
+        }
+        case 'reviews/SET-CURRENT-RATINGS': {
+            return {...state, currentReview: {...state.currentReview, rating: action.averageRating}}
+        }
         default:
             return state
     }
@@ -101,6 +107,21 @@ export const setSearchAC = (search: string) => {
     return {
         type: 'reviews/SET-SEARCH',
         search
+    } as const
+}
+export const setRatingsAC = (reviewId: string, userRating: number, averageRating: number) => {
+    return {
+        type: 'reviews/SET-RATINGS',
+        reviewId,
+        userRating,
+        averageRating
+    } as const
+}
+export const setCurrentRatingsAC = (userRating: number, averageRating: number) => {
+    return {
+        type: 'reviews/SET-CURRENT-RATINGS',
+        userRating,
+        averageRating
     } as const
 }
 
@@ -257,7 +278,7 @@ export const likeReviewTC = (reviewId: string, current?: boolean): AppThunk => {
     return (dispatch,getState) => {
         const review = getState().reviews.reviews.find(r => r._id === reviewId)
         // dispatch(setAppStatusAC("loading"))
-        likesAPI.addLike ({reviewId})
+        gradesAPI.addLike ({reviewId})
             .then(res => {
 
 
@@ -288,7 +309,7 @@ export const dislikeReviewTC = (reviewId: string, current?: boolean): AppThunk =
         const review = getState().reviews.reviews.find(r => r._id === reviewId)
 
         // dispatch(setAppStatusAC("loading"))
-        likesAPI.deleteLike(reviewId)
+        gradesAPI.deleteLike(reviewId)
             .then(res => {
 
                 if (review) {
@@ -312,9 +333,35 @@ export const dislikeReviewTC = (reviewId: string, current?: boolean): AppThunk =
     }
 }
 
+export const ratedReviewTC = (value: number, reviewId: string, current?: boolean): AppThunk => {
+    return (dispatch,getState) => {
+        const review = getState().reviews.reviews.find(r => r._id === reviewId)
+
+        // dispatch(setAppStatusAC("loading"))
+        gradesAPI.addRating({value, reviewId})
+            .then(res => {
+
+                if (review) {
+                    if (current) {
+                        dispatch(setCurrentRatingsAC(res.data.userRating,res.data.averageRating ))
+                    }
+                    dispatch(setRatingsAC(reviewId, res.data.userRating, res.data.averageRating))
+                }
+
+                // console.log('review', res.data.review)
+                // dispatch(getAuthorTC(res.data.review.))
+            })
+            .catch(err => {
+                console.log('error', err.message)
+
+            })
+            .finally(() => {
+                    // dispatch(setAppStatusAC("succeeded"))
+                }
+            )
+    }
+}
 
 
-
-
-export type ReviewActionsType = ReturnType<typeof setReviewsAC> | ReturnType<typeof setMainReviewsAC> | ReturnType<typeof setSearchAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setCurrentLikesAC>| ReturnType<typeof setLikesAC>
+export type ReviewActionsType = ReturnType<typeof setCurrentRatingsAC> | ReturnType<typeof setRatingsAC> | ReturnType<typeof setReviewsAC> | ReturnType<typeof setMainReviewsAC> | ReturnType<typeof setSearchAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setCurrentLikesAC>| ReturnType<typeof setLikesAC>
 

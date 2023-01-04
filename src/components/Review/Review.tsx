@@ -26,16 +26,16 @@ type ReviewPropsType = {
     comments: number
     authorGrade: number
     createdAt: string
-    overallRating: {1: number, 2: number, 3: number, 4: number, 5: number}
+    rating: number
 }
 
 function Review({author, userName, tags, likes,imageURL, reviewId,
                    reviewTitle, workTitle, reviewText, category, authorGrade,
-                    createdAt, overallRating,comments,...props}: ReviewPropsType) {
+                    createdAt, rating,comments,...props}: ReviewPropsType) {
 
     const navigate = useNavigate()
 const dispatch = useAppDispatch()
-    const [rating, setRating] = useState<number | null>(2.5);
+    const [ratingChanging, setRating] = useState<number | null>(2.5);
     // const overallRatingValue =
     // const [author, setAuthor] = useState(true)
 
@@ -117,10 +117,10 @@ const dispatch = useAppDispatch()
                         <Box>
                             <Chip sx={{marginLeft: '8px'}} color="info">{category.title}</Chip>
                         </Box>
-                        <Box color={'gray'}>Overall rating:</Box>
+                        <Box color={'gray'}>Average rating:</Box>
                         <Box>
 
-                            <Rating size="large" name="read-only" value={4} readOnly/>
+                            <Rating size="large" name="read-only" value={rating} readOnly/>
 
                         </Box>
                     </Stack>
@@ -166,7 +166,7 @@ const dispatch = useAppDispatch()
                     </div>
                     <Box>
                         👉 <Rating name="controlled"
-                                   value={rating}
+                                   value={ratingChanging}
                                    onChange={(event, newValue) => {
                                        setRating(newValue);
                                    }}/>

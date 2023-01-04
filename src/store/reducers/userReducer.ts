@@ -10,6 +10,7 @@ type UserType = {
     username: string
     avatar: string
     likes: Array<{_id: string, reviewId: string, userId: string}>
+    ratings: Array<{_id: string, reviewId: string, userId: string, rating: number}>
 }
 const initialState = {
     user: {} as UserType

@@ -66,7 +66,7 @@ export const ReviewsTable = ({reviews,...props}: PropsType) => {
                                     <TableCell className={`${s.cellText}`} align="center">
                                         {/*<StarIcon sx={{color: 'yellow'}} />*/}
                                         <span className={`${s.cellText}`}>  ⭐️
-                                        {3.5}</span>
+                                        {r.rating.toFixed(1)}</span>
                                     </TableCell>
                                     <TableCell className={`${s.cellText}`} align="center">
                                         <span className={`${s.cellText}`}>❤{r.likes.length}</span>,

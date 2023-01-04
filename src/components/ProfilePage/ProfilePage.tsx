@@ -130,7 +130,7 @@ function ProfilePage() {
                                     category={r.category}
                                     createdAt={r.createdAt.slice(0, 11)}
                                     likes={r.likes}
-                                    overallRating={r.overallRating}
+                                    rating={r.rating}
                                     userName={r.userName}
                                     authorGrade={r.authorGrade}
                                     comments={r.comments}

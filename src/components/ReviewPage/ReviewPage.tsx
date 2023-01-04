@@ -65,10 +65,10 @@ function ReviewPage() {
                                     <Chip sx={{marginLeft: '8px'}} color="info">{current.category.title}</Chip>
                                 </Box>
                                 }
-                                <Box color={'gray'}>Overall rating:</Box>
+                                <Box color={'gray'}>Average rating:</Box>
                                 <Box>
 
-                                    <Rating size="large"  name="read-only" value={4} readOnly/>
+                                    <Rating size="large"  name="read-only" value={current.rating} readOnly/>
 
                                 </Box>
                             </Stack>
