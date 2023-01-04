@@ -253,7 +253,7 @@ const dispatch = useAppDispatch()
                         </IconButton>
                         <span style={{color: '#166d3d'}}>{comments}</span>
                     </div>
-                    <LikeComponent likes={likes} reviewId={reviewId}/>
+                    <LikeComponent likes={likes} reviewId={reviewId} current={'none'}/>
                 </Stack>
 
             </Stack>

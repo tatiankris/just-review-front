@@ -8,7 +8,7 @@ import {deleteReviewTC, dislikeReviewTC, likeReviewTC} from "../../store/reducer
 type LikePropsType = {
     likes: Array<{_id: string, reviewId: string, userId: string}>
     reviewId: string
-    current?: boolean
+    current: 'current' | 'none'
 }
 
 function LikeComponent( { likes, reviewId,current, ...props }:LikePropsType ) {
@@ -19,18 +19,21 @@ function LikeComponent( { likes, reviewId,current, ...props }:LikePropsType ) {
     const loggedUserId = useAppSelector(state => state.auth.user.id)
     const like = likes.find(l => l.userId === loggedUserId)
 
+
     const handleLike = () => {
+
         if (isLoggedIn) {
             if (!!like && loggedUserId) {
-                current
+                current === 'current'
                     ? dispatch(dislikeReviewTC(reviewId, current))
-                    : dispatch(dislikeReviewTC(reviewId))
+                    : dispatch(dislikeReviewTC(reviewId, 'none'))
 
             }
             if (!like && loggedUserId) {
-                current
+
+                current === 'current'
                 ? dispatch(likeReviewTC(reviewId, current))
-                : dispatch(likeReviewTC(reviewId))
+                : dispatch(likeReviewTC(reviewId, 'none'))
             }
         } else {
             alert('Log IN!!')

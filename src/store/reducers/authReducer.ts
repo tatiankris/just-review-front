@@ -9,6 +9,7 @@ type UserData = {
     username: string
     avatar: string
     roles: Array<string>
+    ratings: Array<any>
 }
 
 let initialState = {
@@ -33,6 +34,9 @@ export const authReducer = (state: StateType = initialState, action: AuthActions
         case 'auth/SET-IS-INITIALIZE': {
             return {...state, isInitializeApp: true}
         }
+        case 'auth/SET-RATING': {
+            return {...state, user: {...state.user, ratings: action.ratings}}
+        }
         default:
             return state
     }
@@ -55,6 +59,14 @@ export const logoutAC = () => {
         type: 'auth/SET-IS-LOGOUT',
     } as const
 }
+export const setAuthUserRating = (userRatings: Array<any>) => {
+    return {
+        type: 'auth/SET-RATING',
+        ratings: userRatings
+    } as const
+}
+
+
 
 
 
@@ -69,7 +81,8 @@ export const loginTC = (data: LoginDataType): AppThunk => {
                     email: res.data.user.email,
                     username: res.data.user.username,
                     avatar: res.data.user.avatar,
-                    roles: res.data.user.roles
+                    roles: res.data.user.roles,
+                    ratings: res.data.user.ratings
                 } as UserData
                 console.log('user', user)
                 dispatch(loginAC(user))
@@ -135,7 +148,8 @@ export const authTC = (): AppThunk => {
                     email: res.data.user.email,
                     username: res.data.user.username,
                     avatar: res.data.user.avatar,
-                    roles: res.data.user.roles
+                    roles: res.data.user.roles,
+                    ratings: res.data.user.ratings
                 } as UserData
                 console.log('auth me user', user)
                 dispatch(loginAC(user))
@@ -168,7 +182,8 @@ export const googleAuthTC = (): AppThunk => {
                     email: res.data.user.email,
                     username: res.data.user.username,
                     avatar: res.data.user.avatar,
-                    roles: res.data.user.roles
+                    roles: res.data.user.roles,
+                    ratings: res.data.user.ratings
                 } as UserData
                 console.log('googleAuth', res.data)
                 dispatch(loginAC(user))
@@ -188,5 +203,5 @@ export const googleAuthTC = (): AppThunk => {
 }
 
 
-export type AuthActionsType = ReturnType<typeof loginAC> | ReturnType<typeof initializeAC> | ReturnType<typeof logoutAC>
+export type AuthActionsType = ReturnType<typeof loginAC> | ReturnType<typeof setAuthUserRating> | ReturnType<typeof initializeAC> | ReturnType<typeof logoutAC>
 

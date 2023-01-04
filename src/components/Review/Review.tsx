@@ -10,6 +10,7 @@ import DeleteModal from "../commonComponents/DeleteModal";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {dislikeReviewTC, likeReviewTC, TagsType} from "../../store/reducers/reviewsReducer";
 import LikeComponent from "../commonComponents/LikeComponent";
+import RatingComponent from "../commonComponents/RatingComponent";
 
 
 type ReviewPropsType = {
@@ -43,18 +44,6 @@ const dispatch = useAppDispatch()
     const loggedUserId = useAppSelector(state => state.auth.user.id)
     const like = likes.find(l => l.userId === loggedUserId)
 
-    const handleLike = () => {
-        if (isLoggedIn) {
-            if (!!like && loggedUserId) {
-                dispatch(dislikeReviewTC(reviewId))
-            }
-            if (!like && loggedUserId) {
-                dispatch(likeReviewTC(reviewId))
-            }
-        } else {
-            alert('Log IN!!')
-        }
-    }
 
     const search = useAppSelector(state => state.reviews.search)
 
@@ -165,11 +154,7 @@ const dispatch = useAppDispatch()
 
                     </div>
                     <Box>
-                        👉 <Rating name="controlled"
-                                   value={ratingChanging}
-                                   onChange={(event, newValue) => {
-                                       setRating(newValue);
-                                   }}/>
+                        👉 <RatingComponent reviewId={reviewId} />
                     </Box>
                 </Stack>
 
@@ -187,7 +172,7 @@ const dispatch = useAppDispatch()
                 {/*    }*/}
 
                 {/*</div>*/}
-                <LikeComponent  likes={likes} reviewId={reviewId} />
+                <LikeComponent  likes={likes} reviewId={reviewId} current={'none'}/>
 
                 <div>
                     <IconButton onClick={() => {

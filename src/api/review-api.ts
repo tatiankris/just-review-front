@@ -36,7 +36,7 @@ export const gradesAPI = {
         return instance.delete(`/reviews/like/${reviewId}`, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
     },
     addRating(data: { value: number, reviewId: string }) {
-        return instance.post('/reviews/rating', data, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
+        return instance.put('/reviews/rating', data, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
     }
 
 }

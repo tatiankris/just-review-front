@@ -9,6 +9,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {getCurrentReviewsTC, getReviewsTC} from "../../store/reducers/reviewsReducer";
 import LikeComponent from "../commonComponents/LikeComponent";
 import {ReactMarkdown} from "react-markdown/lib/react-markdown";
+import RatingComponent from "../commonComponents/RatingComponent";
 
 const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
@@ -67,8 +68,7 @@ function ReviewPage() {
                                 }
                                 <Box color={'gray'}>Average rating:</Box>
                                 <Box>
-
-                                    <Rating size="large"  name="read-only" value={current.rating} readOnly/>
+                                    <Rating size="large" value={Number(current.rating)} readOnly/>
 
                                 </Box>
                             </Stack>
@@ -110,7 +110,7 @@ function ReviewPage() {
 
                             </div>
                             <Box>
-                                👉 <Rating/>
+                                👉 <RatingComponent reviewId={current._id} current />
                             </Box>
                         </Stack>
 
@@ -118,7 +118,7 @@ function ReviewPage() {
                     </Box>
                     <Stack className={s.bottom} direction="row" spacing={2} justifyContent="space-around">
                         { current.likes &&
-                            <LikeComponent likes={current.likes} reviewId={current._id} current />
+                            <LikeComponent likes={current.likes} reviewId={current._id} current={'current'} />
                         }
                         {
                             current.createdAt &&

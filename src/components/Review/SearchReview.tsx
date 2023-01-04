@@ -1,5 +1,5 @@
 import { Paper, Rating } from "@mui/material";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import s from './SearchReview.module.scss'
 import {Avatar, Box, Chip, Grid, IconButton, Stack, Typography} from "@mui/joy";
 import {NavLink, useNavigate} from "react-router-dom";
@@ -10,6 +10,7 @@ import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {TagsType} from "../../store/reducers/reviewsReducer";
 import LikeComponent from "../commonComponents/LikeComponent";
 import { useMediaQuery } from 'react-responsive'
+import RatingComponent from "../commonComponents/RatingComponent";
 
 
 type ReviewPropsType = {
@@ -38,9 +39,14 @@ function SearchReview({author, userName, tags, likes,imageURL, reviewId,
 
     const navigate = useNavigate()
 const dispatch = useAppDispatch()
-    const [ratingChanging, setRating] = useState<number | null>(2.5);
+
+    // const [ratingChanging, setRating] = useState<number | null>(2.5);
     // const overallRatingValue =
     // const [author, setAuthor] = useState(true)
+
+    useEffect(() => {
+        alert('changing')
+    }, [rating])
 
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const loggedUserId = useAppSelector(state => state.auth.user.id)
@@ -138,7 +144,7 @@ const dispatch = useAppDispatch()
                                 </div>
                                 <Stack className={s.overallRating} direction="row">
                                     <Box>
-                                        <Rating name="read-only" value={rating} readOnly/>
+                                        <Rating name="read-only" value={Number(rating)} readOnly/>
                                     </Box>
                                 </Stack>
                             </Box>
@@ -227,17 +233,13 @@ const dispatch = useAppDispatch()
 
                                     <Box color={'gray'}>Average review rating:</Box>
                                     <Box>
-                                        <Rating size="large" name="read-only" value={4} readOnly/>
+                                        <Rating size="large" name="read-only" value={Number(rating)} readOnly/>
                                     </Box>
                                 </Stack>
                             </Box>
 
                             <Box className={s.setRating}>
-                                👉 <Rating name="controlled"
-                                           value={ratingChanging}
-                                           onChange={(event, newValue) => {
-                                               setRating(newValue);
-                                           }}/>
+                                👉 <RatingComponent reviewId={reviewId} />
                             </Box>
 
                         </Box>
@@ -256,7 +258,7 @@ const dispatch = useAppDispatch()
                         </IconButton>
                         <span style={{color: '#166d3d'}}>{comments}</span>
                     </div>
-                    <LikeComponent likes={likes} reviewId={reviewId}/>
+                    <LikeComponent likes={likes} reviewId={reviewId} current={"none"}/>
                 </Stack>
 
             </Stack>

@@ -1,5 +1,5 @@
 import {AppThunk} from "../store";
-import {loginAC} from "./authReducer";
+import {loginAC, setAuthUserRating} from "./authReducer";
 import {gradesAPI, ReviewDataType, reviewsAPI} from "../../api/review-api";
 import {getCategoriesTC, getTagsTC} from "./tagsReducer";
 import {getCommentsTC} from "./commentsReducer";
@@ -45,6 +45,14 @@ export const reviewsReducer = (state: StateType = initialState, action: ReviewAc
         case 'reviews/SET-LIKES': {
             return {...state, reviews:
                     [...state.reviews.map(r => r._id === action.reviewId ? {...r, likes: action.likes} : r)]}
+        }
+        case 'reviews/SET-LATEST-LIKES': {
+            return {...state, latest:
+                    [...state.latest.map(r => r._id === action.reviewId ? {...r, likes: action.likes} : r)]}
+        }
+        case 'reviews/SET-HIGHEST-LIKES': {
+            return {...state, highestRating:
+                    [...state.highestRating.map(r => r._id === action.reviewId ? {...r, likes: action.likes} : r)]}
         }
         case 'reviews/SET-CURRENT-LIKES': {
             return {...state, currentReview: {...state.currentReview, likes: action.likes}}
@@ -97,6 +105,21 @@ export const setLikesAC = (reviewId: string, likes: Array<{_id: string, reviewId
     } as const
 }
 
+export const setLatestLikesAC = (reviewId: string, likes: Array<{_id: string, reviewId: string, userId: string}>) => {
+    return {
+        type: 'reviews/SET-LATEST-LIKES',
+        reviewId,
+        likes
+    } as const
+}
+export const setHighestLikesAC = (reviewId: string, likes: Array<{_id: string, reviewId: string, userId: string}>) => {
+    return {
+        type: 'reviews/SET-HIGHEST-LIKES',
+        reviewId,
+        likes
+    } as const
+}
+
 export const setCurrentLikesAC = (likes: Array<{_id: string, reviewId: string, userId: string}>) => {
     return {
         type: 'reviews/SET-CURRENT-LIKES',
@@ -109,18 +132,16 @@ export const setSearchAC = (search: string) => {
         search
     } as const
 }
-export const setRatingsAC = (reviewId: string, userRating: number, averageRating: number) => {
+export const setRatingsAC = (reviewId: string, averageRating: number) => {
     return {
         type: 'reviews/SET-RATINGS',
         reviewId,
-        userRating,
         averageRating
     } as const
 }
-export const setCurrentRatingsAC = (userRating: number, averageRating: number) => {
+export const setCurrentRatingsAC = (averageRating: number) => {
     return {
         type: 'reviews/SET-CURRENT-RATINGS',
-        userRating,
         averageRating
     } as const
 }
@@ -274,20 +295,35 @@ export const deleteReviewTC = (reviewId: string): AppThunk => {
     }
 }
 
-export const likeReviewTC = (reviewId: string, current?: boolean): AppThunk => {
+export const likeReviewTC = (reviewId: string, current: 'current' | 'none'): AppThunk => {
     return (dispatch,getState) => {
         const review = getState().reviews.reviews.find(r => r._id === reviewId)
+
+        const reviewLatest = getState().reviews.latest.find(r => r._id === reviewId)
+        const highestRating = getState().reviews.highestRating.find(r => r._id === reviewId)
+
         // dispatch(setAppStatusAC("loading"))
         gradesAPI.addLike ({reviewId})
             .then(res => {
 
 
                         if (review) {
-                            if (current) {
-                                dispatch(setCurrentLikesAC(res.data.likes))
-                            }
+
                             dispatch(setLikesAC(reviewId, res.data.likes))
                         }
+                        if (reviewLatest) {
+
+                            dispatch(setLatestLikesAC(reviewId, res.data.likes))
+                        }
+                        if (highestRating) {
+
+                            dispatch(setHighestLikesAC(reviewId, res.data.likes))
+                        }
+
+                        if (current === 'current') {
+                    console.log( "currentTC",current)
+                    dispatch(setCurrentLikesAC(res.data.likes))
+                }
 
 
 
@@ -304,19 +340,31 @@ export const likeReviewTC = (reviewId: string, current?: boolean): AppThunk => {
             )
     }
 }
-export const dislikeReviewTC = (reviewId: string, current?: boolean): AppThunk => {
+export const dislikeReviewTC = (reviewId: string, current:'current' | 'none'): AppThunk => {
     return (dispatch,getState) => {
         const review = getState().reviews.reviews.find(r => r._id === reviewId)
 
+        const reviewLatest = getState().reviews.latest.find(r => r._id === reviewId)
+        const highestRating = getState().reviews.highestRating.find(r => r._id === reviewId)
         // dispatch(setAppStatusAC("loading"))
         gradesAPI.deleteLike(reviewId)
             .then(res => {
 
                 if (review) {
-                    if (current) {
-                        dispatch(setCurrentLikesAC(res.data.likes))
-                    }
+
                     dispatch(setLikesAC(reviewId, res.data.likes))
+                }
+                if (reviewLatest) {
+
+                    dispatch(setLatestLikesAC(reviewId, res.data.likes))
+                }
+                if (highestRating) {
+
+                    dispatch(setHighestLikesAC(reviewId, res.data.likes))
+                }
+                if (current === 'current') {
+                    console.log( "currentTC",current)
+                    dispatch(setCurrentLikesAC(res.data.likes))
                 }
 
                 // console.log('review', res.data.review)
@@ -342,10 +390,14 @@ export const ratedReviewTC = (value: number, reviewId: string, current?: boolean
             .then(res => {
 
                 if (review) {
-                    if (current) {
-                        dispatch(setCurrentRatingsAC(res.data.userRating,res.data.averageRating ))
-                    }
-                    dispatch(setRatingsAC(reviewId, res.data.userRating, res.data.averageRating))
+
+                    dispatch(setRatingsAC(reviewId, res.data.averageRating))
+                    dispatch(setAuthUserRating(res.data.userRatings ))
+
+                }
+                if (current) {
+                    dispatch(setCurrentRatingsAC(res.data.averageRating ))
+                    dispatch(setAuthUserRating(res.data.userRatings ))
                 }
 
                 // console.log('review', res.data.review)
@@ -363,5 +415,5 @@ export const ratedReviewTC = (value: number, reviewId: string, current?: boolean
 }
 
 
-export type ReviewActionsType = ReturnType<typeof setCurrentRatingsAC> | ReturnType<typeof setRatingsAC> | ReturnType<typeof setReviewsAC> | ReturnType<typeof setMainReviewsAC> | ReturnType<typeof setSearchAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setCurrentLikesAC>| ReturnType<typeof setLikesAC>
+export type ReviewActionsType = ReturnType<typeof setHighestLikesAC> | ReturnType<typeof setLatestLikesAC> | ReturnType<typeof setCurrentRatingsAC> | ReturnType<typeof setRatingsAC> | ReturnType<typeof setReviewsAC> | ReturnType<typeof setMainReviewsAC> | ReturnType<typeof setSearchAC> | ReturnType<typeof setCurrentReviewAC>| ReturnType<typeof setCurrentLikesAC>| ReturnType<typeof setLikesAC>
 
