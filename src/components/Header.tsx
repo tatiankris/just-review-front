@@ -50,7 +50,8 @@ function Header() {
     }
 
     const handleLogout = () => {
-        dispatch(logoutAC())}
+        dispatch(logoutAC())
+    }
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(setSearchAC(e.currentTarget.value.trim()))
