@@ -18,12 +18,14 @@ export const authAPI = {
     },
 
     google() {
-        return axios.get('http://localhost:5000/auth/login/success', {withCredentials: true, headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                // "Access-Control-Allow-Origin": 'http://localhost:3000',
-                // "Access-Control-Allow-Methods": 'GET'
-            }})
+        return axios.get('http://localhost:5000/auth/login/success', {withCredentials: true
+            // headers: {
+            //     "Accept": "application/json",
+            //     "Content-Type": "application/json",
+            //     // "Access-Control-Allow-Origin": 'https://tatiankris.github.io',
+            //     // "Access-Control-Allow-Methods": 'GET'
+            // }
+        })
     }
 }
 
