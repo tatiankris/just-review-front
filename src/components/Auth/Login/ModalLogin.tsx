@@ -55,12 +55,12 @@ useEffect(() => {
   }
 
   const google = () => {
-    window.open("http://localhost:5000/auth/google", "_self")
+    window.open("https://just-review-back.vercel.app/auth/google", "_self")
 
   }
 
   const gitHub = () => {
-    window.open("http://localhost:5000/auth/github", "_self")
+    window.open("https://just-review-back.vercel.app/auth/github", "_self")
   }
 
   // function handleCallbackResponse(response: any) {
