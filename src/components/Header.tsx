@@ -82,7 +82,7 @@ function Header() {
                             <Stack direction="row" spacing={1}>
                                 {
                                     !isSmallScreen &&
-                                <Tooltip title="SearchPage" variant="soft" className={s.tooltip}>
+                                <Tooltip title="Home" variant="soft" className={s.tooltip}>
                                     <IconButton
                                         onClick={homeHandler}
                                         // className={s.homeIconButton}

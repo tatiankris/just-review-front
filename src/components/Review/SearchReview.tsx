@@ -44,9 +44,9 @@ const dispatch = useAppDispatch()
     // const overallRatingValue =
     // const [author, setAuthor] = useState(true)
 
-    useEffect(() => {
-        alert('changing')
-    }, [rating])
+    // useEffect(() => {
+    //     // alert('changing')
+    // }, [rating])
 
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const loggedUserId = useAppSelector(state => state.auth.user.id)
