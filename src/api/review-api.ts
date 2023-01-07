@@ -10,11 +10,11 @@ export const reviewsAPI = {
     currentReview(reviewId: string) {
         return instance.get(`/reviews/reviewPage/${reviewId}`)
     },
-    author(username: string) {
-        return instance.get(`/reviews/${username}`)
+    author(username: string, create: string, grade: string, rating: string, category: string ) {
+        return instance.get(`/reviews/${username}?create=${create}&grade=${grade}&rating=${rating}&category=${category}`)
     },
-    create(data: ReviewDataType) {
-        return instance.post('/reviews/review', data, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
+    create(data: ReviewDataType, userId: string) {
+        return instance.post(`/reviews/review/${userId}`, data, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
     },
     update(reviewId: string, data: ReviewDataType) {
         return instance.put(`/reviews/review/${reviewId}`, data, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})

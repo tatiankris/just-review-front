@@ -213,10 +213,10 @@ export const getCurrentReviewsTC = (reviewId: string): AppThunk => {
             )
     }
 }
-export const getAuthorTC = (username: string): AppThunk => {
+export const getAuthorTC = (username: string, create: string, grade: string, rating: string, category: string): AppThunk => {
     return (dispatch) => {
         dispatch(setAppStatusAC("loading"))
-        reviewsAPI.author (username)
+        reviewsAPI.author (username,create, grade, rating, category )
             .then(res => {
                 console.log('reviews', res.data.reviews)
                 dispatch(setReviewsAC(res.data.reviews))
@@ -235,14 +235,14 @@ export const getAuthorTC = (username: string): AppThunk => {
     }
 }
 
-export const createReviewTC = (reviewData: ReviewDataType): AppThunk => {
+export const createReviewTC = (reviewData: ReviewDataType, userId: string): AppThunk => {
     return (dispatch) => {
         dispatch(setAppStatusAC("loading"))
-        reviewsAPI.create (reviewData)
+        reviewsAPI.create (reviewData, userId)
             .then(res => {
 
                 console.log('review', res.data.review)
-                dispatch(getAuthorTC(res.data.review.userName))
+                dispatch(getAuthorTC(res.data.review.userName, '-1', 'null', 'null', 'null'))
             })
             .catch(err => {
                 console.log('error', err.message)
@@ -262,7 +262,7 @@ export const updateReviewTC = (reviewId: string, reviewData: ReviewDataType): Ap
             .then(res => {
 
                 console.log('review', res.data.review)
-                dispatch(getAuthorTC(res.data.review.userName))
+                dispatch(getAuthorTC(res.data.review.userName, '-1', 'null', 'null', 'null'))
             })
             .catch(err => {
                 console.log('error', err.message)
@@ -282,7 +282,7 @@ export const deleteReviewTC = (reviewId: string): AppThunk => {
             .then(res => {
 
                 console.log('review', res.data.review)
-                dispatch(getAuthorTC(res.data.review.userName))
+                dispatch(getAuthorTC(res.data.review.userName, '-1', 'null', 'null', 'null'))
             })
             .catch(err => {
                 console.log('error', err.message)

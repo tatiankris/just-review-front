@@ -23,6 +23,7 @@ import {UploadImage} from "../common/UploadImage/UploadImage";
 
 type CreateType = {
     handleClose: () => void
+    userId: string
 }
 
 export type CreateFormikType = {
@@ -31,6 +32,7 @@ export type CreateFormikType = {
     workTitle: string,
     tags: TagsType,
     authorGrade: number
+
 }
 
 function CreateReviewForm(props: CreateType) {
@@ -85,7 +87,7 @@ function CreateReviewForm(props: CreateType) {
         alert(JSON.stringify(values, null, 2));
 
 
-            dispatch(createReviewTC({...values, reviewText, file: image}))
+            dispatch(createReviewTC({...values, reviewText, file: image}, props.userId))
             props.handleClose()
 
         },

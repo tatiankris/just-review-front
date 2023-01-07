@@ -19,9 +19,10 @@ const style = {
 
 type PropsType = {
     variant: 'soft' | 'solid' | 'outlined'
+    userId: string
 }
 
-function CreateReviewModal({variant}: PropsType) {
+function CreateReviewModal({variant, userId}: PropsType) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -43,7 +44,7 @@ function CreateReviewModal({variant}: PropsType) {
             <ModalDialog className={s.createModal}>
 
 
-                <CreateReviewForm handleClose={handleClose} />
+                <CreateReviewForm handleClose={handleClose} userId={userId}/>
             </ModalDialog>
     </Modal>
     </div>

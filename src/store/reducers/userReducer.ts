@@ -1,7 +1,7 @@
 import {AppThunk} from "../store";
 import {reviewsAPI, userAPI} from "../../api/review-api";
 import {getCategoriesTC, getTagsTC} from "./tagsReducer";
-import {getAuthorTC, setReviewsAC} from "./reviewsReducer";
+import {getAuthorTC, ReviewType, setReviewsAC} from "./reviewsReducer";
 import {setAppStatusAC} from "./appReducer";
 
 type UserType = {
@@ -10,6 +10,8 @@ type UserType = {
     username: string
     avatar: string
     likes: Array<{_id: string, reviewId: string, userId: string}>
+    reviews: Array<ReviewType>
+    roles: Array<string>
 }
 const initialState = {
     user: {} as UserType
@@ -42,7 +44,7 @@ export const getUserTC = (username: string): AppThunk => {
         userAPI.user (username)
             .then(res => {
                 dispatch(setUserAC(res.data.user))
-                dispatch(getAuthorTC(username))
+                dispatch(getAuthorTC(username, '-1', 'null', 'null', 'null'))
             })
             .catch(err => {
                 console.log('error', err.message)

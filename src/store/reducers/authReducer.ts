@@ -84,7 +84,9 @@ export const loginTC = (data: LoginDataType): AppThunk => {
                     roles: res.data.user.roles,
                     ratings: res.data.user.ratings
                 } as UserData
-                console.log('user', user)
+
+
+                console.log('roles', user.roles)
                 dispatch(loginAC(user))
 
                 localStorage.setItem('token', res.data.token)

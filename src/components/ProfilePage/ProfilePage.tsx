@@ -19,6 +19,7 @@ function ProfilePage() {
     const dispatch = useAppDispatch()
     const {username} = useParams()
 
+
     const authUser = useAppSelector(state => state.auth.user)
 
     const reviews = useAppSelector(state => state.reviews.reviews)
@@ -26,6 +27,7 @@ function ProfilePage() {
     const iSmallScreen = useMediaQuery({ query: '(max-width: 712px)' })
     // console.log('REVIEWS',reviews )
 
+    console.log('authUser', authUser)
 
     useEffect(() => {
         if (username) {
@@ -40,6 +42,8 @@ function ProfilePage() {
             <CircularProgress />
         </Backdrop>
     }
+
+
 
     return (
         <Container maxWidth="lg"
@@ -87,11 +91,12 @@ function ProfilePage() {
                                     fontSize: !iSmallScreen ? '24px' : '14px',
                                     fontWeight: 'bold',
                                     color: 'green'
-                                }}>{reviews ? `${reviews.length}` : ''}</span>
+                                }}>{user.reviews ? `${user.reviews.length}` : ''}</span>
                             </Box>
                             {
-                                authUser && user && authUser.username === user.username &&
-
+                                authUser && user && authUser.username === user.username
+                                || authUser && authUser.roles && authUser.roles.includes('ADMIN')
+                                &&
                                 <Box style={{
                                     marginLeft: '8px',
                                     marginTop: "8px",
@@ -102,7 +107,7 @@ function ProfilePage() {
                                     fontSize: iSmallScreen ? '18px' : '34px'
                                 }}>
 
-                                    <CreateReviewModal variant={'solid'}/>
+                                    <CreateReviewModal variant={'solid'} userId={user.userId}/>
                                 </Box>
                             }
                             </Box>
@@ -110,15 +115,16 @@ function ProfilePage() {
                     </Paper>
                     <div style={{width: '100%'}}>
                         {
-                            reviews.length === 0 && authUser && authUser.username === username
+                            user.reviews && user.reviews.length === 0 && authUser && authUser.username === username
                             && <div style={{fontSize: '30px', color: 'grey'}}>
                             Create your first review...
-                                <CreateReviewModal variant={'soft'}/>
+                                <CreateReviewModal variant={'soft'} userId={user.userId}/>
                             </div>
                         }
                         {
-                            !authUser || authUser.username !== username &&
-                            reviews.length !== 0 && reviews.map(r => {
+                            !authUser || authUser && authUser.username && authUser.username !== username
+                            || authUser && authUser.roles && !authUser.roles.includes('ADMIN')
+                            && reviews.length !== 0 && reviews.map(r => {
                                 return <SearchReview
                                     key={r._id}
                                     reviewId={r._id}
@@ -138,10 +144,12 @@ function ProfilePage() {
                             })
                         }
                         {
-                            authUser && authUser.username === username &&
-                            reviews.length !== 0
-                            && <ReviewsTable reviews={reviews} />
-
+                            authUser && authUser.username && authUser.username === username
+                            && <ReviewsTable reviews={reviews.length !== 0 ? reviews : null} username={username ? username : ' '}/>
+                        }
+                        {
+                            authUser && authUser.username && authUser.username !== username && authUser.roles && authUser.roles.includes('ADMIN')
+                            && <ReviewsTable reviews={reviews.length !== 0 ? reviews : null} username={username ? username : ' '} />
                         }
                     </div>
 
