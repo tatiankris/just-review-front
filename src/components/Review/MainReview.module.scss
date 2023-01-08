@@ -17,6 +17,13 @@
   height: 210px;
 }
 
+.darkInfo {
+  color: #fffdfd;
+  background-color: rgba(66, 62, 62, 0.96);
+}
+
+
+
 
 .image {
 
@@ -36,6 +43,12 @@
     font-weight: 600;
 
   }
+  .categoryDark {
+    color: #2eee13;
+    background-color: #2d2a2a;
+    border: 1px solid #2eee13;
+  }
+
 }
 //@media screen and (max-width: 728px) {
 //  .image {
@@ -82,6 +95,9 @@
     font-size: 14px;
 
   }
+  .darkWork {
+    color: #e0b5f3;
+  }
 
 }
 
@@ -101,11 +117,14 @@
 }
 .gradeX {
   background-color: #583e66;
-  color: #ffd70e;
+  color: #fde427;
   padding: 2% 5%;
   border-radius: 10px;
   font-size: 16px;
 
+}
+.darkGrade {
+  background-color: #c9b0ea;
 }
 
 .overallRating {
@@ -140,6 +159,10 @@
   border-radius: 20px;
 
 }
+.darkTag {
+  color: #ebebef;
+  background-color: #262626;
+}
 
 
 .link {
@@ -153,6 +176,10 @@
   }
 }
 
+.dark {
+  color: #fffdfd;
+}
+
 .bottom {
   padding: 0.15% 5%;
   background-color: rgba(255, 226, 187, 0.57);
@@ -160,10 +187,14 @@
   border-bottom-left-radius: 4px 4px;
   font-size: 12px;
 }
+.darkBottom {
+  background-color: rgba(10, 9, 9, 0.84);
+  color: whitesmoke;
+}
 
 .tools {
   padding: 2px;
-  background-color: rgba(206, 255, 187, 0.57);
+  background-color: rgba(206, 255, 187, 0.72);
   border-top-right-radius: 6px 4px;
   border-top-left-radius: 4px 4px;
 }

@@ -20,6 +20,7 @@ import EasyMDE, { Options } from "easymde";
 import {UploadImageButton} from "../common/UploadImage/UploadImageButton";
 import {DragDropImage} from "../common/UploadImage/DragDropImage";
 import {UploadImage} from "../common/UploadImage/UploadImage";
+import {useTranslation} from "react-i18next";
 
 type CreateType = {
     handleClose: () => void
@@ -39,6 +40,7 @@ function CreateReviewForm(props: CreateType) {
 
     const tagsOptions = useAppSelector(state => state.tags.tags)
     const categoryOptions = useAppSelector(state => state.tags.categories)
+    const { t } = useTranslation();
 
     const dispatch = useAppDispatch()
 
@@ -122,7 +124,7 @@ function CreateReviewForm(props: CreateType) {
     return (
         <div className={s.container}>
             <div className={s.modalName}>
-                New Review
+                {t('createReview.new')}
             </div>
             <div className={s.category}>
                 <CategoryAutocomplete categoryOptions={categoryOptions} value={formik.values.category} setFieldValue={formik.setFieldValue} />
@@ -132,9 +134,9 @@ function CreateReviewForm(props: CreateType) {
                     className={s.item}
                     // sx={{width: '100%'}}
                     id="reviewTitle"
-                    placeholder="Review title"
+                    placeholder={`${t('createReview.rTitle')}`}
                     name="reviewTitle"
-                    label="Review title"
+                    label={`${t('createReview.rTitle')}`}
                     value={formik.values.reviewTitle}
                     onChange={formik.handleChange}
                     error={formik.touched.reviewTitle && Boolean(formik.errors.reviewTitle)}
@@ -144,9 +146,9 @@ function CreateReviewForm(props: CreateType) {
                     className={s.item}
                     // sx={{width: '100%'}}
                     id="workTitle"
-                    placeholder="Work title"
+                    placeholder={`${t('createReview.wTitle')}`}
                     name="workTitle"
-                    label="Work title"
+                    label={`${t('createReview.wTitle')}`}
                     value={formik.values.workTitle}
                     onChange={formik.handleChange}
                     error={formik.touched.workTitle && Boolean(formik.errors.workTitle)}
@@ -155,28 +157,28 @@ function CreateReviewForm(props: CreateType) {
 
                 <TagsAutocomplete tagsOptions={tagsOptions} values={formik.values.tags} setFieldValue={formik.setFieldValue} />
 
-                <FormLabel className={s.formLabel} >Review text </FormLabel>
-                <SimpleMdeReact className={`${s.reviewText} ${s.item}`} id="reviewText" placeholder="Review text"
+                <FormLabel className={s.formLabel}>{t('createReview.rText')}</FormLabel>
+                <SimpleMdeReact className={`${s.reviewText} ${s.item}`} id="reviewText" placeholder={`${t('createReview.rText')}`}
                                 value={reviewText} onChange={handleTextChange} options={customRendererOptions}
                 />
 
                <UploadImage handleDelete={handleDelete} image={image} handleImage={handleImage}/>
 
-                <FormLabel sx={{width: '40%', marginTop: '14px'}}>Grade</FormLabel>
+                <FormLabel sx={{width: '40%', marginTop: '14px'}}>{t('createReview.grade')}</FormLabel>
                 <TextField
                     sx={{width: '40%'}}
                     type={'number'}
                     id="authorGrade"
                     name="authorGrade"
-                    placeholder="Grade"
+                    placeholder={`${t('createReview.grade')}`}
                     value={formik.values.authorGrade}
                     onChange={formik.handleChange}
                     error={formik.touched.authorGrade && Boolean(formik.errors.authorGrade)}
                     helperText={formik.touched.authorGrade && formik.errors.authorGrade}
                 />
-                <div style={{color: 'grey'}}>Evaluation of the work (from 1 to 10)</div>
+                <div style={{color: 'grey'}}>{t('createReview.gradeInfo')}</div>
                 <Button sx={{marginTop: '14px', marginBottom: '20px', borderRadius: '22px'}} color="neutral" variant="solid"  type="submit">
-                    Create
+                    {t('createReview.create')}
                 </Button>
             </form>
 

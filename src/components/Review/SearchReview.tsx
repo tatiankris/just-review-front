@@ -11,6 +11,7 @@ import {TagsType} from "../../store/reducers/reviewsReducer";
 import LikeComponent from "../commonComponents/LikeComponent";
 import { useMediaQuery } from 'react-responsive'
 import RatingComponent from "../commonComponents/RatingComponent";
+import {useTranslation} from "react-i18next";
 
 
 type ReviewPropsType = {
@@ -53,7 +54,7 @@ const dispatch = useAppDispatch()
     const like = likes.find(l => l.userId === loggedUserId)
 
     const search = useAppSelector(state => state.reviews.search)
-
+    const { t } = useTranslation();
     const includeSearch = (str: string) => {
 
         if (search && str.includes(search)) {
@@ -80,6 +81,7 @@ const dispatch = useAppDispatch()
 
     const renderTags = tags.length > 5 ? tags.slice(0, 5) : tags
 
+    const theme = useAppSelector(state => state.app.mode)
 
 
     return (
@@ -95,10 +97,10 @@ const dispatch = useAppDispatch()
             {/*    </Stack>*/}
             {/*}*/}
             {iSmallScreen &&
-                <Box>
+                <Box className={theme ? `${s.darkBox}` : ''}>
                     <Box>
                         <div className={s.image} style={{backgroundImage: `url(${imageURL})`, backgroundSize: 'cover'}}>
-                            <div className={s.categoryZ}>{category.title}</div>
+                            <div className={theme ? `${s.categoryZ} ${s.categoryDark}` : `${s.categoryZ}`}>{category.title}</div>
                         </div>
                     </Box>
                     <Box style={{padding: '10px 20px 10px 10px'}}>
@@ -107,16 +109,16 @@ const dispatch = useAppDispatch()
                                 <Avatar className={s.avatar} onClick={() => {
                                     navigate(`${PROFILE_PAGE}/${userName}`)
                                 }} sx={{"--Avatar-size": "16px"}}/>
-                                <a href={`${PROFILE_PAGE}/${userName}`} className={s.link}>{userName}</a>
+                                <a href={`${PROFILE_PAGE}/${userName}`} className={theme ? `${s.dark} ${s.link}` : `${s.link}`}>{userName}</a>
                             </Box>
 
                             <Box className={s.titles}>
-                                <NavLink target={'_blank'} className={s.link}
+                                <NavLink className={theme ? `${s.dark} ${s.link}` : `${s.link}`}
                                          to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>
                                     {includeSearch(reviewTitle)}
                                 </NavLink>
                                 <div>
-                                    <span className={s.workTitle}>{includeSearch(workTitle)}</span>
+                                    <span className={theme ? `${s.darkWork} ${s.workTitle}` : `${s.workTitle}`}>{includeSearch(workTitle)}</span>
                                 </div>
                             </Box>
                             <div className={s.reviewText}>
@@ -140,7 +142,7 @@ const dispatch = useAppDispatch()
                         <Box>
                             <Box>
                                 <div className={s.authorGrade}>
-                                    <div className={s.gradeX}><b style={{color: 'white'}}>{authorGrade}</b>/10</div>
+                                    <div className={theme ? `${s.darkGrade} ${s.gradeX}` : `${s.gradeX}`}><b style={{color: theme ? '#444242' : 'white'}}>{authorGrade}</b>/10</div>
                                 </div>
                                 <Stack className={s.overallRating} direction="row">
                                     <Box>
@@ -154,7 +156,7 @@ const dispatch = useAppDispatch()
                             </Box>
                             <Box className={s.tags}>
                                 {renderTags.map(t => {
-                                    return <div className={s.tag} key={t.title}>
+                                    return <div className={theme ? `${s.darkTag} ${s.tag}` : `${s.tag}`} key={t.title}>
                                         {t.title}
                                     </div>
                                 })}
@@ -166,34 +168,50 @@ const dispatch = useAppDispatch()
             {
                 !iSmallScreen &&
 
-                <Grid container spacing={2} className={s.reviewBox}>
+                <Grid
 
-                    <Grid xs={3}>
+                    container spacing={2} className={theme ? `${s.darkBox}` : ``}>
+
+                    <Grid
+                        sx={{':hover': {cursor: 'pointer'}}}
+                        onClick={(event) => {
+                            event.stopPropagation()
+                            navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
+                        }}
+                        xs={3}>
                         <div className={s.image} style={{backgroundImage: `url(${imageURL})`, backgroundSize: 'cover'}}>
-                            <div className={s.categoryZ}>{category.title}</div>
+                            <div className={theme ? `${s.categoryZ} ${s.categoryDark}` : `${s.categoryZ}`}>{category.title}</div>
                         </div>
                     </Grid>
 
-                    <Grid xs={9} className={s.infoGrid}>
-                        <Box>
+                    <Grid xs={9} className={`${s.infoGrid}`}>
+                        <Box sx={{':hover': {cursor: 'pointer'}}}
+                             onClick={(event) => {
+                                 event.stopPropagation()
+                                 navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
+                             }}>
                             <Box className={s.userLink}>
                                 <Avatar className={s.avatar} onClick={() => {
                                     navigate(`${PROFILE_PAGE}/${userName}`)
                                 }} sx={{"--Avatar-size": "20px"}}/>
-                                <a href={`${PROFILE_PAGE}/${userName}`} style={{fontSize: '14px', fontWeight: 'bold'}}
-                                   className={s.link}>{userName}</a>
+                                <span onClick={(e) => {
+                                    e.stopPropagation()
+                                    navigate(`${PROFILE_PAGE}/${userName}`)}}
+                                    style={{fontSize: '14px', fontWeight: 'bold'}}
+
+                                   className={theme ? `${s.dark} ${s.link}` : `${s.link}`}>{userName}</span>
                             </Box>
 
                             <Box className={s.titles}>
-                                <NavLink target={'_blank'} className={s.link}
+                                <NavLink className={theme ? `${s.dark} ${s.link}` : `${s.link}`}
                                          to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>
                                     {includeSearch(reviewTitle)}
                                 </NavLink>
                                 <div>
-                                    <span className={s.workTitle}>{includeSearch(workTitle)}</span>
+                                    <span className={theme ? `${s.darkWork} ${s.workTitle}` : `${s.workTitle}`}>{includeSearch(workTitle)}</span>
                                 </div>
                             </Box>
-                            <Typography className={s.reviewText} mb={1} lineHeight="sm" textAlign={'start'}
+                            <Typography className={theme ? `${s.darkReview} ${s.reviewText}` : `${s.reviewText}`} mb={1} lineHeight="sm" textAlign={'start'}
                                         margin={'8px 0px'}>
                                 {
                                     reviewText.length < 42 && <>{includeSearch(reviewText)}
@@ -204,16 +222,16 @@ const dispatch = useAppDispatch()
                                     reviewText.length > 42 &&
                                     <>{includeSearch(reviewText.slice(0, 42))}
                                         {'....'}
-                                        <NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}}
-                                                 className={s.reviewTitle}>
-                                            Read more
-                                        </NavLink>
+                                        {/*<NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}}*/}
+                                        {/*         className={s.reviewTitle}>*/}
+                                        {/*    Read more*/}
+                                        {/*</NavLink>*/}
                                     </>
                                 }
                             </Typography>
                             <Box className={s.tags}>
                                 {renderTags.map(t => {
-                                    return <div className={s.tag} key={t.title}>
+                                    return <div className={theme ? `${s.darkTag} ${s.tag}` : `${s.tag}`} key={t.title}>
                                         {t.title}
                                     </div>
                                 })}
@@ -225,13 +243,13 @@ const dispatch = useAppDispatch()
 
                             <Box>
                                 <div className={s.authorGrade}>
-                                    <Box>The author rates the work:</Box>
-                                    <div className={s.gradeX}><b style={{color: 'white'}}>{authorGrade}</b>/10</div>
+                                    <Box>{t('review.authorGrade')}:</Box>
+                                    <div className={theme ? `${s.darkGrade} ${s.gradeX}` : `${s.gradeX}`}><b style={{color: theme ? '#444242' : 'white'}}>{authorGrade}</b>/10</div>
                                 </div>
 
                                 <Stack className={s.overallRating} direction="row">
 
-                                    <Box color={'gray'}>Average review rating:</Box>
+                                    <Box color={'gray'}>{t('review.averageRating')}:</Box>
                                     <Box>
                                         <Rating size="large" name="read-only" value={Number(rating)} readOnly/>
                                     </Box>

@@ -48,6 +48,18 @@
   word-wrap: break-word;
   //margin: 8px 0px;
   text-align: start;
+
+  color: black;
+
+}
+
+
+.link {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+
 }
 
 

@@ -45,6 +45,9 @@ export const userAPI = {
     user(username: string) {
         return instance.get(`/reviews/user/${username}`)
     },
+    users() {
+            return instance.get(`/auth/users`, {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
+    },
 }
 
 export type ReviewDataType = {

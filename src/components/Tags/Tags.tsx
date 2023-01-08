@@ -8,6 +8,7 @@ import Autocomplete from "@mui/joy/Autocomplete";
 import {getReviewsTC} from "../../store/reducers/reviewsReducer";
 import {setSearchTagsAC} from "../../store/reducers/tagsReducer";
 import {useMediaQuery} from "react-responsive";
+import {useTranslation} from "react-i18next";
 
 
 
@@ -42,8 +43,10 @@ function Tags() {
     // console.log("allTags", startTags)
     // console.log("selected", selected)
     // const [value, setValue] = React.useState<Array<{title: string}>>([]);
-
+    const { t } = useTranslation();
     const [selected, setSelected] = React.useState<Array<{title: string}>>([]);
+
+    const theme = useAppSelector(state => state.app.mode)
 
     const handleChange = (value: any) => {
         setSelected([value, ...selected])
@@ -101,10 +104,11 @@ function Tags() {
                     </Box>
                     <Stack spacing={0.2} className={s.autocompleteStack} direction={iSmallScreen ? 'column' : 'row'}>
                     <Autocomplete
+                        variant={theme ? 'solid' : 'outlined'}
                         size={iSmallScreen ? 'sm' : 'md'}
                         className={s.tagsAutocomplete}
                         id={'tagsSearch'}
-                        placeholder={'Tags search...'}
+                        placeholder={`${t('tags.tagsSearch')}`}
                         options={allTags}
                         isOptionEqualToValue={(option: string | {title: string}, value: string | {title: string}) => {
                             const optionTitle = typeof option === "string" ? option : option.title;
@@ -126,9 +130,9 @@ function Tags() {
                     />
                         <Stack  className={s.buttonStack} direction={'row'} spacing={0.2}>
                             <Button size={iSmallScreen ? 'sm' : 'md'} onClick={handleApply} className={s.buttonApply} variant={'solid'}
-                                    color={"info"}>Apply</Button>
+                                    color={"info"}>{t('tags.apply')}</Button>
                             <Button size={iSmallScreen ? 'sm' : 'md'} onClick={handleReset} className={s.buttonApply} variant={'soft'}
-                                    color={"success"}>Reset</Button>
+                                    color={"success"} style={{border: theme ? 'none' : '1px solid green'}}>{t('tags.reset')}</Button>
                         </Stack>
                     </Stack>
             </Box>

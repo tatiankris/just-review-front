@@ -12,15 +12,18 @@ import {getUserTC} from "../../store/reducers/userReducer";
 import SearchReview from "../Review/SearchReview";
 import {useMediaQuery} from "react-responsive";
 import {ReviewsTable} from "./ReviewsTable";
+import {useTranslation} from "react-i18next";
 const URL = 'https://images.pexels.com/photos/7130560/pexels-photo-7130560.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' //'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
 
 function ProfilePage() {
     const dispatch = useAppDispatch()
     const {username} = useParams()
-
+    const { t } = useTranslation();
 
     const authUser = useAppSelector(state => state.auth.user)
+
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const reviews = useAppSelector(state => state.reviews.reviews)
     const user = useAppSelector(state => state.user.user)
@@ -93,9 +96,24 @@ function ProfilePage() {
                                     color: 'green'
                                 }}>{user.reviews ? `${user.reviews.length}` : ''}</span>
                             </Box>
-                            {
-                                authUser && user && authUser.username === user.username
-                                || authUser && authUser.roles && authUser.roles.includes('ADMIN')
+                                {
+                                    authUser && authUser.username === username
+                                    // || authUser && authUser.username !== username  && authUser.roles && authUser.roles.includes('ADMIN')
+                                    &&
+                                    <Box style={{
+                                        marginLeft: '8px',
+                                        marginTop: "8px",
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        height: iSmallScreen ? '28px' : '40px',
+                                        fontSize: iSmallScreen ? '18px' : '34px'
+                                    }}>
+
+                                        <CreateReviewModal variant={'solid'} userId={user.userId}/>
+                                    </Box>
+                                }{
+                                authUser && authUser.username !== username  && authUser.roles && authUser.roles.includes('ADMIN')
                                 &&
                                 <Box style={{
                                     marginLeft: '8px',
@@ -109,22 +127,24 @@ function ProfilePage() {
 
                                     <CreateReviewModal variant={'solid'} userId={user.userId}/>
                                 </Box>
+
+
                             }
                             </Box>
                         </Box>
                     </Paper>
                     <div style={{width: '100%'}}>
+                        {/*{*/}
+                        {/*    authUser && authUser.username === username && user.reviews && user.reviews.length === 0*/}
+                        {/*    && <div style={{fontSize: '30px', color: 'grey'}}>*/}
+                        {/*        {t('createReview.first')}*/}
+                        {/*        <CreateReviewModal variant={'soft'} userId={user.userId}/>*/}
+                        {/*    </div>*/}
+                        {/*}*/}
                         {
-                            user.reviews && user.reviews.length === 0 && authUser && authUser.username === username
-                            && <div style={{fontSize: '30px', color: 'grey'}}>
-                            Create your first review...
-                                <CreateReviewModal variant={'soft'} userId={user.userId}/>
-                            </div>
-                        }
-                        {
-                            !authUser || authUser && authUser.username && authUser.username !== username
-                            || authUser && authUser.roles && !authUser.roles.includes('ADMIN')
-                            && reviews.length !== 0 && reviews.map(r => {
+                            (!isLoggedIn ||
+                                authUser && authUser.username && authUser.username !== username && authUser.roles && !authUser.roles.includes('ADMIN'))
+                             && reviews.length !== 0 && reviews.map(r => {
                                 return <SearchReview
                                     key={r._id}
                                     reviewId={r._id}
@@ -144,11 +164,11 @@ function ProfilePage() {
                             })
                         }
                         {
-                            authUser && authUser.username && authUser.username === username
+                            authUser && authUser.username && authUser.username === username && user.reviews && user.reviews.length > 0
                             && <ReviewsTable reviews={reviews.length !== 0 ? reviews : null} username={username ? username : ' '}/>
                         }
                         {
-                            authUser && authUser.username && authUser.username !== username && authUser.roles && authUser.roles.includes('ADMIN')
+                            authUser && authUser.username && authUser.username !== username && authUser.roles && authUser.roles.includes('ADMIN') && user.reviews && user.reviews.length > 0
                             && <ReviewsTable reviews={reviews.length !== 0 ? reviews : null} username={username ? username : ' '} />
                         }
                     </div>

@@ -10,6 +10,10 @@
   //align-items: flex-start;
   //flex-direction: column;
 }
+
+
+
+
 .image {
   height: 100%;
   //backgroundSize: cover;
@@ -27,6 +31,11 @@
     padding: 1.4% 2%;
     font-weight: 600;
 
+  }
+  .categoryDark {
+    color: #2eee13;
+    background-color: #2d2a2a;
+    border: 1px solid #2eee13;
   }
 }
 @media screen and (max-width: 728px) {
@@ -73,16 +82,23 @@
     color: #a35cdc;
 
   }
+  .darkWork {
+    color: #e0b5f3;
+  }
 
 }
 
 .infoGrid {
+  background-color: rgba(221, 221, 225, 0);
   display: flex;
   flex-direction: row;
   justify-content: space-between ;
   align-items: center;
 }
-
+.darkBox {
+  color: #fffdfd;
+  background-color: rgba(66, 62, 62, 0.96);
+}
 .gradesGrid {
   display: flex;
   flex-direction: column;
@@ -96,11 +112,14 @@
 }
 .gradeX {
   background-color: #583e66;
-  color: #ffd70e;
+  color: #ffd500;
   font-size: 24px;
   padding: 2% 5%;
   border-radius: 10px;
 
+}
+.darkGrade {
+  background-color: #c9b0ea;
 }
 
 
@@ -131,7 +150,10 @@
   border-radius: 20px;
 
 }
-
+.darkTag {
+  color: #ebebef;
+  background-color: #242424;
+}
 
 .link {
   text-decoration: none;
@@ -143,7 +165,9 @@
     color: #b1b0b0;
   }
 }
-
+.dark {
+  color: #fffdfd;
+}
 .bottom {
   padding: 0.15% 5%;
   background-color: rgba(255, 226, 187, 0.57);
@@ -162,6 +186,10 @@
   word-wrap: break-word;
   margin: 8px 0px;
   text-align: start;
+}
+
+.darkReview {
+  color: #fafafa;
 }
 
 

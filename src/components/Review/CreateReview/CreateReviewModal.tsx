@@ -3,6 +3,7 @@ import {Button, Modal, Box, Typography, ModalDialog} from "@mui/joy";
 import s from "./CreateReview.module.scss";
 import UpdateReviewForm from "../UpdateReview/UpdateReviewForm";
 import CreateReviewForm from "./CreateReviewForm";
+import {useTranslation} from "react-i18next";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -23,13 +24,14 @@ type PropsType = {
 }
 
 function CreateReviewModal({variant, userId}: PropsType) {
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
         <div>
-            <Button variant={variant} color={'info'} onClick={handleOpen} style={{fontSize: '18px'}}>+ New Review</Button>
+            <Button variant={variant} color={'info'} onClick={handleOpen} style={{fontSize: '18px'}}>+ {t('createReview.new')}</Button>
             <Modal
                 disableAutoFocus
                 // disableEnforceFocus

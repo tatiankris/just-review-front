@@ -13,8 +13,16 @@ type UserType = {
     reviews: Array<ReviewType>
     roles: Array<string>
 }
+
+type AdminsUser = {
+    userId: string
+    email: string
+    username: string
+    avatar: string
+}
 const initialState = {
-    user: {} as UserType
+    user: {} as UserType,
+    users: [] as Array<AdminsUser>
 }
 
 export type StateType = typeof initialState;
@@ -24,6 +32,9 @@ export const userReducer = (state: StateType = initialState, action: UserActions
     switch (action.type) {
         case 'user/SET-USER': {
             return {...state, user: action.user}
+        }
+        case 'user/SET-ADMINS-USERS': {
+            return {...state, users: action.users}
         }
         default:
             return state
@@ -35,6 +46,12 @@ export const setUserAC = (user: UserType) => {
     return {
         type: 'user/SET-USER',
         user
+    } as const
+}
+export const setAdminsUsersAC = (users: Array<AdminsUser>) => {
+    return {
+        type: 'user/SET-ADMINS-USERS',
+        users
     } as const
 }
 
@@ -56,8 +73,26 @@ export const getUserTC = (username: string): AppThunk => {
             )
     }
 }
+export const getUsersTC = (): AppThunk => {
+    return (dispatch) => {
+        dispatch(setAppStatusAC("loading"))
+        userAPI.users()
+            .then(res => {
+
+                dispatch(setAdminsUsersAC(res.data.users))
+            })
+            .catch(err => {
+                console.log('error', err.message)
+
+            })
+            .finally(() => {
+                    dispatch(setAppStatusAC("succeeded"))
+                }
+            )
+    }
+}
 
 
 
-export type UserActionsType = ReturnType<typeof setUserAC>
+export type UserActionsType = ReturnType<typeof setUserAC> | ReturnType<typeof setAdminsUsersAC>
 

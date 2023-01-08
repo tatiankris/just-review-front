@@ -10,6 +10,7 @@ import {getCurrentReviewsTC, getReviewsTC} from "../../store/reducers/reviewsRed
 import LikeComponent from "../commonComponents/LikeComponent";
 import {ReactMarkdown} from "react-markdown/lib/react-markdown";
 import RatingComponent from "../commonComponents/RatingComponent";
+import {useTranslation} from "react-i18next";
 
 const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
@@ -19,7 +20,7 @@ function ReviewPage() {
     const reviews = useAppSelector(state => state.reviews.reviews)
     const current = useAppSelector(state => state.reviews.currentReview)
     const comments = useAppSelector(state => state.comments.comments)
-
+    const { t } = useTranslation();
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
@@ -66,7 +67,7 @@ function ReviewPage() {
                                     <Chip sx={{marginLeft: '8px'}} color="info">{current.category.title}</Chip>
                                 </Box>
                                 }
-                                <Box color={'gray'}>Average rating:</Box>
+                                <Box color={'gray'}>{t('review.averageRating')}:</Box>
                                 <Box>
                                     <Rating size="large" value={Number(current.rating)} readOnly/>
 
@@ -104,7 +105,7 @@ function ReviewPage() {
                             }
                         <Stack sx={{margin: '12px 4px 8px 4px'}} width={'100%'} direction="row" spacing={2} justifyContent="space-between">
                             <div>
-                                <Typography>Author grade: <Typography variant="outlined" color="success">
+                                <Typography>{t('review.authorGrade')}: <Typography variant="outlined" color="success">
                                     <b>{current.authorGrade}</b>/10
                                 </Typography></Typography>
 
@@ -133,7 +134,7 @@ function ReviewPage() {
                 <Comments comments={comments} />
             }
 
-            {!current && <div>not FOUND</div>}
+            {!current && <div>{t('review.notFound')}</div>}
 
 
 

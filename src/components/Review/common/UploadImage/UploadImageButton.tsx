@@ -1,6 +1,7 @@
 import {Alert, Button } from "@mui/joy";
 import React, {useState} from "react";
 import {convertToBase64} from "../../../../common/utils/convertToBase64";
+import {useTranslation} from "react-i18next";
 
 type PropsType = {
     callback: (file64: string) => void
@@ -9,7 +10,7 @@ type PropsType = {
 export const UploadImageButton = ({callback}: PropsType) => {
 
     const [errorImg, setErrorImg] = useState(false)
-
+    const { t } = useTranslation();
     const alertErrorImg = () => {
         setErrorImg(true)
         setTimeout (() => {
@@ -28,7 +29,7 @@ export const UploadImageButton = ({callback}: PropsType) => {
                     callback(file64);
                 })
             } else {
-                console.error('Error: ', 'Файл слишком большого размера')
+                console.error('Error: ', `${t('uploadImg.toBig')}`)
                 alertErrorImg();
             }
         }
@@ -46,7 +47,7 @@ export const UploadImageButton = ({callback}: PropsType) => {
                     transform: 'translate(-50%, -50%)',
                     width: '240px'
 
-                }}>Error: The file is too big!</Alert>
+                }}>{t('uploadImg.toBig')}</Alert>
             }
             <label style={{marginTop: '10px'}}>
                 <input type="file"
@@ -55,7 +56,7 @@ export const UploadImageButton = ({callback}: PropsType) => {
                        style={{display: 'none'}}
                 />
                 <Button size={'sm'} variant="soft" component="span">
-                    Browse file
+                    {t('uploadImg.browse')}
                 </Button>
             </label>
 

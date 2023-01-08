@@ -10,6 +10,7 @@ import LoginGithub from "react-login-github";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import {authAPI} from "../../../api/auth-api";
 import {useAppDispatch} from "../../../common/utils/hooks";
+import {useTranslation} from "react-i18next";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -29,6 +30,9 @@ type PropsType = {
   isSmallScreen: boolean
 }
 function ModalLogin({isSmallScreen} : PropsType) {
+
+  const { t } = useTranslation();
+
   const clientId = '301022637814-i3noevnhjjh0rn88avi7p3d0q5m6hucj.apps.googleusercontent.com'
   const ghClientId = '51eed0be7af19f448be0'
 
@@ -86,7 +90,7 @@ useEffect(() => {
   return (
       <div>
       {/*<GoogleLogout clientId={clientId} buttonText="Log out" onLogoutSuccess={logOut} />*/}
-      <Button sx={{height: !isSmallScreen ? '30px' : 'auto'}} size={!isSmallScreen ? 'md' : 'sm'} variant={'soft'} color="success" onClick={handleOpen} fullWidth>Login</Button>
+      <Button sx={{height: !isSmallScreen ? '30px' : 'auto'}} size={!isSmallScreen ? 'md' : 'sm'} variant={'soft'} color="success" onClick={handleOpen} fullWidth> {t('header.login')}</Button>
 
 
       {/*<div id={"signInDiv"}></div>*/}
@@ -99,7 +103,7 @@ useEffect(() => {
       >
         <Box className={s.modalBox} sx={style}>
           <Typography id="modal-modal-title"  component="h2">
-            Login
+            {t('header.login')}
           </Typography>
           <div style={{marginTop: '12px'} }>
             {/*<span style={{marginTop: '6px', color: 'gray'}}>Continue with</span>*/}
@@ -121,13 +125,13 @@ useEffect(() => {
               {/*             className={s.ghButton}*/}
               {/*><GitHubIcon className={s.ghIcon} /><span style={{color: 'rgba(0, 0, 0, 0.54)'}}>Sign in with GitHub</span></LoginGithub>*/}
 
-              <Chip color={'success'} startDecorator={<GoogleIcon />} onClick={google}>Sign in with Google</Chip>
-              <Chip startDecorator={<GitHubIcon />} onClick={gitHub}>Sign in with GitHub</Chip>
+              <Chip color={'success'} startDecorator={<GoogleIcon />} onClick={google}>{t('login.google')}</Chip>
+              <Chip startDecorator={<GitHubIcon />} onClick={gitHub}>{t('login.gh')}</Chip>
             </Stack>
           </div>
           <Divider />
           <Typography id="modal-modal-title"  component="h6">
-            or
+            {t('login.or')}
           </Typography>
 
           <Login />

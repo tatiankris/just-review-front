@@ -10,12 +10,14 @@ import Slider from 'react-slick'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {useMediaQuery} from "react-responsive";
+import {useTranslation} from "react-i18next";
 const URL = 'https://images.pexels.com/photos/7130560/pexels-photo-7130560.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' //'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
 
 
 export const MainPage = () => {
 
+    const { t } = useTranslation();
 
     const iSmallScreen = useMediaQuery({ query: '(max-width: 728px)' })
 
@@ -29,6 +31,8 @@ export const MainPage = () => {
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+
+    const theme = useAppSelector(state => state.app.mode)
     const latest = useAppSelector(state => state.reviews.latest)
     const highestRating = useAppSelector(state => state.reviews.highestRating)
 
@@ -38,8 +42,8 @@ export const MainPage = () => {
         <Grid className={s.mainPage} container spacing={3}>
 
             <Grid className={s.reviewsGrid}>
-                <div className={s.title}>
-                    Latest reviews
+                <div className={theme ? `${s.title} ${s.darkTitle}` : `${s.title}`}>
+                    {t('main.latest')}
                 </div>
                 <Slider className={s.slider} {...sliderSettings}>
                 {
@@ -67,8 +71,8 @@ export const MainPage = () => {
             </Grid>
 
             <Grid className={s.reviewsGrid}>
-                <div className={s.title}>
-                    High rating from the author
+                <div className={theme ? `${s.title} ${s.darkTitle}` : `${s.title}`}>
+                    {t('main.highGrade')}
                 </div>
                 <Slider {...sliderSettings}>
                 {

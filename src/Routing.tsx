@@ -7,15 +7,16 @@ import Test from "./testComponents/Test";
 import {useAppSelector} from "./common/utils/hooks";
 import HomePage from "./components/HomePage/HomePage";
 import {GoogleAuth} from "./components/Auth/GoogleAuth";
+import AdminPanel from "./components/AdminPanel/AdminPanel";
 
 export const REVIEW_PAGE = '/review' //'/:userName/:reviewName'
 export const PROFILE_PAGE = '/profile' //'/:userName
-
+export const ADMIN_PANEL = '/admin-panel'
 
 function Routing() {
 
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-
+    const roles = useAppSelector(state => state.auth.user.roles)
     if (!isLoggedIn) {
         return <Routes>
             <Route path={`${REVIEW_PAGE}/:username/:review`} element={<ReviewPage />}/>
@@ -33,9 +34,13 @@ function Routing() {
     return (
 
         <Routes>
+            {
+                roles && roles.includes('ADMIN') &&
+                <Route path={`${ADMIN_PANEL}`} element={<AdminPanel />}/>
+            }
             <Route path={`${REVIEW_PAGE}/:username/:review`} element={<ReviewPage />}/>
-            <Route path={`${PROFILE_PAGE}/:username`} element={<ProfilePage />}/>
 
+            <Route path={`${PROFILE_PAGE}/:username`} element={<ProfilePage />}/>
             <Route path={'/test'} element={<Test />}/>
             {/*<Route path="/search" element={<SearchPage/>} />*/}
             <Route path="/home" element={<HomePage/>} />

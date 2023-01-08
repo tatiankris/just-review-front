@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { TextField, Button } from "@mui/joy";
 import {useAppDispatch} from "../../../common/utils/hooks";
 import {loginTC} from "../../../store/reducers/authReducer";
+import {useTranslation} from "react-i18next";
 
 
 const validationSchema = Yup.object().shape({
@@ -22,7 +23,7 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
     const dispatch = useAppDispatch();
-
+    const { t } = useTranslation();
 
     const formik = useFormik({
         initialValues: {
@@ -45,7 +46,7 @@ const Login = () => {
                     sx={{width: '100%'}}
                     id="email"
                     name="email"
-                    label="Email"
+                    label={`${t('login.email')}`}
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     error={formik.touched.email && Boolean(formik.errors.email)}
@@ -55,7 +56,7 @@ const Login = () => {
                     sx={{width: '100%'}}
                     id="password"
                     name="password"
-                    label="Password"
+                    label={`${t('login.password')}`}
                     type="password"
                     value={formik.values.password}
                     onChange={formik.handleChange}
@@ -63,7 +64,7 @@ const Login = () => {
                     helperText={formik.touched.password && formik.errors.password}
                 />
                 <Button sx={{marginTop: '6px', borderRadius: '22px'}} color="neutral" variant="solid"  type="submit">
-                    Login
+                    {t('header.login')}
                 </Button>
             </form>
         </div>

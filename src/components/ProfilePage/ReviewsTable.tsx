@@ -13,8 +13,8 @@ import {
 } from '@mui/material';
 import React, {useEffect, useState} from 'react';
 import {getAuthorTC, ReviewType, TagsType} from "../../store/reducers/reviewsReducer";
-import {NavLink} from "react-router-dom";
-import {REVIEW_PAGE} from "../../Routing";
+import {NavLink, useNavigate} from "react-router-dom";
+import {PROFILE_PAGE, REVIEW_PAGE} from "../../Routing";
 import StarIcon from '@mui/icons-material/Star';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import s from "./ReviewsTable.module.scss";
@@ -23,6 +23,7 @@ import DeleteModal from "../commonComponents/DeleteModal";
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
+import {useTranslation} from "react-i18next";
 const URL = 'https://images.pexels.com/photos/7130560/pexels-photo-7130560.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' //'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
 type PropsType = {
@@ -32,6 +33,7 @@ type PropsType = {
 export const ReviewsTable = ({reviews, username, ...props}: PropsType) => {
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     // const username = useAppSelector(state => state.auth.user.username)
     const categories = useAppSelector(state => state.tags.categories)
 
@@ -79,7 +81,7 @@ export const ReviewsTable = ({reviews, username, ...props}: PropsType) => {
             : onSortHandler('1', 'null', 'null', category)
         setCreate(!create)
     }
-
+    const { t } = useTranslation();
 
 
 
@@ -101,7 +103,7 @@ export const ReviewsTable = ({reviews, username, ...props}: PropsType) => {
                                         size={'small'}
                                     >
                                         <MenuItem value="null">
-                                            <em>all</em>
+                                            <em>{t('reviewTable.all')}</em>
                                         </MenuItem>
                                         { categories && categories.map((c, i) => {
                                             return <MenuItem key={i} value={c.title}>{c.title}</MenuItem>
@@ -109,12 +111,12 @@ export const ReviewsTable = ({reviews, username, ...props}: PropsType) => {
                                     </Select>
                                 {/*</Box>*/}
                             </TableCell>
-                            <TableCell className={s.cellHeader} align="center"><span className={s.cellHeader}>Review title</span></TableCell>
-                            <TableCell className={s.cellHeader} align="center"><span className={s.cellHeader}>Work title</span></TableCell>
-                            <TableCell className={`${s.cellHeader} ${s.cellTitleIcon}`} align="center"><div className={s.cellHeader}>Author's grade</div><ExpandMoreIcon className={s.sortIcon} onClick={gradeHandler}/></TableCell>
-                            <TableCell className={`${s.cellHeader} ${s.cellTitleIcon}`} align="center"><div className={s.cellHeader}>Rating</div><ExpandMoreIcon className={s.sortIcon} onClick={ratingHandler}/></TableCell>
-                            <TableCell className={s.cellHeader} align="center">Likes, comments</TableCell>
-                            <TableCell className={`${s.cellHeader} ${s.cellTitleIcon}`} align="center"><div className={s.cellHeader}>Created at</div><ExpandMoreIcon className={s.sortIcon} onClick={createHandler}/></TableCell>
+                            <TableCell className={s.cellHeader} align="center"><span className={s.cellHeader}>{t('reviewTable.rTitle')}</span></TableCell>
+                            <TableCell className={s.cellHeader} align="center"><span className={s.cellHeader}>{t('reviewTable.wTitle')}</span></TableCell>
+                            <TableCell className={`${s.cellHeader} ${s.cellTitleIcon}`} align="center"><div className={s.cellHeader}>{t('reviewTable.aGrade')}</div><ExpandMoreIcon className={s.sortIcon} onClick={gradeHandler}/></TableCell>
+                            <TableCell className={`${s.cellHeader} ${s.cellTitleIcon}`} align="center"><div className={s.cellHeader}>{t('reviewTable.rating')}</div><ExpandMoreIcon className={s.sortIcon} onClick={ratingHandler}/></TableCell>
+                            <TableCell className={s.cellHeader} align="center">{t('reviewTable.likesComments')}</TableCell>
+                            <TableCell className={`${s.cellHeader} ${s.cellTitleIcon}`} align="center"><div className={s.cellHeader}>{t('reviewTable.createdAt')}</div><ExpandMoreIcon className={s.sortIcon} onClick={createHandler}/></TableCell>
                             <TableCell className={s.cellHeader}></TableCell>
                         </TableRow>
                     </TableHead>
@@ -128,22 +130,33 @@ export const ReviewsTable = ({reviews, username, ...props}: PropsType) => {
 
                             return (
                                 <TableRow
+
+
                                     hover
                                     key={r._id}
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
 
-                                    <TableCell component="th">
+                                    <TableCell component="th"
+                                               sx={{':hover': {cursor: 'pointer'}}}
+                                               onClick={() => {navigate(`${REVIEW_PAGE}/${r.userName}/${r._id}`)}}
+                                    >
                                         <img src={r.imageURL}
                                              style={{width: '80px', height: '46px', borderRadius: '4px'}}/>
                                     </TableCell>
                                     <TableCell className={`${s.cellText}`} align="center" ><span className={`${s.cellText}`}>{r.category.title}</span></TableCell>
-                                    <TableCell className={`${s.cellText}`} align="left" scope="row">
-                                        <NavLink className={`${s.cellText}`} to={`${REVIEW_PAGE}/${r.userName}/${r._id}`}>
+                                    <TableCell className={`${s.cellText}`} align="left" scope="row"
+                                               sx={{':hover': {cursor: 'pointer'}}}
+                                               onClick={() => {navigate(`${REVIEW_PAGE}/${r.userName}/${r._id}`)}}
+                                    >
+                                        <NavLink className={`${s.cellText} ${s.link}`} to={`${REVIEW_PAGE}/${r.userName}/${r._id}`}>
                                             {r.reviewTitle}
                                         </NavLink>
                                     </TableCell>
-                                    <TableCell className={`${s.cellText}`} align="left" > <span className={`${s.cellText}`}>{r.workTitle}</span></TableCell>
+                                    <TableCell className={`${s.cellText}`} align="left"
+                                               sx={{':hover': {cursor: 'pointer'}}}
+                                               onClick={() => {navigate(`${REVIEW_PAGE}/${r.userName}/${r._id}`)}}
+                                    > <span className={`${s.cellText}`}>{r.workTitle}</span></TableCell>
                                     <TableCell className={`${s.cellText}`} align="center" ><span className={`${s.cellText}`}><b>{r.authorGrade}</b>/10</span></TableCell>
                                     <TableCell className={`${s.cellText}`} align="center">
                                         {/*<StarIcon sx={{color: 'yellow'}} />*/}
@@ -165,7 +178,7 @@ export const ReviewsTable = ({reviews, username, ...props}: PropsType) => {
                                         </div>
                                         <DeleteModal reviewId={r._id} title={r.reviewTitle} type={'review'}/>
                                     </Box>
-                                        <div className={`${s.cellText}`} style={{fontSize: '10px', color: 'gray', margin: '0'}}><NavLink to={`${REVIEW_PAGE}/${r.userName}/${r._id}`}>Открыть</NavLink>
+                                        <div className={`${s.cellText}`} style={{fontSize: '10px', color: 'gray', margin: '0'}}><NavLink to={`${REVIEW_PAGE}/${r.userName}/${r._id}`}>{t('reviewTable.open')}</NavLink>
                                         </div>
                                     </Stack></TableCell>
                                 </TableRow>

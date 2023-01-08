@@ -5,6 +5,7 @@ import Registration from "./Registration";
 import s from './Registration.module.scss'
 import GitHubIcon from "@mui/icons-material/GitHub";
 import {useAppDispatch} from "../../../common/utils/hooks";
+import {useTranslation} from "react-i18next";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -24,6 +25,8 @@ type PropsType = {
 
 function ModalRegistration({isSmallScreen}: PropsType) {
 
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -39,7 +42,7 @@ function ModalRegistration({isSmallScreen}: PropsType) {
 
     return (
         <div>
-            <Button variant={'outlined'} sx={{height: !isSmallScreen ? '30px' : 'auto'}} size={!isSmallScreen ? 'md' : 'sm'} onClick={handleOpen}>Sign Up</Button>
+            <Button variant={'outlined'} sx={{height: !isSmallScreen ? '30px' : 'auto'}} size={!isSmallScreen ? 'md' : 'sm'} onClick={handleOpen}>{t('header.signUp')}</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -48,20 +51,20 @@ function ModalRegistration({isSmallScreen}: PropsType) {
             >
                 <Box className={s.modalBox} sx={style}>
                     <Typography id="modal-modal-title" component="h2">
-                        Sign Up
+                        {t('header.signUp')}
                     </Typography>
 
                     <div style={{marginTop: '12px'} }>
                         {/*<span style={{marginTop: '6px', color: 'gray'}}>Continue with</span>*/}
 
                         <Stack style={{margin: '6px 0px', width: '100%'}} spacing={0.5}>
-                            <Chip color={'success'} startDecorator={<GoogleIcon />} onClick={google}>Sign up with Google</Chip>
-                            <Chip startDecorator={<GitHubIcon />} onClick={gitHub}>Sign up with GitHub</Chip>
+                            <Chip color={'success'} startDecorator={<GoogleIcon />} onClick={google}>{t('login.google')}</Chip>
+                            <Chip startDecorator={<GitHubIcon />} onClick={gitHub}>{t('login.gh')}</Chip>
                         </Stack>
                     </div>
                     <Divider />
                     <Typography id="modal-modal-title"  component="h6">
-                        or
+                        {t('signUp.or')}
                     </Typography>
 
                     <Registration />

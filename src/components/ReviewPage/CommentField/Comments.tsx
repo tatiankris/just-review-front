@@ -18,6 +18,7 @@ import {useAppDispatch, useAppSelector} from "../../../common/utils/hooks";
 import {CommentType, createCommentTC} from "../../../store/reducers/commentsReducer";
 import {useParams} from "react-router-dom";
 import {log} from "util";
+import {useTranslation} from "react-i18next";
 
 type CommentsPropsType ={
     comments: CommentType[]
@@ -26,6 +27,7 @@ function Comments({comments, ...props}: CommentsPropsType) {
 
     const dispatch = useAppDispatch()
     const {review} = useParams()
+    const { t } = useTranslation();
 
     const [value, setValue ] = useState('')
     const handleSubmit = () => {
@@ -46,7 +48,7 @@ function Comments({comments, ...props}: CommentsPropsType) {
         <Paper sx={{backgroundColor: 'rgba(255, 226, 187, 0.57)', margin: '10px 0px 30px 0px'}} elevation={6}>
             <Box className={s.commentsBox}>
                 <Typography padding={'4px'} fontSize={'14px'} fontWeight={'bold'}>
-                    💬 Comments
+                    💬 {t('review.comments')}
                 </Typography>
 
                 {   comments &&
@@ -55,13 +57,13 @@ function Comments({comments, ...props}: CommentsPropsType) {
                     })
                 }
                 <FormControl className={s.formControl}>
-                    <FormLabel>🖊 Send comment</FormLabel>
+                    <FormLabel>🖊 {t('review.sendComment')}</FormLabel>
                     <Textarea
-                        placeholder="Write comment…"
+                        placeholder={`${t('review.writeComment')}`}
                         minRows={3}
                         value={value}
                         onKeyPress={(e) => {if (e.key === "Enter" && !e.shiftKey) { handleSubmit() }} }
-                        onChange={(e) => {setValue(e.currentTarget.value)}}
+                        onChange={(e) => {setValue(String(e.currentTarget.value))}}
                         endDecorator={
                             <Box
                                 sx={{
@@ -73,7 +75,7 @@ function Comments({comments, ...props}: CommentsPropsType) {
                                     flex: 'auto',
                                 }}
                             >
-                                <Button onClick={handleSubmit} variant={'soft'} sx={{ml: 'start'}}>Send</Button>
+                                <Button onClick={handleSubmit} variant={'soft'} sx={{ml: 'start'}}>{t('review.send')}</Button>
                             </Box>
                         }
                         sx={{

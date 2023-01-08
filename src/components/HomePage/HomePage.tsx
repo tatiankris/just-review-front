@@ -8,6 +8,7 @@ import SearchPage from "../SearchPage/SearchPage";
 import {MainPage} from "../MainPage/MainPage";
 import {useDebounce} from "usehooks-ts";
 import {getReviewsTC} from "../../store/reducers/reviewsReducer";
+import {useMediaQuery} from "react-responsive";
 
 export {}
 export const HomePage = () => {
@@ -38,10 +39,10 @@ export const HomePage = () => {
         }
 
     }, [dispatch, debouncedSearch, debouncedTagsSearch])
-
+    const iSmallScreen = useMediaQuery({ query: '(max-width: 728px)' })
     return (
         <Container maxWidth="lg"
-                   sx={{marginTop: '55px'}}
+                   sx={{marginTop: iSmallScreen ? '73px' :'55px'}}
         >
             <Tags />
             {

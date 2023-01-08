@@ -4,6 +4,7 @@ import s from '../Review/Modal.module.scss'
 import { useAppDispatch } from "../../common/utils/hooks";
 import {deleteCommentTC} from "../../store/reducers/commentsReducer";
 import {deleteReviewTC} from "../../store/reducers/reviewsReducer";
+import {useTranslation} from "react-i18next";
 
 
 const style = {
@@ -26,11 +27,13 @@ type DeletePropsType = {
 
 function DeleteModal( { reviewId, commentId,title,type, ...props }:DeletePropsType ) {
 
+
     const dispatch = useAppDispatch()
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const { t } = useTranslation();
 
     const handleDelete = () => {
 
@@ -57,11 +60,11 @@ function DeleteModal( { reviewId, commentId,title,type, ...props }:DeletePropsTy
             >
                 <Box className={s.modalBox} sx={style}>
                     <Typography id="modal-modal-title" level="h4">
-                        Delete {type} {title}?
+                        {t('delete.delete')} {t('delete.publish')} {title}?
                     </Typography>
                     <div style={{marginTop: '10px'}}>
-                        <Button variant={'soft'} color={'danger'} onClick={handleDelete}>Delete</Button>
-                        <Button variant={'soft'} color={'primary'} onClick={handleClose}>Cancel</Button>
+                        <Button variant={'soft'} color={'danger'} onClick={handleDelete}>{t('delete.delete')} </Button>
+                        <Button variant={'soft'} color={'primary'} onClick={handleClose}>{t('delete.cancel')} </Button>
                     </div>
 
                 </Box>

@@ -6,6 +6,7 @@ import DeleteModal from "../../commonComponents/DeleteModal";
 import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch} from "../../../common/utils/hooks";
 import {PROFILE_PAGE} from "../../../Routing";
+import {useTranslation} from "react-i18next";
 
 
 type CommentPropsType ={
@@ -15,6 +16,7 @@ function Comment({comment,...props}: CommentPropsType) {
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+    const { t } = useTranslation();
 
     const {review} = useParams()
 
@@ -76,8 +78,8 @@ function Comment({comment,...props}: CommentPropsType) {
                                             flex: 'auto',
                                         }}
                                     >
-                                        <Button onClick={handleSubmit} variant={'soft'} sx={{ml: 'start'}}>Update</Button>
-                                        <Button onClick={handleCancel} variant={'soft'} color={'info'} sx={{ml: 'start'}}>Cancel</Button>
+                                        <Button onClick={handleSubmit} variant={'soft'} sx={{ml: 'start'}}>{t('review.update')}</Button>
+                                        <Button onClick={handleCancel} variant={'soft'} color={'info'} sx={{ml: 'start'}}>{t('review.cancel')}</Button>
                                     </Box>
                                 }
                                 sx={{

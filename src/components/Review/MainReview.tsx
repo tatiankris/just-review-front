@@ -10,6 +10,7 @@ import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {TagsType} from "../../store/reducers/reviewsReducer";
 import LikeComponent from "../commonComponents/LikeComponent";
 import { useMediaQuery } from 'react-responsive'
+import {useTranslation} from "react-i18next";
 
 
 type ReviewPropsType = {
@@ -35,7 +36,7 @@ function MainReview({author, userName, tags, likes,imageURL, reviewId,
 
     const iSmallScreen = useMediaQuery({ query: '(max-width: 728px)' })
     console.log('iSmallScreen', iSmallScreen)
-
+    const theme = useAppSelector(state => state.app.mode)
     const navigate = useNavigate()
 const dispatch = useAppDispatch()
     const [ratingChanged, setRating] = useState<number | null>(2.5);
@@ -73,7 +74,7 @@ const dispatch = useAppDispatch()
     // const light = useCallback((str: string ) => {}, search)
 
     const renderTags = tags.length > 5 ? tags.slice(0, 5) : tags
-
+    const { t } = useTranslation();
 
 
     return (
@@ -89,28 +90,38 @@ const dispatch = useAppDispatch()
                 </Stack>
             }
 
-            <Box>
+            <Box
+                sx={{':hover': {cursor: 'pointer'}}}
+                onClick={(event) => {
+                    event.stopPropagation()
+                navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
+            }} >
                 <Box>
                     <div className={s.image} style={{backgroundImage: `url(${imageURL})`, backgroundSize: 'cover'}}>
-                        <div className={s.categoryZ}>{category.title}</div>
+                        <div className={theme ? `${s.categoryZ} ${s.categoryDark}` : `${s.categoryZ}`}>{category.title}</div>
                     </div>
                 </Box>
-                <Box className={s.reviewInfo}>
+                <Box className={theme ? `${s.reviewInfo} ${s.darkInfo}` : `${s.reviewInfo}`}>
                     <Box>
                         <Box className={s.userLink}>
-                            <Avatar className={s.avatar} onClick={() => {
+                            <Avatar className={`${s.avatar}`} onClick={() => {
                                 navigate(`${PROFILE_PAGE}/${userName}`)
                             }} sx={{"--Avatar-size": "16px"}}/>
-                            <a href={`${PROFILE_PAGE}/${userName}`} className={s.link}>{userName}</a>
+                            <span onClick={(e) => {
+                                e.stopPropagation()
+                                navigate(`${PROFILE_PAGE}/${userName}`)}}
+                                  className={theme ? `${s.dark} ${s.link}` : `${s.link}`}>
+                                {userName}
+                            </span>
                         </Box>
 
                         <Box className={s.titles}>
-                            <NavLink target={'_blank'} className={s.link}
+                            <NavLink style={{marginTop: '6px'}} className={theme ? `${s.dark} ${s.link}` : `${s.link}`}
                                      to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>
                                 {includeSearch(reviewTitle)}
                             </NavLink>
                             <div>
-                                <span className={s.workTitle}>{includeSearch(workTitle)}</span>
+                                <span className={theme ? `${s.darkWork} ${s.workTitle}` : `${s.workTitle}`}>{includeSearch(workTitle)}</span>
                             </div>
                         </Box>
                         <div className={s.reviewText}>
@@ -123,10 +134,10 @@ const dispatch = useAppDispatch()
                                 reviewText.length > 42 &&
                                 <>{includeSearch(reviewText.slice(0, 42))}
                                     {'....'}
-                                    <NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}}
-                                             className={s.reviewTitle}>
-                                        Read more
-                                    </NavLink>
+                                    {/*<NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}}*/}
+                                    {/*         className={s.reviewTitle}>*/}
+                                    {/*    Read more*/}
+                                    {/*</NavLink>*/}
                                 </>
                             }
                         </div>
@@ -134,7 +145,7 @@ const dispatch = useAppDispatch()
                     <Box>
                         <Box>
                             <div className={s.authorGrade}>
-                                <div className={s.gradeX}><b style={{color: 'white'}}>{authorGrade}</b>/10</div>
+                                <div className={theme ? `${s.darkGrade} ${s.gradeX}` : `${s.gradeX}`}><b style={{color: theme ? '#444242' : 'white'}}>{authorGrade}</b>/10</div>
                             </div>
                             <Stack className={s.overallRating} direction="row">
                                 <Box>
@@ -144,11 +155,11 @@ const dispatch = useAppDispatch()
                         </Box>
 
                         <Box className={s.setRating}>
-                            To rate the review, go to the review page...
+                            {t('main.rateInfo')}
                         </Box>
                         <Box className={s.tags}>
                             {renderTags.map(t => {
-                                return <div className={s.tag} key={t.title}>
+                                return <div className={theme ? `${s.darkTag} ${s.tag}` : `${s.tag}`} key={t.title}>
                                     {t.title}
                                 </div>
                             })}
@@ -178,7 +189,7 @@ const dispatch = useAppDispatch()
             {/*            </Box>*/}
 
             {/*            <Box className={s.titles}>*/}
-            {/*                <NavLink target={'_blank'} className={s.link} to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>*/}
+            {/*                <NavLink className={s.link} to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>*/}
             {/*                    {includeSearch(reviewTitle)}*/}
             {/*                </NavLink>*/}
             {/*                <div>*/}
@@ -241,17 +252,19 @@ const dispatch = useAppDispatch()
             {/*        </Grid>*/}
             {/*    </Grid>*/}
             {/*}*/}
-            <Stack className={s.bottom} alignItems={'center'} direction="row" spacing={2} justifyContent="space-between">
+            <Stack className={theme ? `${s.bottom} ${s.darkBottom}` : `${s.bottom}`} alignItems={'center'} direction="row" spacing={2} justifyContent="space-between">
 
                 <div style={{padding: '6px'}}>{createdAt.slice(0, 10)}</div>
                 <Stack direction={'row'} spacing={2}>
                     <div className={s.commentButton}>
-                        <IconButton onClick={() => {
-                            navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
+                        <IconButton
+                            variant={"plain"}
+                            sx={{':hover' :{backgroundColor: '#addbff00'}}}
+                            onClick={() => {navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
                         }} size="sm" color="neutral">
                             💬
                         </IconButton>
-                        <span style={{color: '#166d3d'}}>{comments}</span>
+                        <span style={{color: theme ? 'rgba(173,255,192,0.68)' : '#166d3d'}}>{comments}</span>
                     </div>
                     <LikeComponent likes={likes} reviewId={reviewId} current={'none'}/>
                 </Stack>

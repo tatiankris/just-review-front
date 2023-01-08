@@ -40,6 +40,7 @@ function RatingComponent( { reviewId,current, ...props }:LikePropsType ) {
                 <Rating name="controlled"
                         value={rating ? rating.rating: 0}
                         onChange={(event, newValue) => {
+                            event.stopPropagation()
                             handleRate(newValue);
                         }}/>
             }

@@ -92,7 +92,7 @@ const dispatch = useAppDispatch()
                 </Box>
 
                 <div style={{fontSize: '24px', fontWeight: 'bold'}}>
-                    <NavLink target={'_blank'} className={s.reviewTitle} to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>
+                    <NavLink className={s.reviewTitle} to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>
                         {includeSearch(reviewTitle)}
                     </NavLink></div>
 

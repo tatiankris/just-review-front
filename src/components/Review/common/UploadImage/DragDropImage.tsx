@@ -3,6 +3,7 @@ import {convertToBase64} from "../../../../common/utils/convertToBase64";
 import {UploadImageButton} from "./UploadImageButton";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import s from './UploadImage.module.scss'
+import {useTranslation} from "react-i18next";
 
 type PropsType = {
     image: string
@@ -10,7 +11,7 @@ type PropsType = {
 
 }
 export const DragDropImage = ({callback, image}: PropsType) => {
-
+    const { t } = useTranslation();
     // const [image, setImage] = useState()
     const [drag, setDrag] = useState(false)
 
@@ -34,7 +35,7 @@ export const DragDropImage = ({callback, image}: PropsType) => {
                     callback(file64);
                 })
             } else {
-                console.error('Error: ', 'Файл слишком большого размера')
+                console.error('Error: ', `${t('uploadImg.toBig')}`)
                 // alertErrorImg();
             }
         }
@@ -53,10 +54,10 @@ export const DragDropImage = ({callback, image}: PropsType) => {
                         <CloudUploadIcon sx={{fontSize:'50px'}}/>
                         {
                             drag
-                                ? <div className={s.informText}>Release to upload image</div>
-                                : <div className={s.informText}>Drag and drop file</div>
+                                ? <div className={s.informText}>{t('uploadImg.release')}</div>
+                                : <div className={s.informText}>{t('uploadImg.drag')}</div>
                         }
-                        <div className={s.dragItem}>OR</div>
+                        <div className={s.dragItem}>{t('uploadImg.or')}</div>
                         <UploadImageButton callback={callback}/>
                     </div>
             }

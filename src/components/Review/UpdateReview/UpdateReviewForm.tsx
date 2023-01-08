@@ -15,6 +15,7 @@ import {UploadImage} from "../common/UploadImage/UploadImage";
 import ReactDOMServer from "react-dom/server";
 import {ReactMarkdown} from "react-markdown/lib/react-markdown";
 import {Options} from "easymde";
+import {useTranslation} from "react-i18next";
 
 
 
@@ -53,7 +54,7 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
     const handleDelete = () => {
         setImage('')
     }
-
+    const { t } = useTranslation();
     const formik = useFormik({
         initialValues: {
             category: oldValues.category,
@@ -108,7 +109,7 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
     return (
         <div className={st.container}>
             <div className={st.modalName}>
-                Update Review
+                {t('updateReview.upReview')}
             </div>
             <div  className={st.category} >
                 <CategoryAutocomplete categoryOptions={categoryOptions} value={formik.values.category} setFieldValue={formik.setFieldValue} />
@@ -118,7 +119,7 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
                     className={st.item}
                     id="reviewTitle"
                     name="reviewTitle"
-                    label="Review title"
+                    label={`${t('createReview.rTitle')}`}
                     value={formik.values.reviewTitle}
                     onChange={formik.handleChange}
                     error={formik.touched.reviewTitle && Boolean(formik.errors.reviewTitle)}
@@ -128,7 +129,7 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
                     className={st.item}
                     id="workTitle"
                     name="workTitle"
-                    label="Work title"
+                    label={`${t('createReview.wTitle')}`}
                     value={formik.values.workTitle}
                     onChange={formik.handleChange}
                     error={formik.touched.workTitle && Boolean(formik.errors.workTitle)}
@@ -137,28 +138,28 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
 
                 <TagsAutocomplete tagsOptions={tagsOptions} values={formik.values.tags} setFieldValue={formik.setFieldValue} />
 
-                <FormLabel className={st.formLabel} >Review text </FormLabel>
+                <FormLabel className={st.formLabel} >{t('createReview.rText')}</FormLabel>
                 <SimpleMdeReact className={`${st.reviewText} ${st.item}`} id="reviewText" placeholder="Review text"
                                 value={reviewText} onChange={handleTextChange} options={customRendererOptions}
                 />
 
                 <UploadImage handleDelete={handleDelete} image={image} handleImage={handleImage}/>
 
-                <FormLabel sx={{width: '40%', marginTop: '14px'}}>Grade</FormLabel>
+                <FormLabel sx={{width: '40%', marginTop: '14px'}}>{t('createReview.grade')}</FormLabel>
                 <TextField
                     sx={{width: '40%'}}
                     type={'number'}
                     id="authorGrade"
                     name="authorGrade"
-                    placeholder="Grade"
+                    placeholder={`${t('createReview.grade')}`}
                     value={formik.values.authorGrade}
                     onChange={formik.handleChange}
                     error={formik.touched.authorGrade && Boolean(formik.errors.authorGrade)}
                     helperText={formik.touched.authorGrade && formik.errors.authorGrade}
                 />
-                <div style={{color: 'grey'}}>Evaluation of the work (from 1 to 10)</div>
+                <div style={{color: 'grey'}}>{t('createReview.gradeInfo')}</div>
                 <Button sx={{marginTop: '6px', marginBottom: '20px', borderRadius: '22px'}} color="neutral" variant="solid"  type="submit">
-                    Update
+                    {t('updateReview.update')}
                 </Button>
             </form>
         </div>

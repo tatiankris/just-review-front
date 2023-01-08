@@ -14,7 +14,7 @@ type LikePropsType = {
 function LikeComponent( { likes, reviewId,current, ...props }:LikePropsType ) {
 
     const dispatch = useAppDispatch()
-
+    const theme = useAppSelector(state => state.app.mode)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const loggedUserId = useAppSelector(state => state.auth.user.id)
     const like = likes.find(l => l.userId === loggedUserId)
@@ -42,15 +42,15 @@ function LikeComponent( { likes, reviewId,current, ...props }:LikePropsType ) {
 
     return (
         <div>
-            <IconButton onClick={handleLike} size="sm" color="danger" style={{backgroundColor: 'none'}}>
+            <IconButton onClick={handleLike} size="sm" color="danger"  variant={"plain"} sx={{':hover' :{backgroundColor: '#addbff00'},':active': {backgroundColor: 'none'} }}>
                 { !!like
                     ? <div>❤</div>
                     : <div>🤍</div> }
             </IconButton>
             {
                 !!like
-                    ? <span style={{color: '#c4111f'}}>{likes.length}</span>
-                    : <span style={{color: '#474343'}}>{likes.length}</span>
+                    ? <span style={{color: theme ? 'pink' : '#c4111f'}}>{likes.length}</span>
+                    : <span style={{color: theme ? 'whitesmoke' : '#474343'}}>{likes.length}</span>
             }
         </div>
 

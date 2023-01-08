@@ -5,9 +5,11 @@ import {useFormik} from "formik";
 import {Button, TextField} from "@mui/joy";
 import {registerTC} from "../../../store/reducers/authReducer";
 import {useAppDispatch} from "../../../common/utils/hooks";
+import {useTranslation} from "react-i18next";
 
 const Registration = () => {
     const dispatch = useAppDispatch();
+    const { t } = useTranslation();
 
     const formik = useFormik({
         initialValues: {
@@ -47,7 +49,7 @@ const Registration = () => {
                     sx={{width: '100%'}}
                     id="username"
                     name="username"
-                    label="Username"
+                    label={`${t('signUp.username')}`}
                     value={formik.values.username}
                     onChange={formik.handleChange}
                     error={formik.touched.username && Boolean(formik.errors.username)}
@@ -57,7 +59,7 @@ const Registration = () => {
                     sx={{width: '100%'}}
                     id="email"
                     name="email"
-                    label="Email"
+                    label={`${t('signUp.email')}`}
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     error={formik.touched.email && Boolean(formik.errors.email)}
@@ -67,7 +69,7 @@ const Registration = () => {
                     sx={{width: '100%'}}
                     id="password"
                     name="password"
-                    label="Password"
+                    label={`${t('signUp.password')}`}
                     type="password"
                     value={formik.values.password}
                     onChange={formik.handleChange}
@@ -78,7 +80,7 @@ const Registration = () => {
                     sx={{width: '100%'}}
                     id="confirmPassword"
                     name="confirmPassword"
-                    label="Confirm password"
+                    label={`${t('signUp.confirmPassword')}`}
                     type="password"
                     value={formik.values.confirmPassword}
                     onChange={formik.handleChange}
@@ -86,7 +88,7 @@ const Registration = () => {
                     helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
                 />
                 <Button sx={{marginTop: '6px', borderRadius: '22px'}} color="neutral" variant="solid"  type="submit">
-                    Registration
+                    {t('signUp.signUp')}
                 </Button>
             </form>
         </div>
