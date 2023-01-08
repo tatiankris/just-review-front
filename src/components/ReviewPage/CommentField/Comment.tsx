@@ -46,8 +46,8 @@ function Comment({comment,...props}: CommentPropsType) {
                 <Box className={s.comment}>
                     <Stack width={'100%'} direction="row" sx={{justifyContent: 'space-between'}}>
                         <Box style={{display: 'inline-flex', alignItems: 'center'}}>
-                            <Avatar onClick={() => {navigate(`${PROFILE_PAGE}/${comment.user}`)}} sx={{"--Avatar-size": "20px"}}/>
-                            <a href={`${PROFILE_PAGE}/${comment.user}`} style={{fontSize: '14px', fontWeight: 'bold'}} className={s.reviewTitle}>{comment.user}</a>
+                            <Avatar src={comment.avatar ? comment.avatar : ''} onClick={() => {navigate(`${PROFILE_PAGE}/${comment.user}`)}} sx={{"--Avatar-size": "20px"}}/>
+                            <a href={`${PROFILE_PAGE}/${comment.username}`} style={{fontSize: '14px', fontWeight: 'bold'}} className={s.reviewTitle}>{comment.username}</a>
                         </Box>
                         <Box style={{display: 'inline-flex', alignItems: 'center'}}>
 

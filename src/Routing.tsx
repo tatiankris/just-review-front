@@ -17,11 +17,12 @@ function Routing() {
 
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const roles = useAppSelector(state => state.auth.user.roles)
+
+
     if (!isLoggedIn) {
         return <Routes>
             <Route path={`${REVIEW_PAGE}/:username/:review`} element={<ReviewPage />}/>
             <Route path={`${PROFILE_PAGE}/:username`} element={<ProfilePage />}/>
-            <Route path={'/test'} element={<Test />}/>
             <Route path={'/google'} element={<GoogleAuth />}/>
             {/*<Route path="/search" element={<SearchPage/>} />*/}
             <Route path="/home" element={<HomePage/>} />
@@ -41,7 +42,6 @@ function Routing() {
             <Route path={`${REVIEW_PAGE}/:username/:review`} element={<ReviewPage />}/>
 
             <Route path={`${PROFILE_PAGE}/:username`} element={<ProfilePage />}/>
-            <Route path={'/test'} element={<Test />}/>
             {/*<Route path="/search" element={<SearchPage/>} />*/}
             <Route path="/home" element={<HomePage/>} />
             <Route

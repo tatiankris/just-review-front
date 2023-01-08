@@ -7,9 +7,13 @@ import {getReviewsTC} from "../../store/reducers/reviewsReducer";
 import { useDebounce } from "usehooks-ts";
 import s from './SearchPage.module.scss'
 import SearchReview from "../Review/SearchReview";
-const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
+import {URL} from '../../common/imageDefault'
+//const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
-function SearchPage() {
+type PropsType = {
+    notMain?: boolean
+}
+function SearchPage({notMain}: PropsType) {
 
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const reviews = useAppSelector(state => state.reviews.reviews)
@@ -29,7 +33,10 @@ function SearchPage() {
                 <Grid container spacing={3}>
                     <Grid className={s.searchPageStack}>
                         {/*<div>*/}
-
+                        {
+                           notMain &&
+                            <div style={{marginTop: '30px'}}><Tags /></div>
+                        }
                             {
                                 reviews && reviews.map(r => {
                                     return <SearchReview
@@ -48,6 +55,7 @@ function SearchPage() {
                                         userName={r.userName}
                                         authorGrade={r.authorGrade}
                                         comments={r.comments}
+                                        avatar={r.avatar ? r.avatar : null}
                                     />
                                 })
                             }

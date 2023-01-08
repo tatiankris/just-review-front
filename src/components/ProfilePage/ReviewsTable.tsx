@@ -24,7 +24,8 @@ import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {useTranslation} from "react-i18next";
-const URL = 'https://images.pexels.com/photos/7130560/pexels-photo-7130560.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' //'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
+import {URL} from '../../common/imageDefault'
+//const URL = 'https://images.pexels.com/photos/7130560/pexels-photo-7130560.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' //'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
 type PropsType = {
     reviews: Array<ReviewType> | null
@@ -141,7 +142,7 @@ export const ReviewsTable = ({reviews, username, ...props}: PropsType) => {
                                                sx={{':hover': {cursor: 'pointer'}}}
                                                onClick={() => {navigate(`${REVIEW_PAGE}/${r.userName}/${r._id}`)}}
                                     >
-                                        <img src={r.imageURL}
+                                        <img src={r.imageURL ? r.imageURL : URL}
                                              style={{width: '80px', height: '46px', borderRadius: '4px'}}/>
                                     </TableCell>
                                     <TableCell className={`${s.cellText}`} align="center" ><span className={`${s.cellText}`}>{r.category.title}</span></TableCell>

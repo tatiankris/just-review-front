@@ -72,6 +72,10 @@ function Header() {
         dispatch(setSearchAC(e.currentTarget.value.trim()))
     }
 
+    const handleClearSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(setSearchAC(''))
+    }
+
     const homeHandler = () => {
         dispatch(setSearchAC(''))
         dispatch(setSearchTagsAC([]))
@@ -134,6 +138,7 @@ function Header() {
                                 size={'md'}
                                 value={search}
                                 onChange={handleSearch}
+                                // onBlur={handleClearSearch}
                                 variant={theme ? 'solid' : 'outlined'}
                                 sx={!isSmallScreen ? {borderRadius: '20px',
                                     maxWidth: '300px',

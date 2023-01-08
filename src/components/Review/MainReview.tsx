@@ -28,11 +28,12 @@ type ReviewPropsType = {
     authorGrade: number
     createdAt: string
     rating: number
+    avatar?: string | null
 }
 
 function MainReview({author, userName, tags, likes,imageURL, reviewId,
                    reviewTitle, workTitle, reviewText, category, authorGrade,
-                    createdAt, rating,comments,...props}: ReviewPropsType) {
+                    createdAt, rating,comments, avatar,...props}: ReviewPropsType) {
 
     const iSmallScreen = useMediaQuery({ query: '(max-width: 728px)' })
     console.log('iSmallScreen', iSmallScreen)
@@ -104,7 +105,7 @@ const dispatch = useAppDispatch()
                 <Box className={theme ? `${s.reviewInfo} ${s.darkInfo}` : `${s.reviewInfo}`}>
                     <Box>
                         <Box className={s.userLink}>
-                            <Avatar className={`${s.avatar}`} onClick={() => {
+                            <Avatar src={avatar ? avatar : ''}   className={`${s.avatar}`} onClick={() => {
                                 navigate(`${PROFILE_PAGE}/${userName}`)
                             }} sx={{"--Avatar-size": "16px"}}/>
                             <span onClick={(e) => {

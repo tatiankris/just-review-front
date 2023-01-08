@@ -63,6 +63,7 @@ i18n
                         send: 'Send',
                         update: 'Update',
                         cancel: 'Cancel',
+                        noReview: 'No reviews'
                     },
                     reviewTable: {
                         rTitle: 'Review title',
@@ -157,7 +158,7 @@ i18n
                         send: 'Отправить',
                         update: 'Редактировать',
                         cancel: 'Отмена',
-
+                        noReview: 'Обзоров нет'
                     },
                     reviewTable: {
                         rTitle: 'Название обзора',

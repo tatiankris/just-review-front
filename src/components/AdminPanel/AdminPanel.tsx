@@ -25,6 +25,13 @@ function AdminPanel() {
 
     console.log('users', users)
 
+    const search = useAppSelector(state => state.reviews.search)
+    useEffect(() => {
+        if (search.length) {
+            navigate('/home')
+        }
+    }, [search])
+
     return (
         <Container maxWidth="lg"
                    sx={{marginTop: '80px', padding: '0', width: '100%'}}

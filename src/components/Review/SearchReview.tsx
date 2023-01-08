@@ -7,7 +7,7 @@ import {PROFILE_PAGE, REVIEW_PAGE} from "../../Routing";
 import UpdateReviewModal from "./UpdateReview/UpdateReviewModal";
 import DeleteModal from "../commonComponents/DeleteModal";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
-import {TagsType} from "../../store/reducers/reviewsReducer";
+import {setSearchAC, TagsType} from "../../store/reducers/reviewsReducer";
 import LikeComponent from "../commonComponents/LikeComponent";
 import { useMediaQuery } from 'react-responsive'
 import RatingComponent from "../commonComponents/RatingComponent";
@@ -29,11 +29,12 @@ type ReviewPropsType = {
     authorGrade: number
     createdAt: string
     rating: number
+    avatar?: string | null
 }
 
 function SearchReview({author, userName, tags, likes,imageURL, reviewId,
                    reviewTitle, workTitle, reviewText, category, authorGrade,
-                    createdAt,rating, comments,...props}: ReviewPropsType) {
+                    createdAt,rating, comments, avatar, ...props}: ReviewPropsType) {
 
     const iSmallScreen = useMediaQuery({ query: '(max-width: 728px)' })
     console.log('iSmallScreen', iSmallScreen)
@@ -98,15 +99,26 @@ const dispatch = useAppDispatch()
             {/*}*/}
             {iSmallScreen &&
                 <Box className={theme ? `${s.darkBox}` : ''}>
-                    <Box>
+                    <Box sx={{':hover': {cursor: 'pointer'}}}
+                         onClick={(event) => {
+                             event.stopPropagation()
+                             navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
+                             dispatch(setSearchAC(''))
+                         }}>
                         <div className={s.image} style={{backgroundImage: `url(${imageURL})`, backgroundSize: 'cover'}}>
                             <div className={theme ? `${s.categoryZ} ${s.categoryDark}` : `${s.categoryZ}`}>{category.title}</div>
                         </div>
                     </Box>
-                    <Box style={{padding: '10px 20px 10px 10px'}}>
+                    <Box sx={{':hover': {cursor: 'pointer'}}}
+                         onClick={(event) => {
+                             event.stopPropagation()
+                             navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
+                             dispatch(setSearchAC(''))
+                         }} style={{padding: '10px 20px 10px 10px'}}>
                         <Box>
                             <Box className={s.userLink}>
-                                <Avatar className={s.avatar} onClick={() => {
+                                <Avatar src={avatar ? avatar : ''} className={s.avatar} onClick={(e) => {
+                                    e.stopPropagation()
                                     navigate(`${PROFILE_PAGE}/${userName}`)
                                 }} sx={{"--Avatar-size": "16px"}}/>
                                 <a href={`${PROFILE_PAGE}/${userName}`} className={theme ? `${s.dark} ${s.link}` : `${s.link}`}>{userName}</a>
@@ -131,10 +143,10 @@ const dispatch = useAppDispatch()
                                     reviewText.length > 42 &&
                                     <>{includeSearch(reviewText.slice(0, 42))}
                                         {'....'}
-                                        <NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}}
-                                                 className={s.reviewTitle}>
-                                            Read more
-                                        </NavLink>
+                                        {/*<NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}}*/}
+                                        {/*         className={s.reviewTitle}>*/}
+                                        {/*    Read more*/}
+                                        {/*</NavLink>*/}
                                     </>
                                 }
                             </div>
@@ -177,6 +189,7 @@ const dispatch = useAppDispatch()
                         onClick={(event) => {
                             event.stopPropagation()
                             navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
+                            dispatch(setSearchAC(''))
                         }}
                         xs={3}>
                         <div className={s.image} style={{backgroundImage: `url(${imageURL})`, backgroundSize: 'cover'}}>
@@ -188,10 +201,11 @@ const dispatch = useAppDispatch()
                         <Box sx={{':hover': {cursor: 'pointer'}}}
                              onClick={(event) => {
                                  event.stopPropagation()
+                                 dispatch(setSearchAC(''))
                                  navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
                              }}>
                             <Box className={s.userLink}>
-                                <Avatar className={s.avatar} onClick={() => {
+                                <Avatar src={avatar ? avatar : ''}  className={s.avatar} onClick={() => {
                                     navigate(`${PROFILE_PAGE}/${userName}`)
                                 }} sx={{"--Avatar-size": "20px"}}/>
                                 <span onClick={(e) => {
@@ -270,6 +284,7 @@ const dispatch = useAppDispatch()
                 <Stack direction={'row'} spacing={2}>
                     <div className={s.commentButton}>
                         <IconButton onClick={() => {
+                            dispatch(setSearchAC(''))
                             navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
                         }} size="sm" color="neutral">
                             💬

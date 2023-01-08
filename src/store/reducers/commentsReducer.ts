@@ -8,7 +8,8 @@ export type CommentType = {
     text: string
     createdAt: string
     _id: string
-
+    username?: string
+    avatar?: string
 }
 
 const initialState = {
@@ -43,7 +44,7 @@ export const getCommentsTC = (reviewId: string): AppThunk => {
         dispatch(setAppStatusAC("loading"))
         commentsAPI.getComments(reviewId)
             .then(res => {
-                console.log('res.data.comments', res.data.comments)
+                // console.log('res.data.comments', res.data.comments)
                 dispatch(setCommentsAC(res.data.comments))
             })
             .catch(err => {

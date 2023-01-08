@@ -6,11 +6,12 @@ import Comments from './CommentField/Comments'
 import {PROFILE_PAGE, REVIEW_PAGE} from "../../Routing";
 import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {useNavigate, useParams} from "react-router-dom";
-import {getCurrentReviewsTC, getReviewsTC} from "../../store/reducers/reviewsReducer";
+import {getCurrentReviewsTC, getReviewsTC, setSearchAC} from "../../store/reducers/reviewsReducer";
 import LikeComponent from "../commonComponents/LikeComponent";
 import {ReactMarkdown} from "react-markdown/lib/react-markdown";
 import RatingComponent from "../commonComponents/RatingComponent";
 import {useTranslation} from "react-i18next";
+import SearchPage from "../SearchPage/SearchPage";
 
 const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
@@ -23,12 +24,13 @@ function ReviewPage() {
     const { t } = useTranslation();
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-
+    const search = useAppSelector(state => state.reviews.search)
     const {username, review} = useParams()
 
-    ///НЕ ПОПАДАЕТ В ISEeFFECT!!!
+
     useEffect(() => {
         // dispatch(getReviewsTC(review, false))
+
         if (review) {
             console.log('review', review)
 
@@ -36,7 +38,15 @@ function ReviewPage() {
         }
     }, [review])
 
-    console.log('current', current)
+    // console.log('current', current)
+
+    useEffect(() => {
+        dispatch(setSearchAC(''))
+    }, [])
+
+    if (search.length) {
+        return <SearchPage notMain />
+    }
 
     return (
         <Container maxWidth="md"

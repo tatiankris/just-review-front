@@ -21,7 +21,7 @@ export type ReviewType = {
     comments: number
     createdAt: string
     imageURL?: string
-
+    avatar?: string
 }
 const initialState = {
     reviews: [] as Array<ReviewType>,
