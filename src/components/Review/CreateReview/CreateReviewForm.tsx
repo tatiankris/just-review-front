@@ -86,8 +86,6 @@ function CreateReviewForm(props: CreateType) {
                 .max(10, 'Invalid grade')
         }),
         onSubmit: (values) => {
-        alert(JSON.stringify(values, null, 2));
-
 
             dispatch(createReviewTC({...values, reviewText, file: image}, props.userId))
             props.handleClose()

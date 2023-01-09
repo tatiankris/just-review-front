@@ -86,8 +86,6 @@ function UpdateReviewForm({ reviewId,oldValues, ...props}:UpdateType) {
         }),
         onSubmit: (values) => {
 
-
-            alert(JSON.stringify(values, null, 2));
             dispatch(updateReviewTC(reviewId, {...values, reviewText, file: image}))
             props.handleClose()
 
