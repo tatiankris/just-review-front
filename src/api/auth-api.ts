@@ -1,8 +1,8 @@
-import {instance} from "./api";
+import {baseURL, instance} from "./api";
 import axios from "axios";
 const CLIENT_ID = '51eed0be7af19f448be0'
 const CLIENT_SECRET = 'f561ab4ab6241252b270812f4dc63877dfa84e4f'
-const baseURL = 'https://just-review-back.vercel.app'
+// const baseURL = 'https://just-review-back.vercel.app'
 const params = '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&code='
 
 

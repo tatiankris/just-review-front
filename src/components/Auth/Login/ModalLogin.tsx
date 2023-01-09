@@ -11,6 +11,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import {authAPI} from "../../../api/auth-api";
 import {useAppDispatch} from "../../../common/utils/hooks";
 import {useTranslation} from "react-i18next";
+import { baseURL } from "../../../api/api";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -33,13 +34,6 @@ function ModalLogin({isSmallScreen} : PropsType) {
 
   const { t } = useTranslation();
 
-  const clientId = '301022637814-i3noevnhjjh0rn88avi7p3d0q5m6hucj.apps.googleusercontent.com'
-  const ghClientId = '51eed0be7af19f448be0'
-
-useEffect(() => {
-
-});
-
   const dispatch = useAppDispatch()
 
 
@@ -59,12 +53,12 @@ useEffect(() => {
   }
 
   const google = () => {
-    window.open("https://just-review-back.vercel.app/auth/google", "_self")
+    window.open(baseURL + "/auth/google", "_self")
 
   }
 
   const gitHub = () => {
-    window.open("https://just-review-back.vercel.app/auth/github", "_self")
+    window.open(baseURL + "/auth/github", "_self")
   }
 
   // function handleCallbackResponse(response: any) {

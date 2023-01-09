@@ -6,6 +6,7 @@ import s from './Registration.module.scss'
 import GitHubIcon from "@mui/icons-material/GitHub";
 import {useAppDispatch} from "../../../common/utils/hooks";
 import {useTranslation} from "react-i18next";
+import {baseURL} from "../../../api/api";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -33,10 +34,10 @@ function ModalRegistration({isSmallScreen}: PropsType) {
     const handleClose = () => setOpen(false);
 
     const google = () => {
-        window.open("https://just-review-back.vercel.app/auth/google", "_self")
+        window.open(baseURL + "/auth/google", "_self")
     }
     const gitHub = () => {
-        window.open("https://just-review-back.vercel.app/auth/github", "_self")
+        window.open(baseURL + "/auth/github", "_self")
     }
 
 

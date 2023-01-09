@@ -2,6 +2,7 @@ import {authAPI, LoginDataType, RegisterDataType} from "../../api/auth-api";
 import {AppThunk} from "../store";
 import {light} from "@mui/material/styles/createPalette";
 import {setAppStatusAC} from "./appReducer";
+import {baseURL} from "../../api/api";
 
 type UserData = {
     id: string
@@ -27,7 +28,7 @@ export const authReducer = (state: StateType = initialState, action: AuthActions
         }
         case 'auth/SET-IS-LOGOUT': {
             localStorage.removeItem('token')
-            window.open("https://just-review-back.vercel.app/auth/logout", "_self")
+            window.open(baseURL + "/auth/logout", "_self")
             console.log('Logout is OK')
             return {...state, isLoggedIn: false, user: {} as UserData}
         }
