@@ -12,6 +12,8 @@ import {ReactMarkdown} from "react-markdown/lib/react-markdown";
 import RatingComponent from "../commonComponents/RatingComponent";
 import {useTranslation} from "react-i18next";
 import SearchPage from "../SearchPage/SearchPage";
+import { useInterval } from "../../common/hooks/useInterval";
+import {getCommentsTC} from "../../store/reducers/commentsReducer";
 
 const URL = 'https://static.okko.tv/images/v2/16449765?scale=1&quality=80'
 
@@ -43,6 +45,13 @@ function ReviewPage() {
     useEffect(() => {
         dispatch(setSearchAC(''))
     }, [])
+
+    useInterval(() => {
+        if (review) {
+            dispatch(getCommentsTC(review))
+        }
+
+    }, 4000)
 
     if (search.length) {
         return <SearchPage notMain />

@@ -41,7 +41,7 @@ export const setCommentsAC = (data: CommentType[]) => {
 
 export const getCommentsTC = (reviewId: string): AppThunk => {
     return (dispatch) => {
-        dispatch(setAppStatusAC("loading"))
+        // dispatch(setAppStatusAC("loading"))
         commentsAPI.getComments(reviewId)
             .then(res => {
                 // console.log('res.data.comments', res.data.comments)
@@ -52,7 +52,7 @@ export const getCommentsTC = (reviewId: string): AppThunk => {
 
             })
             .finally(() => {
-                    dispatch(setAppStatusAC("succeeded"))
+                    // dispatch(setAppStatusAC("succeeded"))
                 }
             )
     }
