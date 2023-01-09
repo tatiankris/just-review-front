@@ -83,6 +83,7 @@ export const ReviewsTable = ({reviews, username, ...props}: PropsType) => {
         setCreate(!create)
     }
     const { t } = useTranslation();
+    const theme = useAppSelector(state => state.app.mode)
 
 
 
@@ -90,7 +91,7 @@ export const ReviewsTable = ({reviews, username, ...props}: PropsType) => {
     return (
         <Grid container className={s.gridContainer}>
             <TableContainer className={s.tableContainer} component={Paper}>
-                <Table className={s.table}  aria-label="simple table">
+                <Table className={theme ? `${s.table} ${s.darkTable}`: `${s.table}`}  aria-label="simple table">
                     <TableHead style={{background: '#EFEFEF', padding: 0}}>
                         <TableRow className={s.headerRow}>
                             <TableCell className={s.cellHeader}></TableCell>
@@ -131,45 +132,48 @@ export const ReviewsTable = ({reviews, username, ...props}: PropsType) => {
 
                             return (
                                 <TableRow
-
-
-                                    hover
+                                    // hover
                                     key={r._id}
-                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                    sx={{'&:last-child td, &:last-child th': {border: 0},
+                                        backgroundColor: theme ? '#5a5a5a' : '#ffffff',
+                                    ':hover': {backgroundColor: theme ? '#787575' : '#f6f1f1' }
+                                    }}
                                 >
 
-                                    <TableCell component="th"
+                                    <TableCell
+                                        className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`}
+                                        component="th"
                                                sx={{':hover': {cursor: 'pointer'}}}
                                                onClick={() => {navigate(`${REVIEW_PAGE}/${r.userName}/${r._id}`)}}
                                     >
                                         <img src={r.imageURL ? r.imageURL : URL}
                                              style={{width: '80px', height: '46px', borderRadius: '4px'}}/>
                                     </TableCell>
-                                    <TableCell className={`${s.cellText}`} align="center" ><span className={`${s.cellText}`}>{r.category.title}</span></TableCell>
-                                    <TableCell className={`${s.cellText}`} align="left" scope="row"
+                                    <TableCell className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`} align="center" ><span className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`}>{r.category.title}</span></TableCell>
+                                    <TableCell className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`} align="left" scope="row"
                                                sx={{':hover': {cursor: 'pointer'}}}
                                                onClick={() => {navigate(`${REVIEW_PAGE}/${r.userName}/${r._id}`)}}
                                     >
-                                        <NavLink className={`${s.cellText} ${s.link}`} to={`${REVIEW_PAGE}/${r.userName}/${r._id}`}>
+                                        <NavLink className={theme ? `${s.cellText} ${s.link} ${s.darkCell}`: `${s.cellText} ${s.link}`} to={`${REVIEW_PAGE}/${r.userName}/${r._id}`}>
                                             {r.reviewTitle}
                                         </NavLink>
                                     </TableCell>
-                                    <TableCell className={`${s.cellText}`} align="left"
+                                    <TableCell className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`} align="left"
                                                sx={{':hover': {cursor: 'pointer'}}}
                                                onClick={() => {navigate(`${REVIEW_PAGE}/${r.userName}/${r._id}`)}}
-                                    > <span className={`${s.cellText}`}>{r.workTitle}</span></TableCell>
-                                    <TableCell className={`${s.cellText}`} align="center" ><span className={`${s.cellText}`}><b>{r.authorGrade}</b>/10</span></TableCell>
-                                    <TableCell className={`${s.cellText}`} align="center">
+                                    > <span className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`}>{r.workTitle}</span></TableCell>
+                                    <TableCell className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`} align="center" ><span className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`}><b>{r.authorGrade}</b>/10</span></TableCell>
+                                    <TableCell className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`} align="center">
                                         {/*<StarIcon sx={{color: 'yellow'}} />*/}
-                                        <span className={`${s.cellText}`}>  ⭐️
+                                        <span className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`}>  ⭐️
                                         {r.rating.toFixed(1)}</span>
                                     </TableCell>
-                                    <TableCell className={`${s.cellText}`} align="center">
-                                        <span className={`${s.cellText}`}>❤{r.likes.length}</span>,
-                                        <span className={`${s.cellText}`}>💬{r.comments}</span>
+                                    <TableCell className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`} align="center">
+                                        <span className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`}>❤{r.likes.length}</span>,
+                                        <span className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`}>💬{r.comments}</span>
                                     </TableCell>
-                                    <TableCell className={`${s.cellText}`} align="right"><span className={`${s.cellText}`}>{r.createdAt.slice(0, 10)}</span></TableCell>
-                                    <TableCell className={`${s.cellText}`} align="right"><Stack  direction="column" spacing={0} justifyContent="center">
+                                    <TableCell className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`} align="right"><span className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`}>{r.createdAt.slice(0, 10)}</span></TableCell>
+                                    <TableCell className={theme ? `${s.cellText} ${s.darkCell}`: `${s.cellText}`} align="right"><Stack  direction="column" spacing={0} justifyContent="center">
                                         <Box className={s.options}>
                                         <div>
                                             <UpdateReviewModal reviewId={r._id} oldValues={{tags: r.tags, imageURL: r.imageURL ? r.imageURL : URL,

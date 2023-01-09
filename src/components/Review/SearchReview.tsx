@@ -121,7 +121,14 @@ const dispatch = useAppDispatch()
                                     e.stopPropagation()
                                     navigate(`${PROFILE_PAGE}/${userName}`)
                                 }} sx={{"--Avatar-size": "16px"}}/>
-                                <a href={`${PROFILE_PAGE}/${userName}`} className={theme ? `${s.dark} ${s.link}` : `${s.link}`}>{userName}</a>
+                                <span onClick={(e) => {
+                                    e.stopPropagation()
+                                    dispatch(setSearchAC(''))
+                                    navigate(`${PROFILE_PAGE}/${userName}`)}}
+                                      style={{fontSize: '10px', fontWeight: 'bold'}}
+
+                                      className={theme ? `${s.dark} ${s.link}` : `${s.link}`}>{userName}</span>
+                                {/*<a href={`${PROFILE_PAGE}/${userName}`} className={theme ? `${s.dark} ${s.link}` : `${s.link}`}>{userName}</a>*/}
                             </Box>
 
                             <Box className={s.titles}>
@@ -180,8 +187,7 @@ const dispatch = useAppDispatch()
             {
                 !iSmallScreen &&
 
-                <Grid
-
+                <Grid marginBottom={0}
                     container spacing={2} className={theme ? `${s.darkBox}` : ``}>
 
                     <Grid
@@ -210,6 +216,7 @@ const dispatch = useAppDispatch()
                                 }} sx={{"--Avatar-size": "20px"}}/>
                                 <span onClick={(e) => {
                                     e.stopPropagation()
+                                    dispatch(setSearchAC(''))
                                     navigate(`${PROFILE_PAGE}/${userName}`)}}
                                     style={{fontSize: '14px', fontWeight: 'bold'}}
 
@@ -278,18 +285,21 @@ const dispatch = useAppDispatch()
                     </Grid>
                 </Grid>
             }
-            <Stack className={s.bottom} alignItems={'center'} direction="row" spacing={2} justifyContent="space-between">
+            <Stack className={theme ? `${s.bottom} ${s.darkBottom}` : `${s.bottom}`} alignItems={'center'} direction="row" spacing={2} justifyContent="space-between">
 
                 <div style={{padding: '6px'}}>{createdAt.slice(0, 10)}</div>
                 <Stack direction={'row'} spacing={2}>
                     <div className={s.commentButton}>
-                        <IconButton onClick={() => {
+                        <IconButton
+                            variant={"plain"}
+                            sx={{':hover' :{backgroundColor: '#addbff00'}}}
+                            onClick={() => {
                             dispatch(setSearchAC(''))
                             navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
                         }} size="sm" color="neutral">
                             💬
                         </IconButton>
-                        <span style={{color: '#166d3d'}}>{comments}</span>
+                        <span style={{color: theme ? 'rgba(173,255,192,0.68)' : '#166d3d'}}>{comments}</span>
                     </div>
                     <LikeComponent likes={likes} reviewId={reviewId} current={"none"}/>
                 </Stack>

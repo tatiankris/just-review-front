@@ -28,6 +28,7 @@ function Comments({comments, ...props}: CommentsPropsType) {
     const dispatch = useAppDispatch()
     const {review} = useParams()
     const { t } = useTranslation();
+    const theme = useAppSelector(state => state.app.mode)
 
     const [value, setValue ] = useState('')
     const handleSubmit = () => {
@@ -45,9 +46,9 @@ function Comments({comments, ...props}: CommentsPropsType) {
 
 
     return (
-        <Paper sx={{backgroundColor: 'rgba(255, 226, 187, 0.57)', margin: '10px 0px 30px 0px'}} elevation={6}>
+        <Paper sx={{backgroundColor: theme ? '#383838' : 'rgb(255,224,211)', margin: '10px 0px 30px 0px'}} elevation={6}>
             <Box className={s.commentsBox}>
-                <Typography padding={'4px'} fontSize={'14px'} fontWeight={'bold'}>
+                <Typography padding={'4px'} fontSize={'14px'} fontWeight={'bold'} sx={{color: theme ? 'white' : '#2d2a2a'}}>
                     💬 {t('review.comments')}
                 </Typography>
 
@@ -57,7 +58,7 @@ function Comments({comments, ...props}: CommentsPropsType) {
                     })
                 }
                 <FormControl className={s.formControl}>
-                    <FormLabel>🖊 {t('review.sendComment')}</FormLabel>
+                    <FormLabel sx={{color: theme ? 'white' : '#767687'}}>🖊 {t('review.sendComment')}</FormLabel>
                     <Textarea
                         placeholder={`${t('review.writeComment')}`}
                         minRows={3}
@@ -70,17 +71,20 @@ function Comments({comments, ...props}: CommentsPropsType) {
                                     display: 'flex',
                                     gap: 'var(--Textarea-paddingBlock)',
                                     pt: 'var(--Textarea-paddingBlock)',
+                                    color: theme ? 'white' : '#2f2b2b',
                                     // borderTop: '1px solid',
                                     // borderColor: 'divider',
                                     flex: 'auto',
                                 }}
                             >
-                                <Button onClick={handleSubmit} variant={'soft'} sx={{ml: 'start'}}>{t('review.send')}</Button>
+                                <Button onClick={handleSubmit} variant={'soft'} color={theme ? 'neutral' : 'primary'} sx={{ml: 'start'}}>{t('review.send')}</Button>
                             </Box>
                         }
                         sx={{
                             minWidth: '40%',
-                            maxWidth: '80%'
+                            maxWidth: '80%',
+                            backgroundColor: theme ? '#2f2b2b' : 'white',
+                            color: theme ? 'white' : '#2f2b2b'
                             // fontWeight,
                             // fontStyle: italic ? 'italic' : 'initial',
                         }}

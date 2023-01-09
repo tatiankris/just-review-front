@@ -168,101 +168,16 @@ const dispatch = useAppDispatch()
                     </Box>
                 </Box>
             </Box>
-
-            {/*{*/}
-            {/*    !iSmallScreen &&*/}
-
-            {/*    <Grid container spacing={2} className={s.reviewBox}>*/}
-
-            {/*        <Grid xs={3}>*/}
-            {/*            <div className={s.image} style={{backgroundImage: `url(${imageURL})`, backgroundSize: 'cover'}}>*/}
-            {/*                <div className={s.categoryZ}>{category.title}</div>*/}
-            {/*            </div>*/}
-            {/*        </Grid>*/}
-
-            {/*        <Grid xs={5}>*/}
-            {/*            <Box className={s.userLink}>*/}
-            {/*                <Avatar className={s.avatar} onClick={() => {*/}
-            {/*                    navigate(`${PROFILE_PAGE}/${userName}`)*/}
-            {/*                }} sx={{"--Avatar-size": "20px"}}/>*/}
-            {/*                <a href={`${PROFILE_PAGE}/${userName}`} style={{fontSize: '14px', fontWeight: 'bold'}}*/}
-            {/*                   className={s.link}>{userName}</a>*/}
-            {/*            </Box>*/}
-
-            {/*            <Box className={s.titles}>*/}
-            {/*                <NavLink className={s.link} to={`${REVIEW_PAGE}/${userName}/${reviewId}`}>*/}
-            {/*                    {includeSearch(reviewTitle)}*/}
-            {/*                </NavLink>*/}
-            {/*                <div>*/}
-            {/*                    <span className={s.workTitle}>{includeSearch(workTitle)}</span>*/}
-            {/*                </div>*/}
-            {/*            </Box>*/}
-            {/*            <Typography className={s.reviewText} mb={1} lineHeight="sm" textAlign={'start'}*/}
-            {/*                        margin={'8px 0px'}>*/}
-            {/*                {*/}
-            {/*                    reviewText.length < 42 && <>{includeSearch(reviewText)}*/}
-            {/*                        {'....'}*/}
-            {/*                    </>*/}
-            {/*                }*/}
-            {/*                {*/}
-            {/*                    reviewText.length > 42 &&*/}
-            {/*                    <>{includeSearch(reviewText.slice(0, 42))}*/}
-            {/*                        {'....'}*/}
-            {/*                        <NavLink to={`${REVIEW_PAGE}/${userName}/${reviewId}`} style={{color: 'grey'}}*/}
-            {/*                                 className={s.reviewTitle}>*/}
-            {/*                            Read more*/}
-            {/*                        </NavLink>*/}
-            {/*                    </>*/}
-            {/*                }*/}
-            {/*            </Typography>*/}
-            {/*            <Box className={s.tags}>*/}
-            {/*                {renderTags.map(t => {*/}
-            {/*                    return <div className={s.tag} key={t.title}>*/}
-            {/*                        {t.title}*/}
-            {/*                    </div>*/}
-            {/*                })}*/}
-            {/*            </Box>*/}
-
-            {/*        </Grid>*/}
-
-            {/*        <Grid className={s.gradesGrid} xs={4}>*/}
-
-            {/*            <Box>*/}
-            {/*                <div className={s.authorGrade}>*/}
-            {/*                    <Box>The author rates the work:</Box>*/}
-            {/*                    <div className={s.gradeX}><b style={{color: 'white'}}>{authorGrade}</b>/10</div>*/}
-            {/*                </div>*/}
-
-            {/*                <Stack className={s.overallRating} direction="row">*/}
-
-            {/*                    <Box color={'gray'}>Average review rating:</Box>*/}
-            {/*                    <Box>*/}
-            {/*                        <Rating size="large" name="read-only" value={4} readOnly/>*/}
-            {/*                    </Box>*/}
-            {/*                </Stack>*/}
-            {/*            </Box>*/}
-
-            {/*            <Box className={s.setRating}>*/}
-            {/*                👉 <Rating name="controlled"*/}
-            {/*                           value={rating}*/}
-            {/*                           onChange={(event, newValue) => {*/}
-            {/*                               setRating(newValue);*/}
-            {/*                           }}/>*/}
-            {/*            </Box>*/}
-
-            {/*        </Grid>*/}
-            {/*    </Grid>*/}
-            {/*}*/}
             <Stack className={theme ? `${s.bottom} ${s.darkBottom}` : `${s.bottom}`} alignItems={'center'} direction="row" spacing={2} justifyContent="space-between">
 
                 <div style={{padding: '6px'}}>{createdAt.slice(0, 10)}</div>
                 <Stack direction={'row'} spacing={2}>
                     <div className={s.commentButton}>
                         <IconButton
-                            variant={"plain"}
+                            variant={"plain"} color="neutral"
                             sx={{':hover' :{backgroundColor: '#addbff00'}}}
                             onClick={() => {navigate(`${REVIEW_PAGE}/${userName}/${reviewId}`)
-                        }} size="sm" color="neutral">
+                        }} size="sm" >
                             💬
                         </IconButton>
                         <span style={{color: theme ? 'rgba(173,255,192,0.68)' : '#166d3d'}}>{comments}</span>

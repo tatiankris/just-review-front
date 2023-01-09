@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import {CommentType, updateCommentTC} from "../../../store/reducers/commentsReducer";
 import DeleteModal from "../../commonComponents/DeleteModal";
 import {useNavigate, useParams} from "react-router-dom";
-import {useAppDispatch} from "../../../common/utils/hooks";
+import {useAppDispatch, useAppSelector} from "../../../common/utils/hooks";
 import {PROFILE_PAGE} from "../../../Routing";
 import {useTranslation} from "react-i18next";
 
@@ -13,6 +13,7 @@ type CommentPropsType ={
     comment: CommentType
 }
 function Comment({comment,...props}: CommentPropsType) {
+    const theme = useAppSelector(state => state.app.mode)
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -42,18 +43,18 @@ function Comment({comment,...props}: CommentPropsType) {
 
     return (
         <Box className={s.commentsStack}>
-            <Card variant="outlined" sx={{margin: '0px'}}>
+            <Card variant={theme ? 'soft' : "outlined"} sx={{margin: '0px', backgroundColor: theme ? '#828282' : 'white', color: theme ? 'white' : '#2d2a2a'}}>
                 <Box className={s.comment}>
                     <Stack width={'100%'} direction="row" sx={{justifyContent: 'space-between'}}>
                         <Box style={{display: 'inline-flex', alignItems: 'center'}}>
                             <Avatar src={comment.avatar ? comment.avatar : ''} onClick={() => {navigate(`${PROFILE_PAGE}/${comment.user}`)}} sx={{"--Avatar-size": "20px"}}/>
-                            <a href={`${PROFILE_PAGE}/${comment.username}`} style={{fontSize: '14px', fontWeight: 'bold'}} className={s.reviewTitle}>{comment.username}</a>
+                            <a href={`${PROFILE_PAGE}/${comment.username}`} style={{fontSize: '14px', fontWeight: 'bold', color: theme ? 'white' : '#2d2a2a'}} className={s.reviewTitle}>{comment.username}</a>
                         </Box>
                         <Box style={{display: 'inline-flex', alignItems: 'center'}}>
 
                             <IconButton sx={{marginRight: '4px'}} onClick={() => {
                                 setUpdate(true)
-                            }} size="sm" color="warning">
+                            }} size="sm" color={theme ? "neutral" : "warning"}>
                                 ✏️
                             </IconButton>
                             <DeleteModal reviewId={comment.review} commentId={comment._id} title={""} type={'comment'}/>
@@ -78,19 +79,21 @@ function Comment({comment,...props}: CommentPropsType) {
                                             flex: 'auto',
                                         }}
                                     >
-                                        <Button onClick={handleSubmit} variant={'soft'} sx={{ml: 'start'}}>{t('review.update')}</Button>
+                                        <Button onClick={handleSubmit} variant={'soft'} sx={{ml: 'start'}} color={theme ? 'neutral' : 'primary'}>{t('review.update')}</Button>
                                         <Button onClick={handleCancel} variant={'soft'} color={'info'} sx={{ml: 'start'}}>{t('review.cancel')}</Button>
                                     </Box>
                                 }
                                 sx={{
                                     minWidth: '90%',
                                     maxWidth: '90%',
-                                    margin: '6px 0px 6px 0px'
+                                    margin: '6px 0px 6px 0px',
+                                    backgroundColor: theme ? '#2f2b2b' : 'white',
+                                    color: theme ? 'white' : '#2f2b2b'
                                     // fontWeight,
                                     // fontStyle: italic ? 'italic' : 'initial',
                                 }}
                             />
-                        : <Typography mb={1} lineHeight="sm" textAlign={'start'}>
+                        : <Typography mb={1} lineHeight="sm" textAlign={'start'} sx={{color: theme ? 'white' : '#2d2a2a'}}>
                             {comment.text}
                         </Typography>
                     }
@@ -105,10 +108,10 @@ function Comment({comment,...props}: CommentPropsType) {
                         gap: 1.5,
                         py: 1.5,
                         px: 'var(--Card-padding)',
-                        bgcolor: 'background.level1',
+                        bgcolor: theme ? '#2f2b2b' : 'background.level1',
                     }}
                 >
-                    <Typography level="body3" sx={{fontWeight: 'md', color: 'text.secondary'}}>
+                    <Typography level="body3" sx={{fontWeight: 'md', color: theme ? '#e5d9d9' : 'text.secondary'}}>
                         {comment.createdAt.slice(0, 10)}
                     </Typography>
                 </CardOverflow>

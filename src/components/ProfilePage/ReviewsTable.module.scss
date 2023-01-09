@@ -16,6 +16,11 @@
   margin-left: 6px;
 }
 
+.darkTable {
+  //background-color: #434349;
+  color: white;
+}
+
 
 
 
@@ -41,6 +46,11 @@
   text-align: center;
 }
 
+.row {
+
+}
+
+
 .cellText {
   padding: 2px;
   max-width: 70px;
@@ -48,9 +58,7 @@
   word-wrap: break-word;
   //margin: 8px 0px;
   text-align: start;
-
   color: black;
-
 }
 
 
@@ -59,8 +67,12 @@
   &:hover {
     text-decoration: underline;
   }
-
 }
+
+.darkCell {
+   color: #f5efef;
+
+ }
 
 
 .sortIcon {

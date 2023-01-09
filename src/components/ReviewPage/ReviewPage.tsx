@@ -28,6 +28,7 @@ function ReviewPage() {
     const navigate = useNavigate()
     const search = useAppSelector(state => state.reviews.search)
     const {username, review} = useParams()
+    const theme = useAppSelector(state => state.app.mode)
 
 
     useEffect(() => {
@@ -57,6 +58,7 @@ function ReviewPage() {
         return <SearchPage notMain />
     }
 
+
     return (
         <Container maxWidth="md"
                    sx={{marginTop: '80px', marginBottom: '20px'}}
@@ -65,7 +67,7 @@ function ReviewPage() {
             {current &&
                 <Paper  sx={{marginBottom: '8px'}} elevation={12}>
 
-                        <Box className={s.reviewBox}>
+                        <Box className={theme ? `${s.reviewBox} ${s.reviewDark}` : `${s.reviewBox}`}>
 
                             <Box style={{display: 'inline-flex', alignItems: 'center'}}>
                                 <Avatar onClick={() => {navigate(`${PROFILE_PAGE}/${current.userName}`)}} sx={{"--Avatar-size": "20px"}}/>
@@ -124,7 +126,7 @@ function ReviewPage() {
                             }
                         <Stack sx={{margin: '12px 4px 8px 4px'}} width={'100%'} direction="row" spacing={2} justifyContent="space-between">
                             <div>
-                                <Typography>{t('review.authorGrade')}: <Typography variant="outlined" color="success">
+                                <Typography sx={{color: theme ? '#f8f4f4' : 'black'}}>{t('review.authorGrade')}: <Typography sx={{color: theme ? '#62ff2b' : '#44a305'}} variant="outlined" color="success">
                                     <b>{current.authorGrade}</b>/10
                                 </Typography></Typography>
 
@@ -136,7 +138,7 @@ function ReviewPage() {
 
 
                     </Box>
-                    <Stack className={s.bottom} direction="row" spacing={2} justifyContent="space-around">
+                    <Stack className={theme ? `${s.bottom} ${s.darkBottom}` : `${s.bottom}`} direction="row" spacing={2} justifyContent="space-around">
                         { current.likes &&
                             <LikeComponent likes={current.likes} reviewId={current._id} current={'current'} />
                         }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {Button, Modal, Box, Typography, IconButton} from "@mui/joy";
 import s from '../Review/Modal.module.scss'
-import { useAppDispatch } from "../../common/utils/hooks";
+import {useAppDispatch, useAppSelector} from "../../common/utils/hooks";
 import {deleteCommentTC} from "../../store/reducers/commentsReducer";
 import {deleteReviewTC} from "../../store/reducers/reviewsReducer";
 import {useTranslation} from "react-i18next";
@@ -29,7 +29,7 @@ function DeleteModal( { reviewId, commentId,title,type, ...props }:DeletePropsTy
 
 
     const dispatch = useAppDispatch()
-
+    const theme = useAppSelector(state => state.app.mode)
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -49,7 +49,7 @@ function DeleteModal( { reviewId, commentId,title,type, ...props }:DeletePropsTy
 
     return (
         <div>
-            <IconButton onClick={handleOpen} size="sm" color={'danger'}>
+            <IconButton onClick={handleOpen} size="sm" color={theme ? "neutral" : 'danger'}>
                 🗑️
             </IconButton>
             <Modal

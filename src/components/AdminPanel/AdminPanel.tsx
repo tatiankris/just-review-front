@@ -31,6 +31,7 @@ function AdminPanel() {
             navigate('/home')
         }
     }, [search])
+    const theme = useAppSelector(state => state.app.mode)
 
     return (
         <Container maxWidth="lg"
@@ -61,20 +62,23 @@ function AdminPanel() {
                                             <TableRow
                                                 onClick={() => {navigate(`${PROFILE_PAGE}/${u.username}`)}}
 
-                                                hover
+
 
                                                 key={i}
-                                                sx={{':hover': {cursor: 'pointer'} ,'&:last-child td, &:last-child th': {border: 0, ':hover': {cursor: 'pointer'}}}}
+                                                sx={{'&:last-child td, &:last-child th': {border: 0, ':hover': {cursor: 'pointer'}},
+                                                    backgroundColor: theme ? '#5a5a5a' : '#ffffff',
+                                                    ':hover': {cursor: 'pointer', backgroundColor: theme ? '#787575' : '#f6f1f1' }
+                                                }}
                                             >
 
-                                                <TableCell>{i}</TableCell>
-                                                <TableCell >
+                                                <TableCell sx={{color: theme ? 'white' : '#3d3c3c'}}>{i}</TableCell>
+                                                <TableCell sx={{color: theme ? 'white' : '#3d3c3c'}} >
                                                     <Stack direction={'row'} spacing={2}>
                                                     <Avatar size={'sm'} src={u.avatar}/>
-                                                    <NavLink to={`${PROFILE_PAGE}/${u.username}`}>{u.username}</NavLink>
+                                                    <NavLink  style={{color: theme ? 'white' : '#3d3c3c', textDecoration: 'none'}}  to={`${PROFILE_PAGE}/${u.username}`}>{u.username}</NavLink>
                                                 </Stack>
                                                 </TableCell>
-                                                <TableCell>{u.email}</TableCell>
+                                                <TableCell sx={{color: theme ? 'white' : '#3d3c3c'}}>{u.email}</TableCell>
                                                 {/*<TableCell>{u.reviews}</TableCell>*/}
                                                 {/*<TableCell>{u.likes}</TableCell>*/}
                                             </TableRow>
